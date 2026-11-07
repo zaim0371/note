@@ -39,7 +39,7 @@ body{margin:0;min-height:100vh;background:linear-gradient(160deg,var(--bg1),var(
 main{max-width:520px;margin:0 auto;padding:16px 16px 48px}
 
 /* ===== Liquid glass bening ===== */
-.glass,.card,.files li,.drop,.pv,.bar,.seg,dialog,.warn,.tile .box{
+.glass,.card,.files li,.drop,.pv,.bar,.seg,.sgc,dialog,.warn,.tile .box{
   position:relative;
   background:linear-gradient(135deg,var(--sheen),transparent 42%,var(--sheen-lo)),var(--glass);
   -webkit-backdrop-filter:blur(12px) saturate(175%) brightness(1.05);backdrop-filter:blur(12px) saturate(175%) brightness(1.05);
@@ -47,7 +47,7 @@ main{max-width:520px;margin:0 auto;padding:16px 16px 48px}
   box-shadow:var(--shadow),inset 0 1px 0 var(--hi),inset 0 -1px 0 var(--hi-lo),inset 1px 0 0 var(--hi-lo),inset -1px 0 0 var(--hi-lo),inset 0 0 22px rgba(255,255,255,.10);
   border-radius:26px}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
-  .glass,.card,.files li,.drop,.pv,.bar,.seg,dialog,.warn,.tile .box{background:var(--bg2)}}
+  .glass,.card,.files li,.drop,.pv,.bar,.seg,.sgc,dialog,.warn,.tile .box{background:var(--bg2)}}
 
 /* ===== Beranda & tile ===== */
 .home h1{font-size:2.1rem;font-weight:800;letter-spacing:-.025em;line-height:1.1;margin:22px 4px 6px}
@@ -72,9 +72,9 @@ main{max-width:520px;margin:0 auto;padding:16px 16px 48px}
 .back:active{transform:scale(.94)}
 .ttl{margin:0;flex:1;text-align:center;padding-right:38px;font-size:1.02rem;font-weight:700;letter-spacing:-.01em;outline:none}
 
-.seg{display:flex;gap:4px;padding:4px;border-radius:999px;margin:0 0 16px}
-.seg button{flex:1;border:0;background:transparent;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;white-space:nowrap;font-size:.88rem;height:36px;padding:0 8px;color:var(--muted)}
-.seg button[aria-selected="true"]{color:var(--ink);background:linear-gradient(180deg,var(--sel1),var(--sel2));box-shadow:inset 0 1px 0 var(--hi),0 3px 10px rgba(35,50,90,.18)}
+.seg,.sgc{display:flex;gap:4px;padding:4px;border-radius:999px;margin:0 0 16px}
+.seg button,.sgc button{flex:1;border:0;background:transparent;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;white-space:nowrap;font-size:.88rem;height:36px;padding:0 8px;color:var(--muted)}
+.seg button[aria-selected="true"],.sgc button[aria-selected="true"]{color:var(--ink);background:linear-gradient(180deg,var(--sel1),var(--sel2));box-shadow:inset 0 1px 0 var(--hi),0 3px 10px rgba(35,50,90,.18)}
 dialog{position:fixed}
 
 /* ===== Kontrol ===== */
@@ -196,6 +196,32 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 #docRender td,#docRender th{border:1px solid #999;padding:4px}
 [hidden]{display:none!important}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+/* ===== Fitur baru: gabung/pisah PDF, QR, tanda tangan, pindai dokumen ===== */
+[hidden]{display:none!important}
+.tg{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px;margin:12px 0}
+.tg button{display:block;height:auto;min-height:96px;padding:4px;border-radius:14px}
+.tg button[aria-pressed="true"]{outline:3px solid var(--accent);outline-offset:-1px}
+.tg canvas{display:block;width:100%;height:auto;border-radius:8px;background:#fff}
+.tg small{display:block;margin-top:3px;font-size:.72rem;color:var(--muted)}
+.files small{color:var(--muted);font-size:.78rem;margin-right:4px}
+.files li[aria-current="true"]{outline:2px solid var(--accent)}
+.qw{background:#fff;border-radius:16px;padding:12px;display:flex;justify-content:center}
+.qw canvas{max-width:100%;height:auto}
+.pad{display:block;width:100%;height:auto;touch-action:none;border-radius:14px;background:rgba(255,255,255,.55)}
+.sgl{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.sgl .it{display:flex;align-items:center;gap:4px}
+.sgl button.u{height:52px;padding:4px 10px;background:#fff}
+.sgl img{max-height:42px;max-width:110px;display:block}
+.sgo{position:absolute;border:1.5px dashed var(--accent);touch-action:none;cursor:move}
+.sgo img{width:100%;height:100%;display:block;pointer-events:none}
+.sgo i{position:absolute;width:28px;height:28px;margin:-14px 0 0 -14px}
+.sgo i::after{content:"";position:absolute;left:50%;top:50%;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;background:#fff;border:2px solid var(--accent)}
+.sgo i[data-h="nw"]{left:0;top:0}.sgo i[data-h="ne"]{left:100%;top:0}.sgo i[data-h="se"]{left:100%;top:100%}.sgo i[data-h="sw"]{left:0;top:100%}
+.sgo b{position:absolute;left:50%;top:100%;width:26px;height:26px;margin:8px 0 0 -13px;border-radius:50%;background:var(--danger);color:#fff;text-align:center;line-height:26px;font-size:.9rem;cursor:pointer}
+.tgl{width:52px;height:30px;padding:3px;border-radius:999px;position:relative;flex:none}
+.tgl i{display:block;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.3);transition:transform .2s}
+.tgl[aria-checked="true"]{background:rgba(10,132,255,.8)}.tgl[aria-checked="true"] i{transform:translateX(22px)}
+.pgnum{min-width:64px;text-align:center;font-size:.9rem}
 </style>
 </head>
 <body>
@@ -210,6 +236,10 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
   <a class="tile" data-k="pdf" data-go="pdf" href="#pdf"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 11v6m0 0-2.5-2.5M12 17l2.5-2.5"/></svg></div><b>Konverter PDF</b><small>Word &amp; gambar ke PDF</small></a>
   <a class="tile" data-k="ocr" data-go="ocr" href="#ocr"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="3.5"/><path d="M9 10h6M12 10v5"/></svg></div><b>Gambar ke Teks</b><small>Baca teks dari foto</small></a>
   <a class="tile" data-k="size" data-go="size" href="#size"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 10l7-7M21 8V3h-5M10 14l-7 7M3 16v5h5"/></svg></div><b>Ubah Ukuran</b><small>Perkecil ukuran file</small></a>
+  <a class="tile" data-k="gd" data-go="gd" href="#gd"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="9" height="11" rx="2"/><rect x="11" y="9" width="9" height="11" rx="2"/></svg></div><b>Gabung &amp; Pisah PDF</b><small>Satukan atau potong</small></a>
+  <a class="tile" data-k="qr" data-go="qr" href="#qr"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><path d="M14 14h2v2h-2zM18 14h2v6h-4M14 18v2"/></svg></div><b>Pembuat QR</b><small>Teks, Wi-Fi, kontak</small></a>
+  <a class="tile" data-k="sg" data-go="sg" href="#sg"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17c3-6 4-9 6-9s0 6 2 6 2-4 4-4 1 3 4 3"/><path d="M4 21h16"/></svg></div><b>Tanda Tangan PDF</b><small>Bubuhkan tanda tangan</small></a>
+  <a class="tile" data-k="ds" data-go="ds" href="#ds"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h8l4 4v14H7z"/><path d="M4 8v13h3M10 12h6M10 16h6"/></svg></div><b>Pindai Dokumen</b><small>Foto kertas ke PDF</small></a>
 </nav>
 <!-- NOTE: Teks dihapus dari tampilan: "Semua proses berjalan di perangkatmu." -->
 </section>
@@ -314,10 +344,73 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
   <div class="row"><button id="dlgNo">Batal</button><button class="primary" id="dlgGo">Buka tautan</button></div>
 </dialog>
 
+<!-- ===== Gabung & Pisah PDF ===== -->
+<section id="p-gd" class="page" hidden>
+<header class="bar"><a class="back" href="#" data-back aria-label="Kembali ke beranda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></a><h2 class="ttl">Gabung &amp; Pisah PDF</h2></header>
+<div class="sgc" role="tablist"><button type="button" role="tab" id="gdT1" aria-selected="true">Gabung</button><button type="button" role="tab" id="gdT2" aria-selected="false">Pisah</button></div>
+<div id="gdA">
+<label class="drop"><b>Pilih PDF</b><br>Bisa lebih dari satu<input id="gdFiles" type="file" accept="application/pdf" multiple hidden></label>
+<ul class="files" id="gdList"></ul>
+<div class="row"><button class="primary" id="gdMerge" disabled>Gabungkan</button><button type="button" id="gdRstA">Reset</button></div>
+</div>
+<div id="gdB" hidden>
+<label class="drop"><b>Pilih satu PDF</b><br><span id="gdName">Belum ada file dipilih</span><input id="gdOne" type="file" accept="application/pdf" hidden></label>
+<div class="tg" id="gdGrid"></div>
+<div class="row"><button type="button" id="gdAll">Pilih semua</button><button type="button" id="gdNone">Kosongkan</button></div>
+<div class="opts"><label>Hasil<select id="gdMode"><option value="one">Satu file</option><option value="zip">Pisah per halaman (ZIP)</option></select></label></div>
+<div class="row"><button class="primary" id="gdSplit" disabled>Pisahkan</button><button type="button" id="gdRstB">Reset</button></div>
+</div>
+<p class="msg" id="gdMsg" role="status"></p>
+<h3 class="hh">Riwayat <button type="button" class="ghost" id="gdHC">Hapus semua</button></h3><div id="gdHist"></div>
+</section>
+<!-- ===== Pembuat QR ===== -->
+<section id="p-qr" class="page" hidden>
+<header class="bar"><a class="back" href="#" data-back aria-label="Kembali ke beranda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></a><h2 class="ttl">Pembuat QR</h2></header>
+<div class="opts"><label>Jenis<select id="qType"><option value="txt">Teks / Tautan</option><option value="wifi">Wi-Fi</option><option value="vc">Kontak</option><option value="mail">Email</option></select></label></div>
+<div class="opts" id="qF_txt"><label>Teks atau tautan<input id="q_txt" type="text" autocomplete="off"></label></div>
+<div class="opts" id="qF_wifi" hidden><label>Nama jaringan<input id="q_ssid" type="text" autocomplete="off"></label><label>Kata sandi<input id="q_pw" type="text" autocomplete="off"></label><label>Keamanan<select id="q_sec"><option value="WPA">WPA/WPA2</option><option value="WEP">WEP</option><option value="nopass">Tanpa sandi</option></select></label></div>
+<div class="opts" id="qF_vc" hidden><label>Nama<input id="q_nm" type="text" autocomplete="off"></label><label>Telepon<input id="q_tel" type="tel" autocomplete="off"></label><label>Email<input id="q_em" type="email" autocomplete="off"></label></div>
+<div class="opts" id="qF_mail" hidden><label>Alamat tujuan<input id="q_to" type="email" autocomplete="off"></label><label>Subjek<input id="q_sub" type="text" autocomplete="off"></label><label>Isi<input id="q_body" type="text" autocomplete="off"></label></div>
+<div class="opts"><label>Koreksi kesalahan<select id="qEc"><option value="L">Rendah</option><option value="M" selected>Sedang</option><option value="Q">Tinggi</option><option value="H">Maksimal</option></select></label><label>Ukuran<select id="qSz"><option value="220">Kecil</option><option value="300" selected>Sedang</option><option value="380">Besar</option></select></label></div>
+<div class="card" id="qCard" hidden><div class="qw"><canvas id="qCv" aria-label="Kode QR"></canvas></div></div>
+<div class="row"><button class="primary" id="qDl" disabled>Unduh PNG</button><button type="button" id="qCp" disabled>Salin gambar</button><button type="button" id="qRst">Reset</button></div>
+<p class="msg" id="qMsg" role="status"></p>
+</section>
+<!-- ===== Tanda Tangan PDF ===== -->
+<section id="p-sg" class="page" hidden>
+<header class="bar"><a class="back" href="#" data-back aria-label="Kembali ke beranda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></a><h2 class="ttl">Tanda Tangan PDF</h2></header>
+<label class="drop"><b>Pilih PDF</b><br><span id="sgName">Belum ada file dipilih</span><input id="sgFile" type="file" accept="application/pdf" hidden></label>
+<h3 class="hh">Tanda tangan <button type="button" class="ghost" id="sgNew">Buat baru</button></h3>
+<div id="sgPadBox" hidden><div class="card"><canvas id="sgPad" class="pad" width="600" height="240" aria-label="Kanvas tanda tangan"></canvas></div>
+<div class="opts"><label>Pena<select id="sgPen"><option value="#111111">Hitam</option><option value="#0a3fd4">Biru</option></select></label></div>
+<div class="row"><button type="button" id="sgClr">Hapus</button><button type="button" class="primary" id="sgOk">Selesai</button></div></div>
+<div class="sgl" id="sgSaved"></div>
+<div id="sgView" hidden>
+<div class="row"><button type="button" class="ic" id="sgPrev" aria-label="Halaman sebelumnya"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button><span class="pgnum" id="sgPg">1 / 1</span><button type="button" class="ic" id="sgNext" aria-label="Halaman berikutnya"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button></div>
+<div class="stage" id="sgStage" style="cursor:default"><canvas id="sgCv"></canvas></div>
+<div class="row"><button class="primary" id="sgGo" disabled>Terapkan &amp; unduh</button><button type="button" id="sgRst">Reset</button></div>
+</div>
+<p class="msg" id="sgMsg" role="status"></p>
+<h3 class="hh">Riwayat <button type="button" class="ghost" id="sgHC">Hapus semua</button></h3><div id="sgHist"></div>
+</section>
+<!-- ===== Pindai Dokumen ===== -->
+<section id="p-ds" class="page" hidden>
+<header class="bar"><a class="back" href="#" data-back aria-label="Kembali ke beranda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></a><h2 class="ttl">Pindai Dokumen</h2></header>
+<div class="row"><label class="btn" for="dsCam">Ambil foto</label><label class="btn" for="dsGal">Dari galeri</label><input id="dsCam" type="file" accept="image/*" capture="environment" hidden><input id="dsGal" type="file" accept="image/*" multiple hidden></div>
+<div id="dsWork" hidden>
+<div class="stage" id="dsStage"><canvas id="dsCv" aria-label="Geser titik sudut ke tepi kertas"></canvas></div>
+<ul class="files" id="dsList"></ul>
+<div class="opts"><label>Filter<select id="dsF"><option value="orig">Asli</option><option value="doc" selected>Dokumen</option><option value="bw">Hitam-putih</option><option value="gray">Abu-abu</option></select></label><label>Ukuran halaman<select id="dsS"><option value="a4">A4</option><option value="letter">Letter</option></select></label></div>
+<div class="row"><span id="dsTxt" style="font-size:.9rem;flex:1">Buat teks bisa dicari</span><button type="button" class="tgl" id="dsOcr" role="switch" aria-checked="false" aria-labelledby="dsTxt"><i></i></button></div>
+<div class="row"><button class="primary" id="dsGo">Buat PDF</button><button type="button" id="dsRst">Reset</button></div>
+</div>
+<p class="msg" id="dsMsg" role="status"></p>
+<h3 class="hh">Riwayat <button type="button" class="ghost" id="dsHC">Hapus semua</button></h3><div id="dsHist"></div>
+</section>
 <script>
 (function(){
   var $=function(i){return document.getElementById(i);};
-  var pages={scan:$('p-scan'),pdf:$('p-pdf'),ocr:$('p-ocr'),size:$('p-size')},home=$('home'),cur=null;
+  var pages={scan:$('p-scan'),pdf:$('p-pdf'),ocr:$('p-ocr'),size:$('p-size'),gd:$('p-gd'),qr:$('p-qr'),sg:$('p-sg'),ds:$('p-ds')},home=$('home'),cur=null;
   function show(k,first){
     if(!pages[k])k='';cur=k;
     home.hidden=!!k;
@@ -364,6 +457,8 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 <script async src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script async src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js"></script>
 <script async src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script>
 (function(){
   var $=function(id){return document.getElementById(id);};
@@ -1124,6 +1219,271 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
     document.addEventListener('click',function(e){if(!e.target.closest('.dd'))closeAll();});
     document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAll();});
   })();
+})();
+</script>
+<script>
+/* Fitur baru. Catatan teknis:
+   - PDF diproses dengan pdf-lib (salin halaman asli, tanpa render ulang); thumbnail/halaman dirender pdf.js.
+   - Pindai Dokumen: tanpa OpenCV. Deteksi tepi = ambang Otsu + komponen terang terbesar -> 4 sudut ekstrem;
+     perspective warp = homografi manual + sampling bilinear di canvas. Bila gagal, sudut awal manual (inset 8%).
+   - Tanda tangan: koordinat layar (pecahan 0..1 dari tampilan) dikonversi ke ruang PDF per rotasi halaman (0/90/180/270).
+     Asumsi: MediaBox berawal di (0,0). */
+(function(){
+var $=function(i){return document.getElementById(i);};
+function esc(t){var d=document.createElement('div');d.textContent=t;return d.innerHTML;}
+function fmt(b){return b>=1048576?(b/1048576).toFixed(1)+' MB':Math.max(1,Math.round(b/1024))+' KB';}
+function say(id,t,ok){var m=$(id);m.className='msg'+(ok?' ok':'');m.textContent=t||'';}
+function dl(b,n){var u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=n;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},4000);}
+function base(n){return String(n||'dokumen').replace(/\.[^.]+$/,'');}
+function ic(p){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+p+'"/></svg>';}
+function ib(a,l,p){return '<button type="button" class="ic" data-a="'+a+'" aria-label="'+l+'" title="'+l+'">'+ic(p)+'</button>';}
+var UP='m6 15 6-6 6 6',DN='m6 9 6 6 6-6',DEL='M5 7h14M10 11v6M14 11v6M6 7l1 12h10l1-12M9 7V4h6v3';
+function lib(id,ok,w){if(!ok)say(id,'Pustaka '+w+' gagal dimuat. Periksa koneksi internet lalu muat ulang halaman.');return !!ok;}
+function clamp(v,a,b){return Math.min(b,Math.max(a,v));}
+function errT(e){return e&&e.message?' ('+e.message+')':'';}
+function pjs(buf){var L=window.pdfjsLib;if(!L.GlobalWorkerOptions.workerSrc)L.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';return L.getDocument({data:buf.slice(0)}).promise;}
+async function rend(doc,n,w){var p=await doc.getPage(n),v=p.getViewport({scale:1}),vp=p.getViewport({scale:w/v.width}),c=document.createElement('canvas');c.width=Math.round(vp.width);c.height=Math.round(vp.height);await p.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;return c;}
+function mkHist(key,boxId,clrId){
+  var a=[],box=$(boxId);try{a=JSON.parse(localStorage.getItem(key)||'[]')||[];}catch(e){}
+  function save(){try{localStorage.setItem(key,JSON.stringify(a.slice(0,30)));}catch(e){}}
+  function draw(){box.innerHTML=a.length?a.map(function(h,i){var t='';try{t=new Date(h.ts).toLocaleString('id-ID',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});}catch(e){}
+    return '<div class="card"><p class="val">'+esc(h.name)+'</p><p class="meta">'+h.pages+' halaman · '+fmt(h.size)+' · '+esc(t)+'</p><div class="acts"><button data-i="'+i+'">Hapus</button></div></div>';}).join(''):'<p class="empty">Belum ada file yang diunduh.</p>';}
+  box.addEventListener('click',function(e){var b=e.target.closest('button');if(!b||b.getAttribute('data-i')===null)return;a.splice(+b.getAttribute('data-i'),1);save();draw();});
+  $(clrId).onclick=function(){a=[];save();draw();};
+  draw();return function(h){h.ts=Date.now();a.unshift(h);a=a.slice(0,30);save();draw();};
+}
+function toBytes(u){var s=atob(u.split(',')[1]),b=new Uint8Array(s.length);for(var i=0;i<s.length;i++)b[i]=s.charCodeAt(i);return b;}
+window.addEventListener('load',function(){var m=[];if(!window.PDFLib)m.push('gabung & tanda tangan PDF');if(!window.qrcode)m.push('pembuat QR');
+  if(m.length){var w=$('libwarn');w.textContent=(w.hidden?'Sebagian pustaka gagal dimuat (':w.textContent.replace(/\. Periksa.*$/,'').replace(/\)$/,'; ')) +m.join(', ')+'). Periksa koneksi internet lalu muat ulang halaman.';w.hidden=false;}});
+
+/* ===== 1. Gabung & Pisah ===== */
+var gH=mkHist('gd-history','gdHist','gdHC'),gm=[],sp=null,sel={};
+function gdTab(n){$('gdT1').setAttribute('aria-selected',n===1);$('gdT2').setAttribute('aria-selected',n===2);$('gdA').hidden=n!==1;$('gdB').hidden=n!==2;say('gdMsg','');}
+$('gdT1').onclick=function(){gdTab(1);};$('gdT2').onclick=function(){gdTab(2);};
+function gmDraw(){var l=$('gdList');l.innerHTML='';
+  gm.forEach(function(f,i){var li=document.createElement('li');li.innerHTML='<span></span><small>'+f.n+' hlm</small>'+ib('up','Naikkan',UP)+ib('dn','Turunkan',DN)+ib('del','Hapus',DEL);
+    li.querySelector('span').textContent=f.name;var q=function(a){return li.querySelector('[data-a='+a+']');};
+    q('up').disabled=i===0;q('dn').disabled=i===gm.length-1;
+    q('up').onclick=function(){var t=gm[i-1];gm[i-1]=gm[i];gm[i]=t;gmDraw();};
+    q('dn').onclick=function(){var t=gm[i+1];gm[i+1]=gm[i];gm[i]=t;gmDraw();};
+    q('del').onclick=function(){gm.splice(i,1);gmDraw();};l.appendChild(li);});
+  $('gdMerge').disabled=gm.length<2;}
+$('gdFiles').onchange=async function(e){
+  var fs=[].slice.call(e.target.files);e.target.value='';if(!fs.length||!lib('gdMsg',window.PDFLib,'pdf-lib'))return;say('gdMsg','');
+  for(var f of fs){try{var buf=await f.arrayBuffer(),d=await PDFLib.PDFDocument.load(buf);gm.push({name:f.name,buf:buf,n:d.getPageCount()});}
+    catch(x){say('gdMsg','“'+f.name+'” tidak bisa dibaca (rusak atau terkunci kata sandi).');}}
+  gmDraw();};
+$('gdMerge').onclick=async function(){
+  var b=this;b.disabled=true;say('gdMsg','Menggabungkan...',true);
+  try{var out=await PDFLib.PDFDocument.create(),tot=0;
+    for(var f of gm){var s=await PDFLib.PDFDocument.load(f.buf),ps=await out.copyPages(s,s.getPageIndices());ps.forEach(function(p){out.addPage(p);});tot+=ps.length;}
+    var bl=new Blob([await out.save()],{type:'application/pdf'});dl(bl,'gabungan.pdf');gH({name:'gabungan.pdf',pages:tot,size:bl.size});gdReset();say('gdMsg','PDF gabungan diunduh.',true);
+  }catch(x){say('gdMsg','Gagal menggabungkan'+errT(x)+'.');b.disabled=false;}};
+function gdReset(){gm=[];gmDraw();sp=null;sel={};$('gdGrid').innerHTML='';$('gdName').textContent='Belum ada file dipilih';$('gdSplit').disabled=true;say('gdMsg','');}
+$('gdRstA').onclick=$('gdRstB').onclick=gdReset;
+function gridDraw(){var g=$('gdGrid');g.innerHTML='';
+  var io=('IntersectionObserver' in window)?new IntersectionObserver(function(es){es.forEach(function(en){if(!en.isIntersecting)return;io.unobserve(en.target);var b=en.target,n=+b.getAttribute('data-n');
+    rend(sp.pj,n,160).then(function(c){b.insertBefore(c,b.firstChild);}).catch(function(){});});},{rootMargin:'200px'}):null;
+  for(var i=1;i<=sp.n;i++){var b=document.createElement('button');b.type='button';b.setAttribute('data-n',i);b.setAttribute('aria-pressed','false');b.innerHTML='<small>'+i+'</small>';
+    b.onclick=function(){var n=this.getAttribute('data-n'),on=!sel[n];if(on)sel[n]=1;else delete sel[n];this.setAttribute('aria-pressed',on);$('gdSplit').disabled=!Object.keys(sel).length;};
+    g.appendChild(b);if(io)io.observe(b);else rend(sp.pj,i,160).then(function(c){});}
+  $('gdSplit').disabled=true;}
+$('gdOne').onchange=async function(e){
+  var f=e.target.files[0];e.target.value='';if(!f||!lib('gdMsg',window.PDFLib&&window.pdfjsLib,'pdf-lib / pdf.js'))return;say('gdMsg','');
+  try{var buf=await f.arrayBuffer(),d=await PDFLib.PDFDocument.load(buf),pj=await pjs(buf);sp={name:f.name,buf:buf,n:d.getPageCount(),pj:pj};sel={};$('gdName').textContent=f.name+' · '+sp.n+' hlm';gridDraw();}
+  catch(x){say('gdMsg','PDF tidak bisa dibaca (rusak atau terkunci kata sandi).');}};
+function selAll(on){if(!sp)return;sel={};[].forEach.call($('gdGrid').children,function(b){if(on)sel[b.getAttribute('data-n')]=1;b.setAttribute('aria-pressed',on);});$('gdSplit').disabled=!on;}
+$('gdAll').onclick=function(){selAll(true);};$('gdNone').onclick=function(){selAll(false);};
+$('gdSplit').onclick=async function(){
+  var b=this,idx=Object.keys(sel).map(Number).sort(function(a,c){return a-c;}).map(function(n){return n-1;}),zip=$('gdMode').value==='zip';
+  if(!idx.length)return;if(zip&&!lib('gdMsg',window.JSZip,'ZIP'))return;b.disabled=true;say('gdMsg','Memproses...',true);
+  try{var src=await PDFLib.PDFDocument.load(sp.buf),nm=base(sp.name),blob,name;
+    if(!zip){var o=await PDFLib.PDFDocument.create();(await o.copyPages(src,idx)).forEach(function(p){o.addPage(p);});blob=new Blob([await o.save()],{type:'application/pdf'});name=nm+'_pilihan.pdf';}
+    else{var z=new JSZip();for(var i of idx){var o2=await PDFLib.PDFDocument.create();o2.addPage((await o2.copyPages(src,[i]))[0]);z.file(nm+'_hal'+(i+1)+'.pdf',await o2.save());}blob=await z.generateAsync({type:'blob'});name=nm+'_halaman.zip';}
+    dl(blob,name);gH({name:name,pages:idx.length,size:blob.size});gdReset();say('gdMsg','File diunduh.',true);
+  }catch(x){say('gdMsg','Gagal memisahkan'+errT(x)+'.');b.disabled=false;}};
+
+/* ===== 2. Pembuat QR ===== */
+var qT=$('qType'),qb=null;
+function qv(i){return $(i).value.trim();}
+function qEsc(s){return s.replace(/([\\;,:"])/g,'\\$1');}
+function vEsc(s){return s.replace(/([\\;,])/g,'\\$1').replace(/\n/g,'\\n');}
+function qText(){var t=qT.value;
+  if(t==='txt')return qv('q_txt');
+  if(t==='wifi'){var s=qv('q_ssid');if(!s)return '';var sec=$('q_sec').value;return 'WIFI:T:'+sec+';S:'+qEsc(s)+';'+(sec==='nopass'?'':'P:'+qEsc($('q_pw').value)+';')+';';}
+  if(t==='vc'){var n=qv('q_nm'),tl=qv('q_tel'),em=qv('q_em');if(!n&&!tl&&!em)return '';return 'BEGIN:VCARD\nVERSION:3.0\nFN:'+vEsc(n)+'\n'+(tl?'TEL:'+vEsc(tl)+'\n':'')+(em?'EMAIL:'+vEsc(em)+'\n':'')+'END:VCARD';}
+  var to=qv('q_to');if(!to)return '';var q=[];if(qv('q_sub'))q.push('subject='+encodeURIComponent(qv('q_sub')));if(qv('q_body'))q.push('body='+encodeURIComponent(qv('q_body')));
+  return 'mailto:'+to+(q.length?'?'+q.join('&'):'');}
+function qDraw(cv,px){var n=qb.getModuleCount(),cell=Math.max(1,Math.floor(px/(n+8))),S=cell*(n+8),x;cv.width=cv.height=S;x=cv.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,S,S);x.fillStyle='#000';
+  for(var r=0;r<n;r++)for(var c=0;c<n;c++)if(qb.isDark(r,c))x.fillRect((c+4)*cell,(r+4)*cell,cell,cell);}
+function qUpd(){
+  ['txt','wifi','vc','mail'].forEach(function(k){$('qF_'+k).hidden=qT.value!==k;});
+  $('q_pw').closest('label').hidden=$('q_sec').value==='nopass';
+  var t=qText(),ok=false;qb=null;say('qMsg','');
+  if(t){if(!lib('qMsg',window.qcode_ok,'pembuat QR')){}else try{
+    var q=qcode_make(t,$('qEc').value);qb=q;var cv=$('qCv');qDraw(cv,+$('qSz').value*2);cv.style.width=cv.width/2+'px';ok=true;
+  }catch(x){say('qMsg','Teks terlalu panjang untuk QR pada tingkat koreksi ini. Persingkat teks atau turunkan tingkat koreksi.');}}
+  $('qCard').hidden=!ok;$('qDl').disabled=!ok;$('qCp').disabled=!ok;}
+function qcode_make(t,ec){qcode_ok_init();var q=qrcode(0,ec);q.addData(t,'Byte');q.make();return q;}
+function qcode_ok_init(){if(window.qrcode&&qrcode.stringToBytesFuncs&&qrcode.stringToBytesFuncs['UTF-8'])qrcode.stringToBytes=qrcode.stringToBytesFuncs['UTF-8'];}
+Object.defineProperty(window,'qcode_ok',{get:function(){return !!window.qrcode;}});
+function qBlob(){var c=document.createElement('canvas');qDraw(c,1024);return new Promise(function(r){c.toBlob(r,'image/png');});}
+document.getElementById('p-qr').addEventListener('input',qUpd);document.getElementById('p-qr').addEventListener('change',qUpd);
+$('qDl').onclick=async function(){var b=await qBlob();dl(b,'qr.png');qReset();say('qMsg','PNG diunduh.',true);};
+$('qCp').onclick=async function(){try{if(!window.ClipboardItem||!navigator.clipboard)throw 0;await navigator.clipboard.write([new ClipboardItem({'image/png':await qBlob()})]);say('qMsg','Gambar disalin.',true);}catch(e){say('qMsg','Browser ini tidak mengizinkan menyalin gambar. Gunakan Unduh PNG.');}};
+function qReset(){[].forEach.call(document.querySelectorAll('#p-qr input'),function(i){i.value='';});qUpd();}
+$('qRst').onclick=qReset;qUpd();
+
+/* ===== 3. Tanda Tangan PDF ===== */
+var sH=mkHist('sg-history','sgHist','sgHC'),sg={buf:null,name:'',pj:null,n:0,cur:1,objs:[],seq:0,tok:0},sigs=[],drag=null,pen=null;
+try{sigs=JSON.parse(localStorage.getItem('sig-list')||'[]')||[];}catch(e){}
+function sigSave(){try{localStorage.setItem('sig-list',JSON.stringify(sigs.slice(0,6)));}catch(e){}}
+function sigDraw(){var b=$('sgSaved');b.innerHTML='';sigs.forEach(function(u,i){var s=document.createElement('span');s.className='it';s.innerHTML='<button type="button" class="u" aria-label="Pakai tanda tangan"><img alt=""></button><button type="button" class="ic" aria-label="Hapus tanda tangan">'+ic(DEL)+'</button>';
+  s.querySelector('img').src=u;s.querySelector('.u').onclick=function(){sgAdd(u);};s.querySelector('.ic').onclick=function(){sigs.splice(i,1);sigSave();sigDraw();};b.appendChild(s);});}
+var pad=$('sgPad'),px=pad.getContext('2d'),inked=false;
+function padPt(e){var r=pad.getBoundingClientRect();return {x:(e.clientX-r.left)*pad.width/r.width,y:(e.clientY-r.top)*pad.height/r.height};}
+pad.addEventListener('pointerdown',function(e){pen=padPt(e);px.strokeStyle=$('sgPen').value;px.lineWidth=4;px.lineCap=px.lineJoin='round';px.beginPath();px.moveTo(pen.x,pen.y);px.lineTo(pen.x+.1,pen.y);px.stroke();inked=true;try{pad.setPointerCapture(e.pointerId);}catch(x){}e.preventDefault();});
+pad.addEventListener('pointermove',function(e){if(!pen)return;var p=padPt(e);px.beginPath();px.moveTo(pen.x,pen.y);px.lineTo(p.x,p.y);px.stroke();pen=p;});
+['pointerup','pointercancel'].forEach(function(n){pad.addEventListener(n,function(){pen=null;});});
+$('sgNew').onclick=function(){$('sgPadBox').hidden=!$('sgPadBox').hidden;px.clearRect(0,0,pad.width,pad.height);inked=false;};
+$('sgClr').onclick=function(){px.clearRect(0,0,pad.width,pad.height);inked=false;};
+$('sgOk').onclick=function(){
+  if(!inked){say('sgMsg','Gambar tanda tangan dulu di kanvas.');return;}
+  var w=pad.width,h=pad.height,d=px.getImageData(0,0,w,h).data,x0=w,y0=h,x1=-1,y1=-1;
+  for(var y=0;y<h;y++)for(var x=0;x<w;x++)if(d[(y*w+x)*4+3]>8){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;}
+  if(x1<0)return;x0=Math.max(0,x0-6);y0=Math.max(0,y0-6);x1=Math.min(w-1,x1+6);y1=Math.min(h-1,y1+6);
+  var o=document.createElement('canvas');o.width=x1-x0+1;o.height=y1-y0+1;o.getContext('2d').drawImage(pad,x0,y0,o.width,o.height,0,0,o.width,o.height);
+  sigs.unshift(o.toDataURL('image/png'));sigs=sigs.slice(0,6);sigSave();sigDraw();$('sgPadBox').hidden=true;say('sgMsg','');};
+$('sgFile').onchange=async function(e){
+  var f=e.target.files[0];e.target.value='';if(!f||!lib('sgMsg',window.PDFLib&&window.pdfjsLib,'pdf-lib / pdf.js'))return;say('sgMsg','');
+  try{var buf=await f.arrayBuffer(),d=await PDFLib.PDFDocument.load(buf),pj=await pjs(buf);sg.buf=buf;sg.name=f.name;sg.pj=pj;sg.n=d.getPageCount();sg.cur=1;sg.objs=[];
+    $('sgName').textContent=f.name;$('sgView').hidden=false;sgPage();}
+  catch(x){say('sgMsg','PDF tidak bisa dibaca (rusak atau terkunci kata sandi).');}};
+async function sgPage(){var t=++sg.tok,c=await rend(sg.pj,sg.cur,900);if(t!==sg.tok)return;var cv=$('sgCv');cv.width=c.width;cv.height=c.height;cv.getContext('2d').drawImage(c,0,0);
+  $('sgPg').textContent=sg.cur+' / '+sg.n;$('sgPrev').disabled=sg.cur<2;$('sgNext').disabled=sg.cur>=sg.n;sgOv();}
+function place(el,o){var cv=$('sgCv');el.style.left=o.x*100+'%';el.style.top=o.y*100+'%';el.style.width=o.w*100+'%';el.style.height=o.w*o.ar*cv.width/cv.height*100+'%';}
+function sgOv(){var st=$('sgStage');[].forEach.call(st.querySelectorAll('.sgo'),function(n){n.remove();});
+  sg.objs.forEach(function(o){if(o.p!==sg.cur)return;var el=document.createElement('div');el.className='sgo';el.setAttribute('data-id',o.id);el.innerHTML='<img alt=""><i data-h="nw"></i><i data-h="ne"></i><i data-h="se"></i><i data-h="sw"></i><b data-del>×</b>';el.querySelector('img').src=o.u;place(el,o);st.appendChild(el);});
+  $('sgGo').disabled=!sg.objs.length;}
+$('sgPrev').onclick=function(){sg.cur--;sgPage();};$('sgNext').onclick=function(){sg.cur++;sgPage();};
+function sgAdd(u){if(!sg.buf){say('sgMsg','Pilih PDF dulu.');return;}say('sgMsg','');var im=new Image();im.onload=function(){sg.objs.push({id:++sg.seq,p:sg.cur,x:.3,y:.4,w:.35,ar:im.naturalHeight/im.naturalWidth,u:u});sgOv();};im.src=u;}
+var stg=$('sgStage');
+function sp2(e){var r=$('sgCv').getBoundingClientRect();return {x:(e.clientX-r.left)/r.width,y:(e.clientY-r.top)/r.height};}
+stg.addEventListener('pointerdown',function(e){var el=e.target.closest&&e.target.closest('.sgo');if(!el)return;var o=sg.objs.filter(function(a){return a.id==el.getAttribute('data-id');})[0];if(!o)return;
+  if(e.target.hasAttribute('data-del')){sg.objs.splice(sg.objs.indexOf(o),1);sgOv();return;}
+  var p=sp2(e),h=e.target.getAttribute('data-h'),k=o.ar*$('sgCv').width/$('sgCv').height,hh=o.w*k;
+  if(h)drag={o:o,el:el,h:h,k:k,ax:h.indexOf('w')>-1?o.x+o.w:o.x,ay:h.indexOf('n')>-1?o.y+hh:o.y};else drag={o:o,el:el,m:1,sx:p.x,sy:p.y,ox:o.x,oy:o.y,k:k};
+  try{stg.setPointerCapture(e.pointerId);}catch(x){}e.preventDefault();});
+stg.addEventListener('pointermove',function(e){if(!drag)return;var p=sp2(e),o=drag.o,k=drag.k;
+  if(drag.m){o.x=clamp(drag.ox+p.x-drag.sx,0,1-o.w);o.y=clamp(drag.oy+p.y-drag.sy,0,1-o.w*k);}
+  else{var w=clamp(Math.max(Math.abs(p.x-drag.ax),Math.abs(p.y-drag.ay)/k),.06,1),hh=w*k;o.w=w;o.x=drag.h.indexOf('w')>-1?drag.ax-w:drag.ax;o.y=drag.h.indexOf('n')>-1?drag.ay-hh:drag.ay;}
+  place(drag.el,o);});
+['pointerup','pointercancel'].forEach(function(n){stg.addEventListener(n,function(){drag=null;});});
+$('sgGo').onclick=async function(){
+  var b=this;b.disabled=true;say('sgMsg','Menerapkan tanda tangan...',true);
+  try{var doc=await PDFLib.PDFDocument.load(sg.buf),cache={},D=PDFLib.degrees;
+    for(var o of sg.objs){var img=cache[o.u]||(cache[o.u]=await doc.embedPng(toBytes(o.u))),pg=doc.getPage(o.p-1),a=((pg.getRotation().angle%360)+360)%360,sz=pg.getSize(),w0=sz.width,h0=sz.height,
+        W=a%180?h0:w0,H=a%180?w0:h0,vx=o.x*W,vy=o.y*H,vw=o.w*W,vh=vw*o.ar,X,Y;
+      /* (vx,vy)=pojok kiri-bawah gambar di ruang tampilan (asal kiri-atas) -> ruang PDF per rotasi */
+      var by=vy+vh;
+      if(a===0){X=vx;Y=H-by;}else if(a===90){X=by;Y=vx;}else if(a===180){X=w0-vx;Y=by;}else{X=w0-by;Y=h0-vx;}
+      pg.drawImage(img,{x:X,y:Y,width:vw,height:vh,rotate:D(a)});}
+    var bl=new Blob([await doc.save()],{type:'application/pdf'}),nm=base(sg.name)+'_ttd.pdf';dl(bl,nm);sH({name:nm,pages:doc.getPageCount(),size:bl.size});sgReset();say('sgMsg','PDF bertanda tangan diunduh.',true);
+  }catch(x){say('sgMsg','Gagal menerapkan tanda tangan'+errT(x)+'.');b.disabled=false;}};
+function sgReset(){sg.buf=null;sg.pj=null;sg.objs=[];sg.tok++;$('sgView').hidden=true;$('sgName').textContent='Belum ada file dipilih';$('sgPadBox').hidden=true;say('sgMsg','');}
+$('sgRst').onclick=sgReset;sigDraw();
+
+/* ===== 4. Pindai Dokumen ===== */
+var dH=mkHist('ds-history','dsHist','dsHC'),pgs=[],dcur=0,dd=null;
+function area(q){var s=0;for(var i=0;i<4;i++){var a=q[i],b=q[(i+1)%4];s+=a.x*b.y-b.x*a.y;}return Math.abs(s)/2;}
+function detect(pg){
+  var w=160,h=Math.max(8,Math.round(pg.sc.height*w/pg.sc.width)),c=document.createElement('canvas');c.width=w;c.height=h;var x=c.getContext('2d',{willReadFrequently:true});x.drawImage(pg.sc,0,0,w,h);
+  var d=x.getImageData(0,0,w,h).data,n=w*h,g=new Uint8Array(n),hi=new Array(256).fill(0),i;
+  for(i=0;i<n;i++){g[i]=d[i*4]*.3+d[i*4+1]*.59+d[i*4+2]*.11;hi[g[i]]++;}
+  var sum=0,sb=0,wb=0,mx=0,th=128;for(i=0;i<256;i++)sum+=i*hi[i];
+  for(i=0;i<256;i++){wb+=hi[i];if(!wb)continue;var wf=n-wb;if(!wf)break;sb+=i*hi[i];var mb=sb/wb,mf=(sum-sb)/wf,v=wb*wf*(mb-mf)*(mb-mf);if(v>mx){mx=v;th=i;}}
+  var lab=new Int32Array(n),best=0,bc=0,L=0;
+  for(i=0;i<n;i++){if(g[i]>th&&!lab[i]){L++;var st=[i],cnt=0;lab[i]=L;while(st.length){var p=st.pop(),X=p%w,Y=(p-X)/w;cnt++;
+    if(X>0&&g[p-1]>th&&!lab[p-1]){lab[p-1]=L;st.push(p-1);}if(X<w-1&&g[p+1]>th&&!lab[p+1]){lab[p+1]=L;st.push(p+1);}
+    if(Y>0&&g[p-w]>th&&!lab[p-w]){lab[p-w]=L;st.push(p-w);}if(Y<h-1&&g[p+w]>th&&!lab[p+w]){lab[p+w]=L;st.push(p+w);}}
+    if(cnt>bc){bc=cnt;best=L;}}}
+  if(!best||bc<n*.15)return null;
+  var tl={s:1e9},br={s:-1e9},tr={s:-1e9},bl={s:1e9};
+  for(i=0;i<n;i++)if(lab[i]===best){var X2=i%w,Y2=(i-X2)/w,s1=X2+Y2,s2=X2-Y2;
+    if(s1<tl.s)tl={s:s1,x:X2,y:Y2};if(s1>br.s)br={s:s1,x:X2,y:Y2};if(s2>tr.s)tr={s:s2,x:X2,y:Y2};if(s2<bl.s)bl={s:s2,x:X2,y:Y2};}
+  var q=[tl,tr,br,bl].map(function(p){return {x:(p.x+.5)/w,y:(p.y+.5)/h};});
+  return area(q)>.2?q:null;}
+function warp(pg,maxS){
+  var s=pg.sc,sw=s.width,sh=s.height,q=pg.q.map(function(p){return {x:p.x*sw,y:p.y*sh};}),ds=function(a,b){return Math.hypot(a.x-b.x,a.y-b.y);};
+  var ow=Math.max(ds(q[0],q[1]),ds(q[3],q[2])),oh=Math.max(ds(q[0],q[3]),ds(q[1],q[2])),k=Math.min(1,maxS/Math.max(ow,oh,1));
+  ow=Math.max(8,Math.round(ow*k));oh=Math.max(8,Math.round(oh*k));
+  if(!pg.sd)pg.sd=s.getContext('2d').getImageData(0,0,sw,sh);
+  var S=pg.sd.data,out=document.createElement('canvas');out.width=ow;out.height=oh;var oc=out.getContext('2d'),im=oc.createImageData(ow,oh),O=im.data;
+  var x0=q[0].x,y0=q[0].y,x1=q[1].x,y1=q[1].y,x2=q[2].x,y2=q[2].y,x3=q[3].x,y3=q[3].y,sx=x0-x1+x2-x3,sy=y0-y1+y2-y3,dx1=x1-x2,dx2=x3-x2,dy1=y1-y2,dy2=y3-y2,den=dx1*dy2-dx2*dy1,G=0,H=0;
+  if(Math.abs(sx)>1e-9||Math.abs(sy)>1e-9){G=(sx*dy2-sy*dx2)/(den||1);H=(dx1*sy-dy1*sx)/(den||1);}
+  var a=x1-x0+G*x1,b=x3-x0+H*x3,c=x0,d=y1-y0+G*y1,e=y3-y0+H*y3,f=y0;
+  for(var y=0;y<oh;y++)for(var x=0;x<ow;x++){var u=(x+.5)/ow,v=(y+.5)/oh,w=G*u+H*v+1,X=(a*u+b*v+c)/w-.5,Y=(d*u+e*v+f)/w-.5,o=(y*ow+x)*4;
+    X=clamp(X,0,sw-1.001);Y=clamp(Y,0,sh-1.001);var ix=X|0,iy=Y|0,fx=X-ix,fy=Y-iy,p=(iy*sw+ix)*4,p2=p+sw*4;
+    for(var ch=0;ch<3;ch++)O[o+ch]=(S[p+ch]*(1-fx)+S[p+4+ch]*fx)*(1-fy)+(S[p2+ch]*(1-fx)+S[p2+4+ch]*fx)*fy;O[o+3]=255;}
+  oc.putImageData(im,0,0);return out;}
+function filt(cv,m){
+  if(m==='orig')return cv;
+  var w=cv.width,h=cv.height,x=cv.getContext('2d'),im=x.getImageData(0,0,w,h),d=im.data,n=w*h,g=new Float32Array(n),i,bg=null;
+  for(i=0;i<n;i++)g[i]=d[i*4]*.299+d[i*4+1]*.587+d[i*4+2]*.114;
+  if(m!=='gray'){/* koreksi bayangan: latar diperkirakan dari salinan buram (diperkecil lalu dibesarkan) */
+    var gc=document.createElement('canvas');gc.width=w;gc.height=h;var gx=gc.getContext('2d'),gi=gx.createImageData(w,h);
+    for(i=0;i<n;i++){gi.data[i*4]=gi.data[i*4+1]=gi.data[i*4+2]=g[i];gi.data[i*4+3]=255;}gx.putImageData(gi,0,0);
+    var sm=document.createElement('canvas');sm.width=Math.max(1,w>>4);sm.height=Math.max(1,h>>4);var sx=sm.getContext('2d');sx.imageSmoothingQuality='high';sx.drawImage(gc,0,0,sm.width,sm.height);
+    gx.clearRect(0,0,w,h);gx.imageSmoothingEnabled=true;gx.drawImage(sm,0,0,w,h);bg=gx.getImageData(0,0,w,h).data;}
+  for(i=0;i<n;i++){var v=g[i];if(bg){var r=v/Math.max(40,bg[i*4]);v=m==='bw'?(r<.86?0:255):clamp((r*255*.95-90)*1.9,0,255);}d[i*4]=d[i*4+1]=d[i*4+2]=v;}
+  x.putImageData(im,0,0);return cv;}
+async function dsAdd(files){
+  if(!files.length)return;var miss=0;say('dsMsg','Membaca gambar...',true);
+  for(var f of files){try{var bm=await createImageBitmap(f),sc=Math.min(1,3000/Math.max(bm.width,bm.height)),c=document.createElement('canvas');c.width=Math.round(bm.width*sc);c.height=Math.round(bm.height*sc);c.getContext('2d',{willReadFrequently:true}).drawImage(bm,0,0,c.width,c.height);if(bm.close)bm.close();
+    var pg={sc:c,sd:null,q:null},q=null;try{q=detect(pg);}catch(e){}
+    if(!q){miss++;q=[{x:.08,y:.08},{x:.92,y:.08},{x:.92,y:.92},{x:.08,y:.92}];}pg.q=q;pgs.push(pg);}
+    catch(x){say('dsMsg','Satu gambar tidak bisa dibaca'+errT(x)+'. Format seperti HEIC mungkin tidak didukung browser; coba JPG atau PNG.');}}
+  if(!pgs.length)return;dcur=pgs.length-1;$('dsWork').hidden=false;dsDraw();dsList();
+  say('dsMsg',miss?'Tepi kertas tidak terdeteksi otomatis pada '+miss+' halaman. Geser titik sudut ke tepi kertas.':'',false);}
+$('dsCam').onchange=$('dsGal').onchange=function(e){var fs=[].slice.call(e.target.files);e.target.value='';dsAdd(fs);};
+function dsDraw(){var pg=pgs[dcur];if(!pg)return;var cv=$('dsCv'),sc=Math.min(1,1000/Math.max(pg.sc.width,pg.sc.height));cv.width=Math.round(pg.sc.width*sc);cv.height=Math.round(pg.sc.height*sc);
+  var x=cv.getContext('2d');x.drawImage(pg.sc,0,0,cv.width,cv.height);var q=pg.q.map(function(p){return {x:p.x*cv.width,y:p.y*cv.height};});
+  x.beginPath();q.forEach(function(p,i){i?x.lineTo(p.x,p.y):x.moveTo(p.x,p.y);});x.closePath();x.fillStyle='rgba(10,132,255,.15)';x.fill();x.lineWidth=3;x.strokeStyle='#0a84ff';x.stroke();
+  q.forEach(function(p){x.beginPath();x.arc(p.x,p.y,11,0,7);x.fillStyle='#fff';x.fill();x.stroke();});}
+function dsList(){var l=$('dsList');l.innerHTML='';var m=$('dsF').value;
+  pgs.forEach(function(pg,i){var li=document.createElement('li'),t=filt(warp(pg,96),m);li.innerHTML='<div class="th"><img alt=""></div><span>Halaman '+(i+1)+'</span>'+ib('up','Naikkan',UP)+ib('dn','Turunkan',DN)+ib('del','Hapus',DEL);
+    li.querySelector('img').src=t.toDataURL('image/jpeg',.6);if(i===dcur)li.setAttribute('aria-current','true');
+    li.querySelector('span').onclick=function(){dcur=i;dsDraw();dsList();};
+    var q=function(a){return li.querySelector('[data-a='+a+']');};q('up').disabled=i===0;q('dn').disabled=i===pgs.length-1;
+    q('up').onclick=function(){var x=pgs[i-1];pgs[i-1]=pgs[i];pgs[i]=x;if(dcur===i)dcur=i-1;else if(dcur===i-1)dcur=i;dsList();};
+    q('dn').onclick=function(){var x=pgs[i+1];pgs[i+1]=pgs[i];pgs[i]=x;if(dcur===i)dcur=i+1;else if(dcur===i+1)dcur=i;dsList();};
+    q('del').onclick=function(){pgs.splice(i,1);if(!pgs.length){dsReset();return;}dcur=Math.min(dcur,pgs.length-1);dsDraw();dsList();};l.appendChild(li);});}
+var dcv=$('dsCv');
+function dpt(e){var r=dcv.getBoundingClientRect();return {x:(e.clientX-r.left)/r.width,y:(e.clientY-r.top)/r.height,k:dcv.width/r.width};}
+dcv.addEventListener('pointerdown',function(e){var pg=pgs[dcur];if(!pg)return;var p=dpt(e),bi=-1,bd=40*p.k;
+  pg.q.forEach(function(c,i){var d=Math.hypot((c.x-p.x)*dcv.width,(c.y-p.y)*dcv.height);if(d<bd){bd=d;bi=i;}});
+  if(bi>-1){dd=bi;try{dcv.setPointerCapture(e.pointerId);}catch(x){}}e.preventDefault();});
+dcv.addEventListener('pointermove',function(e){if(dd===null)return;var p=dpt(e);pgs[dcur].q[dd]={x:clamp(p.x,0,1),y:clamp(p.y,0,1)};dsDraw();});
+function dsUp(){if(dd===null)return;dd=null;dsList();}
+dcv.addEventListener('pointerup',dsUp);dcv.addEventListener('pointercancel',dsUp);
+$('dsF').addEventListener('change',dsList);
+$('dsOcr').onclick=function(){var on=this.getAttribute('aria-checked')!=='true';this.setAttribute('aria-checked',on);};
+function dsReset(){pgs=[];dcur=0;$('dsWork').hidden=true;$('dsList').innerHTML='';$('dsOcr').setAttribute('aria-checked','false');say('dsMsg','');}
+$('dsRst').onclick=dsReset;
+$('dsGo').onclick=async function(){
+  if(!lib('dsMsg',window.PDFLib,'pdf-lib'))return;var b=this;b.disabled=true;
+  var ocr=$('dsOcr').getAttribute('aria-checked')==='true',a4=$('dsS').value==='a4',PW=a4?595.28:612,PH=a4?841.89:792,m=$('dsF').value,wk=null,note='';
+  try{var out=await PDFLib.PDFDocument.create(),font=await out.embedFont(PDFLib.StandardFonts.Helvetica);
+    if(ocr){if(window.Tesseract){try{wk=await Tesseract.createWorker('ind+eng');}catch(e){note=' Teks tidak bisa dibuat (pembaca teks gagal dimuat); PDF dibuat tanpa lapisan teks.';}}else note=' Pembaca teks belum dimuat; PDF dibuat tanpa lapisan teks.';}
+    for(var i=0;i<pgs.length;i++){say('dsMsg','Memproses halaman '+(i+1)+'/'+pgs.length+'...',true);await new Promise(function(r){setTimeout(r,20);});
+      var cv=filt(warp(pgs[i],2000),m),jb=await new Promise(function(r){cv.toBlob(r,'image/jpeg',.88);}),img=await out.embedJpg(new Uint8Array(await jb.arrayBuffer())),
+        ls=cv.width>cv.height,pw=ls?PH:PW,ph=ls?PW:PH,s=Math.min(pw/cv.width,ph/cv.height),dw=cv.width*s,dh=cv.height*s,x=(pw-dw)/2,y=(ph-dh)/2,p=out.addPage([pw,ph]);
+      p.drawImage(img,{x:x,y:y,width:dw,height:dh});
+      if(wk){try{var r=await wk.recognize(cv),ws=r.data.words||[];ws.forEach(function(w){var t=String(w.text||'').replace(/[^\x20-\xff]/g,'?').trim();if(!t||!w.bbox)return;
+        p.drawText(t,{x:x+w.bbox.x0*s,y:y+dh-w.bbox.y1*s,size:Math.max(4,(w.bbox.y1-w.bbox.y0)*s*.9),font:font,opacity:0});});}catch(e){note=' Sebagian teks tidak bisa dibaca.';}}}
+    if(wk)try{await wk.terminate();}catch(e){}
+    var bl=new Blob([await out.save()],{type:'application/pdf'}),nm='pindaian_'+new Date().toISOString().slice(0,10)+'.pdf';dl(bl,nm);dH({name:nm,pages:pgs.length,size:bl.size});dsReset();say('dsMsg','PDF diunduh.'+note,true);
+  }catch(x){say('dsMsg','Gagal membuat PDF'+errT(x)+'.');}b.disabled=false;};
 })();
 </script>
 </body>
