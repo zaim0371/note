@@ -248,9 +248,6 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 .rb .pgnum{min-width:54px;font-size:.8rem;font-weight:600}
 #epSig{margin:0 0 12px}
 #epSig .hh{margin-top:0}
-#epStage{-webkit-user-select:text;user-select:text}
-.etx{position:absolute;white-space:pre;color:transparent;caret-color:var(--accent);outline:none;line-height:1.15;font-family:Helvetica,Arial,sans-serif;cursor:text;padding:3px 2px;margin:-4px 0 0 -3px;-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
-.etx:focus,.etx.d{background:#fff;color:#111}.etx:focus{outline:1.5px solid var(--accent)}
 .enw{width:auto!important;height:auto!important}.enw span{-webkit-user-select:text;user-select:text;display:block;white-space:pre;min-width:1em;color:#111;background:rgba(255,255,255,.65);font-family:Helvetica,Arial,sans-serif;line-height:1.15;outline:none;padding:0 3px}
 </style>
 </head>
@@ -264,20 +261,19 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 <nav class="grid" aria-label="Pilih alat">
   <a class="tile" data-k="scan" data-go="scan" href="#scan"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg></div><b>QR Master</b><small>Pindai, buat QR, gambar ke teks</small></a>
   <a class="tile" data-k="pdf" data-go="pdf" href="#pdf"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 11v6m0 0-2.5-2.5M12 17l2.5-2.5"/></svg></div><b>File Master</b><small>Konversi, gabung &amp; pisah, edit</small></a>
-  <a class="tile" data-k="size" data-go="size" href="#size"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 10l7-7M21 8V3h-5M10 14l-7 7M3 16v5h5"/></svg></div><b>Ubah Ukuran</b><small>Perkecil ukuran file</small></a>
 </nav>
 <!-- NOTE: Teks dihapus dari tampilan: "Semua proses berjalan di perangkatmu." -->
 </section>
 
 <section id="p-scan" class="page" hidden>
 <header class="bar"><a class="back" href="#" data-back aria-label="Kembali ke beranda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></a><h2 class="ttl">QR Master</h2></header>
+<!-- ===== MENU QR MASTER =====
+     Tambah fitur: salin satu tombol .fm-i, isi data-p (id panel fitur) dan data-cat (kategori).
+     Pengelompokan + garis pemisah otomatis oleh groupMenu(); urutan kategori lewat QM_CATS. -->
 <nav class="fm" id="qmMenu" aria-label="Fitur QR Master">
-<div class="fm-h" role="presentation"><span>Pindai</span></div>
-<button type="button" class="fm-i" data-p="qmScan"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg></span><span class="ft"><b>Pindai QR</b><small>Barcode &amp; QR lewat kamera atau foto</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
-<div class="fm-h" role="presentation"><span>Buat</span></div>
-<button type="button" class="fm-i" data-p="qmMake"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><path d="M14 14h2v2h-2zM18 14h2v6h-4M14 18v2"/></svg></span><span class="ft"><b>Buat QR</b><small>Ubah tautan menjadi kode QR</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
-<div class="fm-h" role="presentation"><span>Teks</span></div>
-<button type="button" class="fm-i" data-p="qmOcr"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="3.5"/><path d="M9 10h6M12 10v5"/></svg></span><span class="ft"><b>Gambar ke Teks</b><small>Baca teks dari foto</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+<button type="button" class="fm-i" data-p="qmScan" data-cat="Pindai"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg></span><span class="ft"><b>Pindai QR</b><small>Barcode &amp; QR lewat kamera atau foto</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+<button type="button" class="fm-i" data-p="qmMake" data-cat="Buat"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><path d="M14 14h2v2h-2zM18 14h2v6h-4M14 18v2"/></svg></span><span class="ft"><b>Buat QR</b><small>Ubah tautan menjadi kode QR</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+<button type="button" class="fm-i" data-p="qmOcr" data-cat="Teks"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="3.5"/><path d="M9 10h6M12 10v5"/></svg></span><span class="ft"><b>Gambar ke Teks</b><small>Baca teks dari foto</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
 </nav>
 <div id="qmScan" hidden>
 <!-- NOTE: Teks dihapus dari tampilan: "Arahkan kamera ke barcode atau QR. Hasilnya bisa disalin atau dibuka." -->
@@ -334,23 +330,27 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 
 <section id="p-pdf" class="page" hidden>
 <header class="bar"><a class="back" href="#" data-back aria-label="Kembali ke beranda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></a><h2 class="ttl">File Master</h2></header>
+<!-- ===== MENU FILE MASTER =====
+     Cara menambah fitur: salin satu tombol .fm-i di bawah, lalu isi
+       data-t   = id tab fitur (lihat <div class="seg"> di bawah),
+       data-cat = nama kategori (Konversi / Kelola / Edit / Pindai, atau nama baru).
+     Penempatan di bawah judul kategori + garis pemisah dibuat OTOMATIS oleh groupMenu() di bagian script,
+     jadi urutan tombol di sini bebas. Urutan kategori diatur lewat FM_CATS. -->
 <nav class="fm" id="fmMenu" aria-label="Fitur File Master">
-<div class="fm-h" role="presentation"><span>Konversi</span></div>
-<button type="button" class="fm-i" data-t="s-word"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg></span><span class="ft"><b>Word ke PDF</b><small>Ubah file .docx menjadi PDF</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
-<button type="button" class="fm-i" data-t="s-ppt"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8"/></svg></span><span class="ft"><b>PowerPoint ke PDF</b><small>Ubah file .pptx menjadi PDF</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
-<button type="button" class="fm-i" data-t="s-img"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="3"/><circle cx="9" cy="10" r="1.5"/><path d="m4 17 5-4 4 3 3-2 4 3"/></svg></span><span class="ft"><b>Gambar ke PDF</b><small>Satukan gambar menjadi PDF</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
-<button type="button" class="fm-i" data-t="s-p2w"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></span><span class="ft"><b>PDF ke Word</b><small>Ubah PDF menjadi file .docx</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
-<div class="fm-h" role="presentation"><span>Kelola</span></div>
-<button type="button" class="fm-i" data-t="s-gab"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="9" height="11" rx="2"/><rect x="11" y="9" width="9" height="11" rx="2"/></svg></span><span class="ft"><b>Gabung &amp; Pisah PDF</b><small>Satukan PDF atau ambil halaman tertentu</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
-<div class="fm-h" role="presentation"><span>Edit</span></div>
-<button type="button" class="fm-i" data-t="s-edt"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg></span><span class="ft"><b>Edit PDF</b><small>Ubah teks, gambar, tanda tangan</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
-<div class="fm-h" role="presentation"><span>Pindai</span></div>
-<button type="button" class="fm-i" data-t="s-pin"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h8l4 4v14H7z"/><path d="M4 8v13h3M10 12h6M10 16h6"/></svg></span><span class="ft"><b>Pindai Dokumen</b><small>Foto kertas menjadi PDF</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+<button type="button" class="fm-i" data-t="s-word" data-cat="Konversi"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg></span><span class="ft"><b>Word ke PDF</b><small>Ubah file .docx menjadi PDF</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+<button type="button" class="fm-i" data-t="s-ppt" data-cat="Konversi"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8"/></svg></span><span class="ft"><b>PowerPoint ke PDF</b><small>Ubah file .pptx menjadi PDF</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+<button type="button" class="fm-i" data-t="s-img" data-cat="Konversi"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="3"/><circle cx="9" cy="10" r="1.5"/><path d="m4 17 5-4 4 3 3-2 4 3"/></svg></span><span class="ft"><b>Gambar ke PDF</b><small>Satukan gambar menjadi PDF</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+<button type="button" class="fm-i" data-t="s-p2w" data-cat="Konversi"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></span><span class="ft"><b>PDF ke Word</b><small>Ubah PDF menjadi file .docx</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+<button type="button" class="fm-i" data-t="s-gab" data-cat="Kelola"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="9" height="11" rx="2"/><rect x="11" y="9" width="9" height="11" rx="2"/></svg></span><span class="ft"><b>Gabung &amp; Pisah PDF</b><small>Satukan PDF atau ambil halaman tertentu</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+<button type="button" class="fm-i" data-t="s-edt" data-cat="Edit"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg></span><span class="ft"><b>Edit PDF</b><small>Tambah teks, gambar, tanda tangan</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+<button type="button" class="fm-i" data-t="s-pin" data-cat="Pindai"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h8l4 4v14H7z"/><path d="M4 8v13h3M10 12h6M10 16h6"/></svg></span><span class="ft"><b>Pindai Dokumen</b><small>Foto kertas menjadi PDF</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+<button type="button" class="fm-i" data-t="s-size" data-cat="Kelola"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 10l7-7M21 8V3h-5M10 14l-7 7M3 16v5h5"/></svg></span><span class="ft"><b>Ubah Ukuran File</b><small>Perkecil ukuran file</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
 </nav>
 <div class="seg" role="tablist" aria-label="Jenis konversi" hidden>
   <button type="button" role="tab" id="s-word" aria-controls="p-word" aria-selected="true" tabindex="0">Word ke PDF</button>
   <button type="button" role="tab" id="s-ppt" aria-controls="p-ppt" aria-selected="false" tabindex="-1">PowerPoint ke PDF</button>
   <button type="button" role="tab" id="s-p2w" aria-controls="p-p2w" aria-selected="false" tabindex="-1">PDF ke Word</button>
+  <button type="button" role="tab" id="s-size" aria-controls="szPanel" aria-selected="false" tabindex="-1">Ubah Ukuran</button>
   <button type="button" role="tab" id="s-img" aria-controls="p-img" aria-selected="false" tabindex="-1">Gambar ke PDF</button>
   <button type="button" role="tab" id="s-gab" aria-controls="gdPanel" aria-selected="false" tabindex="-1">Gabung &amp; Pisah</button>
   <button type="button" role="tab" id="s-edt" aria-controls="epPanel" aria-selected="false" tabindex="-1">Edit PDF</button>
@@ -370,6 +370,17 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 <div class="row"><button class="primary" id="pptGo" disabled>Ubah ke PDF</button><button type="button" id="pptReset">Reset</button></div>
 <p class="msg" id="pptMsg" role="status"></p>
 <div id="pptOut"></div>
+</div>
+<div id="szPanel" role="tabpanel" aria-labelledby="s-size" hidden>
+<input id="szFile" type="file" hidden>
+<label class="drop" for="szFile"><b>Pilih file</b><br><span id="szName">Belum ada file dipilih</span></label>
+<div class="opts">
+  <label>Ukuran tujuan<input id="szVal" type="number" inputmode="decimal" min="1" step="any" value="200"></label>
+  <label>Satuan<select id="szUnit"><option value="1024" selected>KB</option><option value="1048576">MB</option></select></label>
+</div>
+<div class="row"><button type="button" class="primary" id="szGo" disabled>Ubah ukuran</button><button type="button" id="szReset">Reset</button></div>
+<p class="msg" id="szMsg" role="status"></p>
+<div id="szOut"></div>
 </div>
 <div id="p-p2w" role="tabpanel" aria-labelledby="s-p2w" hidden>
 <label class="drop"><b>Pilih file PDF</b><br><span id="p2wName">Belum ada file dipilih</span><input id="p2wFile" type="file" accept="application/pdf" hidden></label>
@@ -438,18 +449,6 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 </div>
 <p class="msg" id="gdMsg" role="status"></p>
 </section>
-<section id="p-size" class="page" hidden>
-<header class="bar"><a class="back" href="#" data-back aria-label="Kembali ke beranda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></a><h2 class="ttl">Ubah Ukuran</h2></header>
-<input id="szFile" type="file" hidden>
-<label class="drop" for="szFile"><b>Pilih file</b><br><span id="szName">Belum ada file dipilih</span></label>
-<div class="opts">
-  <label>Ukuran tujuan<input id="szVal" type="number" inputmode="decimal" min="1" step="any" value="200"></label>
-  <label>Satuan<select id="szUnit"><option value="1024" selected>KB</option><option value="1048576">MB</option></select></label>
-</div>
-<div class="row"><button type="button" class="primary" id="szGo" disabled>Ubah ukuran</button><button type="button" id="szReset">Reset</button></div>
-<p class="msg" id="szMsg" role="status"></p>
-<div id="szOut"></div>
-</section>
 <div id="docRender" hidden></div>
 </main>
 
@@ -464,7 +463,7 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 <script>
 (function(){
   var $=function(i){return document.getElementById(i);};
-  var pages={scan:$('p-scan'),pdf:$('p-pdf'),size:$('p-size')},home=$('home'),cur=null;
+  var pages={scan:$('p-scan'),pdf:$('p-pdf')},home=$('home'),cur=null;
   function show(k,first){
     if(!pages[k])k='';cur=k;
     home.hidden=!!k;
@@ -1731,33 +1730,27 @@ $('dsGo').onclick=async function(){
     var bl=new Blob([await out.save()],{type:'application/pdf'}),nm='pindaian_'+new Date().toISOString().slice(0,10)+'.pdf';dl(bl,nm);dH({name:nm,pages:pgs.length,size:bl.size});dsReset();say('dsMsg','PDF diunduh.'+note,true);
   }catch(x){say('dsMsg','Gagal membuat PDF'+errT(x)+'.');}b.disabled=false;};
 /* ===== Edit PDF =====
-   Teks asli dibaca pdf.js (hanya teks tegak). Mengetuk teks = mengedit di tempat; saat disimpan, teks lama ditutup kotak
-   putih lalu teks baru digambar dengan font Helvetica (karakter di luar Latin diganti '?'). Teks lama tetap ada di balik
-   penutup (bisa tersalin). Teks baru & gambar memakai koordinat tampilan yang dikonversi per rotasi halaman. */
-var eH=H('Edit PDF'),ep={buf:null,name:'',pj:null,n:0,cur:1,tok:0,tc:{},objs:[],seq:0,pw:1,vp:null,sel:null},eg=null;
+   Menambah teks baru, gambar, dan tanda tangan di atas halaman PDF (mengubah teks asli PDF tidak didukung).
+   Teks baru memakai font Helvetica (karakter di luar Latin diganti '?'). Teks, gambar, dan tanda tangan memakai
+   koordinat tampilan (pecahan 0..1) yang dikonversi per rotasi halaman (0/90/180/270). */
+var eH=H('Edit PDF'),ep={buf:null,name:'',pj:null,n:0,cur:1,tok:0,objs:[],seq:0,pw:1,vp:null,sel:null},eg=null;
 function vis(pg){var a=((pg.getRotation().angle%360)+360)%360,s=pg.getSize();return {a:a,w:s.width,h:s.height,W:a%180?s.height:s.width,H:a%180?s.width:s.height};}
 function v2p(v,vx,vy,vh){var by=vy+vh;if(v.a===0)return {x:vx,y:v.H-by};if(v.a===90)return {x:by,y:vx};if(v.a===180)return {x:v.w-vx,y:by};return {x:v.w-by,y:v.h-vx};}
 $('epFile').onchange=async function(e){
   var f=e.target.files[0];e.target.value='';if(!f||!lib('epMsg',window.PDFLib&&window.pdfjsLib,'pdf-lib / pdf.js'))return;say('epMsg','');
   try{var buf=await f.arrayBuffer(),d=await PDFLib.PDFDocument.load(buf),pj=await pjs(buf);
-    ep.buf=buf;ep.name=f.name;ep.pj=pj;ep.n=d.getPageCount();ep.cur=1;ep.tc={};ep.objs=[];$('epName').textContent=f.name;$('epView').hidden=false;epPage();}
+    ep.buf=buf;ep.name=f.name;ep.pj=pj;ep.n=d.getPageCount();ep.cur=1;ep.objs=[];$('epName').textContent=f.name;$('epView').hidden=false;epPage();}
   catch(x){say('epMsg','PDF tidak bisa dibaca (rusak atau terkunci kata sandi).');}};
 async function epPage(){
   var t=++ep.tok,pg=await ep.pj.getPage(ep.cur),v1=pg.getViewport({scale:1}),vp=pg.getViewport({scale:900/v1.width}),cv=$('epCv');
   cv.width=Math.round(vp.width);cv.height=Math.round(vp.height);await pg.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;if(t!==ep.tok)return;
   ep.pw=v1.width;ep.vp=vp;
-  if(!ep.tc[ep.cur]){var tc=await pg.getTextContent(),L=[];tc.items.forEach(function(it){var m=it.transform;if(!it.str||!it.str.trim()||Math.abs(m[1])>.01*Math.abs(m[0]))return;L.push({s:it.str,n:null,e:m[4],f:m[5],w:it.width,fs:Math.hypot(m[0],m[1])});});ep.tc[ep.cur]=L;if(t!==ep.tok)return;}
   $('epPg').textContent=ep.cur+' / '+ep.n;$('epPrev').disabled=ep.cur<2;$('epNext').disabled=ep.cur>=ep.n;epOv();}
 function epPlace(el,o,k){el.style.left=o.x*100+'%';el.style.top=o.y*100+'%';var cv=$('epCv');
   if(o.t==='img'){el.style.width=o.w*100+'%';el.style.height=o.w*o.ar*cv.width/cv.height*100+'%';}else el.style.fontSize=o.fs*k+'px';}
 function epOv(){
   var st=$('epStage'),cv=$('epCv'),k=cv.getBoundingClientRect().width/ep.pw||1;epW=cv.getBoundingClientRect().width;
-  [].forEach.call(st.querySelectorAll('.sgo,.etx'),function(n){n.remove();});
-  (ep.tc[ep.cur]||[]).forEach(function(it){var p=ep.vp.convertToViewportPoint(it.e,it.f),sp=document.createElement('span');
-    sp.className='etx'+(it.n!==null?' d':'');sp.contentEditable='true';sp.spellcheck=false;sp.textContent=it.n!==null?it.n:it.s;
-    sp.style.left=p[0]/cv.width*100+'%';sp.style.top=(p[1]-it.fs*ep.vp.scale*.9)/cv.height*100+'%';sp.style.fontSize=it.fs*k+'px';
-    sp.oninput=function(){it.n=sp.textContent;sp.classList.add('d');};
-    sp.onblur=function(){if(it.n===it.s){it.n=null;sp.classList.remove('d');}};st.appendChild(sp);});
+  [].forEach.call(st.querySelectorAll('.sgo'),function(n){n.remove();});
   ep.objs.forEach(function(o){if(o.p!==ep.cur)return;var el=document.createElement('div');el.className='sgo'+(o.t==='txt'?' enw':'');el.setAttribute('data-id',o.id);
     if(o.t==='img'){el.innerHTML='<img alt=""><i data-h="nw"></i><i data-h="ne"></i><i data-h="se"></i><i data-h="sw"></i><b data-del>×</b>';el.querySelector('img').src=o.u;}
     else{el.innerHTML='<span contenteditable="true" spellcheck="false"></span><i data-h="nw"></i><b data-del>×</b>';var s=el.querySelector('span');s.textContent=o.s;s.oninput=function(){o.s=s.textContent;};s.onfocus=function(){ep.sel=o;};}
@@ -1793,9 +1786,6 @@ $('epGo').onclick=async function(){
   var b=this,bad=false;b.disabled=true;say('epMsg','Menyimpan...',true);
   function wa(s){var t=s.replace(/[^\x20-\x7e\xa0-\xff]/g,'?');if(t!==s)bad=true;return t;}
   try{var doc=await PDFLib.PDFDocument.load(ep.buf),font=await doc.embedFont(PDFLib.StandardFonts.Helvetica),D=PDFLib.degrees,rgb=PDFLib.rgb,cache={};
-    Object.keys(ep.tc).forEach(function(pn){var pg=doc.getPage(pn-1);ep.tc[pn].forEach(function(it){if(it.n===null)return;
-      pg.drawRectangle({x:it.e-1,y:it.f-it.fs*.25,width:Math.max(it.w,font.widthOfTextAtSize(wa(it.s),it.fs))+2,height:it.fs*1.2,color:rgb(1,1,1)});
-      if(it.n.trim())pg.drawText(wa(it.n),{x:it.e,y:it.f,size:it.fs,font:font,color:rgb(0,0,0)});});});
     for(var o of ep.objs){var pg=doc.getPage(o.p-1),v=vis(pg),vx=o.x*v.W,vy=o.y*v.H;
       if(o.t==='img'){var img=cache[o.u]||(cache[o.u]=await(o.u.indexOf('image/jpeg')===5?doc.embedJpg(toBytes(o.u)):doc.embedPng(toBytes(o.u)))),vw=o.w*v.W,vh=vw*o.ar,q=v2p(v,vx,vy,vh);
         pg.drawImage(img,{x:q.x,y:q.y,width:vw,height:vh,rotate:D(v.a)});}
@@ -1803,11 +1793,29 @@ $('epGo').onclick=async function(){
     var bl=new Blob([await doc.save()],{type:'application/pdf'}),nm=base(ep.name)+'_edit.pdf';dl(bl,nm);eH({name:nm,size:bl.size});epReset();
     say('epMsg','PDF hasil edit diunduh.'+(bad?' Karakter di luar font standar diganti tanda tanya.':''),true);
   }catch(x){say('epMsg','Gagal menyimpan'+errT(x)+'.');b.disabled=false;}};
-function epReset(){ep.buf=null;ep.pj=null;ep.tc={};ep.objs=[];ep.tok++;$('epView').hidden=true;$('epSig').hidden=true;$('sgPadBox').hidden=true;$('epSg').setAttribute('aria-pressed','false');$('epName').textContent='Belum ada file dipilih';say('epMsg','');}
+function epReset(){ep.buf=null;ep.pj=null;ep.objs=[];ep.tok++;$('epView').hidden=true;$('epSig').hidden=true;$('sgPadBox').hidden=true;$('epSg').setAttribute('aria-pressed','false');$('epName').textContent='Belum ada file dipilih';say('epMsg','');}
 $('epRst').onclick=epReset;
+/* ===== Pengelompokan menu otomatis =====
+   groupMenu(nav, urutan): membaca atribut data-cat di setiap tombol .fm-i, lalu menyusun ulang menu menjadi
+   kelompok: judul kategori + garis pemisah, diikuti fitur-fitur di kategori itu. Kategori diurutkan menurut daftar
+   'urutan'; kategori yang belum terdaftar diletakkan di akhir (urut sesuai kemunculan). Tombol tanpa data-cat
+   masuk ke kategori "Lainnya". Jadi untuk fitur baru cukup menulis data-cat, tanpa mengatur judul secara manual. */
+var FM_CATS=['Konversi','Kelola','Edit','Pindai'];   /* urutan kategori di File Master */
+var QM_CATS=['Pindai','Buat','Teks'];                /* urutan kategori di QR Master */
+function groupMenu(nav,order){
+  var items=[].slice.call(nav.querySelectorAll('.fm-i')),seen=[];
+  [].forEach.call(nav.querySelectorAll('.fm-h'),function(h){h.remove();});
+  items.forEach(function(b){var c=b.getAttribute('data-cat')||'Lainnya';if(seen.indexOf(c)<0)seen.push(c);});
+  var rank=function(c){var i=order.indexOf(c);return i<0?order.length+seen.indexOf(c):i;};
+  seen.sort(function(a,b){return rank(a)-rank(b);});
+  seen.forEach(function(c){
+    var h=document.createElement('div');h.className='fm-h';h.setAttribute('role','presentation');
+    var sp=document.createElement('span');sp.textContent=c;h.appendChild(sp);nav.appendChild(h);
+    items.forEach(function(b){if((b.getAttribute('data-cat')||'Lainnya')===c)nav.appendChild(b);});});}
+
 /* ===== File Master: daftar fitur (kolom) -> isi fitur ===== */
 (function(){
-  var menu=$('fmMenu'),ttl=document.querySelector('#p-pdf .ttl'),back=document.querySelector('#p-pdf .back'),open=false,pushed=false,ids=['p-word','p-ppt','p-p2w','p-img','gdPanel','epPanel','dsPanel'];
+  var menu=$('fmMenu');groupMenu(menu,FM_CATS);var ttl=document.querySelector('#p-pdf .ttl'),back=document.querySelector('#p-pdf .back'),open=false,pushed=false,ids=['p-word','p-ppt','p-p2w','szPanel','p-img','gdPanel','epPanel','dsPanel'];
   function showMenu(){open=false;pushed=false;menu.hidden=false;ids.forEach(function(i){$(i).hidden=true;});ttl.textContent='File Master';say('gdMsg','');}
   menu.addEventListener('click',function(e){var b=e.target.closest('.fm-i');if(!b)return;
     menu.hidden=true;open=true;ttl.textContent=b.querySelector('b').textContent;$(b.getAttribute('data-t')).click();window.scrollTo(0,0);
@@ -1819,7 +1827,7 @@ $('epRst').onclick=epReset;
 })();
 /* ===== QR Master: daftar fitur -> isi fitur ===== */
 (function(){
-  var menu=$('qmMenu'),ttl=document.querySelector('#p-scan .ttl'),back=document.querySelector('#p-scan .back'),ids=['qmScan','qmMake','qmOcr'],open=false,pushed=false;
+  var menu=$('qmMenu');groupMenu(menu,QM_CATS);var ttl=document.querySelector('#p-scan .ttl'),back=document.querySelector('#p-scan .back'),ids=['qmScan','qmMake','qmOcr'],open=false,pushed=false;
   function fire(on){window.dispatchEvent(new CustomEvent('qmscan',{detail:on}));}
   function showMenu(){open=false;pushed=false;menu.hidden=false;ids.forEach(function(i){$(i).hidden=true;});ttl.textContent='QR Master';fire(false);}
   menu.addEventListener('click',function(e){var b=e.target.closest('.fm-i');if(!b)return;var p=b.getAttribute('data-p');
