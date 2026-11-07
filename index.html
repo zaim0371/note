@@ -39,7 +39,7 @@ body{margin:0;min-height:100vh;background:linear-gradient(160deg,var(--bg1),var(
 main{max-width:520px;margin:0 auto;padding:16px 16px 48px}
 
 /* ===== Liquid glass bening ===== */
-.glass,.card,.files li,.drop,.pv,.bar,.seg,.sgc,dialog,.warn,.tile .box{
+.glass,.card,.files li,.drop,.pv,.bar,.seg,dialog,.warn,.tile .box{
   position:relative;
   background:linear-gradient(135deg,var(--sheen),transparent 42%,var(--sheen-lo)),var(--glass);
   -webkit-backdrop-filter:blur(12px) saturate(175%) brightness(1.05);backdrop-filter:blur(12px) saturate(175%) brightness(1.05);
@@ -47,7 +47,7 @@ main{max-width:520px;margin:0 auto;padding:16px 16px 48px}
   box-shadow:var(--shadow),inset 0 1px 0 var(--hi),inset 0 -1px 0 var(--hi-lo),inset 1px 0 0 var(--hi-lo),inset -1px 0 0 var(--hi-lo),inset 0 0 22px rgba(255,255,255,.10);
   border-radius:26px}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
-  .glass,.card,.files li,.drop,.pv,.bar,.seg,.sgc,dialog,.warn,.tile .box{background:var(--bg2)}}
+  .glass,.card,.files li,.drop,.pv,.bar,.seg,dialog,.warn,.tile .box{background:var(--bg2)}}
 
 /* ===== Beranda & tile ===== */
 .home h1{font-size:2.1rem;font-weight:800;letter-spacing:-.025em;line-height:1.1;margin:22px 4px 6px}
@@ -72,9 +72,10 @@ main{max-width:520px;margin:0 auto;padding:16px 16px 48px}
 .back:active{transform:scale(.94)}
 .ttl{margin:0;flex:1;text-align:center;padding-right:38px;font-size:1.02rem;font-weight:700;letter-spacing:-.01em;outline:none}
 
-.seg,.sgc{display:flex;gap:4px;padding:4px;border-radius:999px;margin:0 0 16px}
-.seg button,.sgc button{flex:1;border:0;background:transparent;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;white-space:nowrap;font-size:.88rem;height:36px;padding:0 8px;color:var(--muted)}
-.seg button[aria-selected="true"],.sgc button[aria-selected="true"]{color:var(--ink);background:linear-gradient(180deg,var(--sel1),var(--sel2));box-shadow:inset 0 1px 0 var(--hi),0 3px 10px rgba(35,50,90,.18)}
+.seg{display:flex;gap:4px;padding:4px;border-radius:999px;margin:0 0 16px;overflow-x:auto;scrollbar-width:none}
+.seg::-webkit-scrollbar{display:none}
+.seg button{flex:1 0 auto;border:0;background:transparent;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;white-space:nowrap;font-size:.88rem;height:36px;padding:0 12px;color:var(--muted)}
+.seg button[aria-selected="true"]{color:var(--ink);background:linear-gradient(180deg,var(--sel1),var(--sel2));box-shadow:inset 0 1px 0 var(--hi),0 3px 10px rgba(35,50,90,.18)}
 dialog{position:fixed}
 
 /* ===== Kontrol ===== */
@@ -233,13 +234,10 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 <!-- NOTE: Teks dihapus dari tampilan: "Pilih alat yang ingin dipakai." -->
 <nav class="grid" aria-label="Pilih alat">
   <a class="tile" data-k="scan" data-go="scan" href="#scan"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg></div><b>Pindai</b><small>Barcode &amp; QR</small></a>
-  <a class="tile" data-k="pdf" data-go="pdf" href="#pdf"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 11v6m0 0-2.5-2.5M12 17l2.5-2.5"/></svg></div><b>Konverter PDF</b><small>Word &amp; gambar ke PDF</small></a>
+  <a class="tile" data-k="pdf" data-go="pdf" href="#pdf"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 11v6m0 0-2.5-2.5M12 17l2.5-2.5"/></svg></div><b>Konverter PDF</b><small>Ubah, gabung, pindai, tanda tangan</small></a>
   <a class="tile" data-k="ocr" data-go="ocr" href="#ocr"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="3.5"/><path d="M9 10h6M12 10v5"/></svg></div><b>Gambar ke Teks</b><small>Baca teks dari foto</small></a>
   <a class="tile" data-k="size" data-go="size" href="#size"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 10l7-7M21 8V3h-5M10 14l-7 7M3 16v5h5"/></svg></div><b>Ubah Ukuran</b><small>Perkecil ukuran file</small></a>
-  <a class="tile" data-k="gd" data-go="gd" href="#gd"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="9" height="11" rx="2"/><rect x="11" y="9" width="9" height="11" rx="2"/></svg></div><b>Gabung &amp; Pisah PDF</b><small>Satukan atau potong</small></a>
   <a class="tile" data-k="qr" data-go="qr" href="#qr"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><path d="M14 14h2v2h-2zM18 14h2v6h-4M14 18v2"/></svg></div><b>Pembuat QR</b><small>Teks, Wi-Fi, kontak</small></a>
-  <a class="tile" data-k="sg" data-go="sg" href="#sg"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17c3-6 4-9 6-9s0 6 2 6 2-4 4-4 1 3 4 3"/><path d="M4 21h16"/></svg></div><b>Tanda Tangan PDF</b><small>Bubuhkan tanda tangan</small></a>
-  <a class="tile" data-k="ds" data-go="ds" href="#ds"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h8l4 4v14H7z"/><path d="M4 8v13h3M10 12h6M10 16h6"/></svg></div><b>Pindai Dokumen</b><small>Foto kertas ke PDF</small></a>
 </nav>
 <!-- NOTE: Teks dihapus dari tampilan: "Semua proses berjalan di perangkatmu." -->
 </section>
@@ -273,6 +271,10 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 <div class="seg" role="tablist" aria-label="Jenis konversi">
   <button type="button" role="tab" id="s-word" aria-controls="p-word" aria-selected="true" tabindex="0">Word ke PDF</button>
   <button type="button" role="tab" id="s-img" aria-controls="p-img" aria-selected="false" tabindex="-1">Gambar ke PDF</button>
+  <button type="button" role="tab" id="s-gab" aria-controls="gdA" aria-selected="false" tabindex="-1">Gabung</button>
+  <button type="button" role="tab" id="s-pis" aria-controls="gdB" aria-selected="false" tabindex="-1">Pisah</button>
+  <button type="button" role="tab" id="s-ttd" aria-controls="sgPanel" aria-selected="false" tabindex="-1">Tanda tangan</button>
+  <button type="button" role="tab" id="s-pin" aria-controls="dsPanel" aria-selected="false" tabindex="-1">Pindai</button>
 </div>
 <div id="p-word" role="tabpanel" aria-labelledby="s-word">
 <!-- NOTE: Teks dihapus dari tampilan: "Ubah file Word (.docx) menjadi PDF langsung di perangkatmu. File tidak diunggah ke mana pun." -->
@@ -295,6 +297,44 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 <p class="msg" id="imgMsg" role="status"></p>
 <div id="imgOut"></div>
 </div>
+<div id="gdA" role="tabpanel" aria-labelledby="s-gab" hidden>
+<label class="drop"><b>Pilih PDF</b><br>Bisa lebih dari satu<input id="gdFiles" type="file" accept="application/pdf" multiple hidden></label>
+<ul class="files" id="gdList"></ul>
+<div class="row"><button class="primary" id="gdMerge" disabled>Gabungkan</button><button type="button" id="gdRstA">Reset</button></div>
+</div>
+<div id="gdB" role="tabpanel" aria-labelledby="s-pis" hidden>
+<label class="drop"><b>Pilih satu PDF</b><br><span id="gdName">Belum ada file dipilih</span><input id="gdOne" type="file" accept="application/pdf" hidden></label>
+<div class="tg" id="gdGrid"></div>
+<div class="row"><button type="button" id="gdAll">Pilih semua</button><button type="button" id="gdNone">Kosongkan</button></div>
+<div class="opts"><label>Hasil<select id="gdMode"><option value="one">Satu file</option><option value="zip">Pisah per halaman (ZIP)</option></select></label></div>
+<div class="row"><button class="primary" id="gdSplit" disabled>Pisahkan</button><button type="button" id="gdRstB">Reset</button></div>
+</div>
+<div id="sgPanel" role="tabpanel" aria-labelledby="s-ttd" hidden>
+<label class="drop"><b>Pilih PDF</b><br><span id="sgName">Belum ada file dipilih</span><input id="sgFile" type="file" accept="application/pdf" hidden></label>
+<h3 class="hh">Tanda tangan <button type="button" class="ghost" id="sgNew">Buat baru</button></h3>
+<div id="sgPadBox" hidden><div class="card"><canvas id="sgPad" class="pad" width="600" height="240" aria-label="Kanvas tanda tangan"></canvas></div>
+<div class="opts"><label>Pena<select id="sgPen"><option value="#111111">Hitam</option><option value="#0a3fd4">Biru</option></select></label></div>
+<div class="row"><button type="button" id="sgClr">Hapus</button><button type="button" class="primary" id="sgOk">Selesai</button></div></div>
+<div class="sgl" id="sgSaved"></div>
+<div id="sgView" hidden>
+<div class="row"><button type="button" class="ic" id="sgPrev" aria-label="Halaman sebelumnya"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button><span class="pgnum" id="sgPg">1 / 1</span><button type="button" class="ic" id="sgNext" aria-label="Halaman berikutnya"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button></div>
+<div class="stage" id="sgStage" style="cursor:default"><canvas id="sgCv"></canvas></div>
+<div class="row"><button class="primary" id="sgGo" disabled>Terapkan &amp; unduh</button><button type="button" id="sgRst">Reset</button></div>
+</div>
+<p class="msg" id="sgMsg" role="status"></p>
+</div>
+<div id="dsPanel" role="tabpanel" aria-labelledby="s-pin" hidden>
+<div class="row"><label class="btn" for="dsCam">Ambil foto</label><label class="btn" for="dsGal">Dari galeri</label><input id="dsCam" type="file" accept="image/*" capture="environment" hidden><input id="dsGal" type="file" accept="image/*" multiple hidden></div>
+<div id="dsWork" hidden>
+<div class="stage" id="dsStage"><canvas id="dsCv" aria-label="Geser titik sudut ke tepi kertas"></canvas></div>
+<ul class="files" id="dsList"></ul>
+<div class="opts"><label>Filter<select id="dsF"><option value="orig">Asli</option><option value="doc" selected>Dokumen</option><option value="bw">Hitam-putih</option><option value="gray">Abu-abu</option></select></label><label>Ukuran halaman<select id="dsS"><option value="a4">A4</option><option value="letter">Letter</option></select></label></div>
+<div class="row"><span id="dsTxt" style="font-size:.9rem;flex:1">Buat teks bisa dicari</span><button type="button" class="tgl" id="dsOcr" role="switch" aria-checked="false" aria-labelledby="dsTxt"><i></i></button></div>
+<div class="row"><button class="primary" id="dsGo">Buat PDF</button><button type="button" id="dsRst">Reset</button></div>
+</div>
+<p class="msg" id="dsMsg" role="status"></p>
+</div>
+<p class="msg" id="gdMsg" role="status"></p>
 <h3 class="hh">Riwayat <button type="button" class="ghost" id="pdfHistClear">Hapus semua</button></h3>
 <div id="pdfHist"></div>
 </section>
@@ -344,25 +384,6 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
   <div class="row"><button id="dlgNo">Batal</button><button class="primary" id="dlgGo">Buka tautan</button></div>
 </dialog>
 
-<!-- ===== Gabung & Pisah PDF ===== -->
-<section id="p-gd" class="page" hidden>
-<header class="bar"><a class="back" href="#" data-back aria-label="Kembali ke beranda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></a><h2 class="ttl">Gabung &amp; Pisah PDF</h2></header>
-<div class="sgc" role="tablist"><button type="button" role="tab" id="gdT1" aria-selected="true">Gabung</button><button type="button" role="tab" id="gdT2" aria-selected="false">Pisah</button></div>
-<div id="gdA">
-<label class="drop"><b>Pilih PDF</b><br>Bisa lebih dari satu<input id="gdFiles" type="file" accept="application/pdf" multiple hidden></label>
-<ul class="files" id="gdList"></ul>
-<div class="row"><button class="primary" id="gdMerge" disabled>Gabungkan</button><button type="button" id="gdRstA">Reset</button></div>
-</div>
-<div id="gdB" hidden>
-<label class="drop"><b>Pilih satu PDF</b><br><span id="gdName">Belum ada file dipilih</span><input id="gdOne" type="file" accept="application/pdf" hidden></label>
-<div class="tg" id="gdGrid"></div>
-<div class="row"><button type="button" id="gdAll">Pilih semua</button><button type="button" id="gdNone">Kosongkan</button></div>
-<div class="opts"><label>Hasil<select id="gdMode"><option value="one">Satu file</option><option value="zip">Pisah per halaman (ZIP)</option></select></label></div>
-<div class="row"><button class="primary" id="gdSplit" disabled>Pisahkan</button><button type="button" id="gdRstB">Reset</button></div>
-</div>
-<p class="msg" id="gdMsg" role="status"></p>
-<h3 class="hh">Riwayat <button type="button" class="ghost" id="gdHC">Hapus semua</button></h3><div id="gdHist"></div>
-</section>
 <!-- ===== Pembuat QR ===== -->
 <section id="p-qr" class="page" hidden>
 <header class="bar"><a class="back" href="#" data-back aria-label="Kembali ke beranda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></a><h2 class="ttl">Pembuat QR</h2></header>
@@ -372,45 +393,15 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 <div class="opts" id="qF_vc" hidden><label>Nama<input id="q_nm" type="text" autocomplete="off"></label><label>Telepon<input id="q_tel" type="tel" autocomplete="off"></label><label>Email<input id="q_em" type="email" autocomplete="off"></label></div>
 <div class="opts" id="qF_mail" hidden><label>Alamat tujuan<input id="q_to" type="email" autocomplete="off"></label><label>Subjek<input id="q_sub" type="text" autocomplete="off"></label><label>Isi<input id="q_body" type="text" autocomplete="off"></label></div>
 <div class="opts"><label>Koreksi kesalahan<select id="qEc"><option value="L">Rendah</option><option value="M" selected>Sedang</option><option value="Q">Tinggi</option><option value="H">Maksimal</option></select></label><label>Ukuran<select id="qSz"><option value="220">Kecil</option><option value="300" selected>Sedang</option><option value="380">Besar</option></select></label></div>
+<div class="row"><label class="btn" for="qImg">Tambah gambar</label><button type="button" id="qImgX" hidden>Hapus gambar</button><input id="qImg" type="file" accept="image/*" hidden></div>
 <div class="card" id="qCard" hidden><div class="qw"><canvas id="qCv" aria-label="Kode QR"></canvas></div></div>
 <div class="row"><button class="primary" id="qDl" disabled>Unduh PNG</button><button type="button" id="qCp" disabled>Salin gambar</button><button type="button" id="qRst">Reset</button></div>
 <p class="msg" id="qMsg" role="status"></p>
 </section>
-<!-- ===== Tanda Tangan PDF ===== -->
-<section id="p-sg" class="page" hidden>
-<header class="bar"><a class="back" href="#" data-back aria-label="Kembali ke beranda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></a><h2 class="ttl">Tanda Tangan PDF</h2></header>
-<label class="drop"><b>Pilih PDF</b><br><span id="sgName">Belum ada file dipilih</span><input id="sgFile" type="file" accept="application/pdf" hidden></label>
-<h3 class="hh">Tanda tangan <button type="button" class="ghost" id="sgNew">Buat baru</button></h3>
-<div id="sgPadBox" hidden><div class="card"><canvas id="sgPad" class="pad" width="600" height="240" aria-label="Kanvas tanda tangan"></canvas></div>
-<div class="opts"><label>Pena<select id="sgPen"><option value="#111111">Hitam</option><option value="#0a3fd4">Biru</option></select></label></div>
-<div class="row"><button type="button" id="sgClr">Hapus</button><button type="button" class="primary" id="sgOk">Selesai</button></div></div>
-<div class="sgl" id="sgSaved"></div>
-<div id="sgView" hidden>
-<div class="row"><button type="button" class="ic" id="sgPrev" aria-label="Halaman sebelumnya"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button><span class="pgnum" id="sgPg">1 / 1</span><button type="button" class="ic" id="sgNext" aria-label="Halaman berikutnya"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button></div>
-<div class="stage" id="sgStage" style="cursor:default"><canvas id="sgCv"></canvas></div>
-<div class="row"><button class="primary" id="sgGo" disabled>Terapkan &amp; unduh</button><button type="button" id="sgRst">Reset</button></div>
-</div>
-<p class="msg" id="sgMsg" role="status"></p>
-<h3 class="hh">Riwayat <button type="button" class="ghost" id="sgHC">Hapus semua</button></h3><div id="sgHist"></div>
-</section>
-<!-- ===== Pindai Dokumen ===== -->
-<section id="p-ds" class="page" hidden>
-<header class="bar"><a class="back" href="#" data-back aria-label="Kembali ke beranda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></a><h2 class="ttl">Pindai Dokumen</h2></header>
-<div class="row"><label class="btn" for="dsCam">Ambil foto</label><label class="btn" for="dsGal">Dari galeri</label><input id="dsCam" type="file" accept="image/*" capture="environment" hidden><input id="dsGal" type="file" accept="image/*" multiple hidden></div>
-<div id="dsWork" hidden>
-<div class="stage" id="dsStage"><canvas id="dsCv" aria-label="Geser titik sudut ke tepi kertas"></canvas></div>
-<ul class="files" id="dsList"></ul>
-<div class="opts"><label>Filter<select id="dsF"><option value="orig">Asli</option><option value="doc" selected>Dokumen</option><option value="bw">Hitam-putih</option><option value="gray">Abu-abu</option></select></label><label>Ukuran halaman<select id="dsS"><option value="a4">A4</option><option value="letter">Letter</option></select></label></div>
-<div class="row"><span id="dsTxt" style="font-size:.9rem;flex:1">Buat teks bisa dicari</span><button type="button" class="tgl" id="dsOcr" role="switch" aria-checked="false" aria-labelledby="dsTxt"><i></i></button></div>
-<div class="row"><button class="primary" id="dsGo">Buat PDF</button><button type="button" id="dsRst">Reset</button></div>
-</div>
-<p class="msg" id="dsMsg" role="status"></p>
-<h3 class="hh">Riwayat <button type="button" class="ghost" id="dsHC">Hapus semua</button></h3><div id="dsHist"></div>
-</section>
 <script>
 (function(){
   var $=function(i){return document.getElementById(i);};
-  var pages={scan:$('p-scan'),pdf:$('p-pdf'),ocr:$('p-ocr'),size:$('p-size'),gd:$('p-gd'),qr:$('p-qr'),sg:$('p-sg'),ds:$('p-ds')},home=$('home'),cur=null;
+  var pages={scan:$('p-scan'),pdf:$('p-pdf'),ocr:$('p-ocr'),size:$('p-size'),qr:$('p-qr')},home=$('home'),cur=null;
   function show(k,first){
     if(!pages[k])k='';cur=k;
     home.hidden=!!k;
@@ -721,6 +712,7 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
     }).join('');
   }
   function addPdfHist(h){pHist.unshift(h);pHist=pHist.slice(0,30);savePH();renderPH();}
+  window.addPdfHist=addPdfHist;
   $('pdfHist').addEventListener('click',function(e){
     var b=e.target.closest('button');if(!b||b.getAttribute('data-pdel')===null)return;
     pHist.splice(parseInt(b.getAttribute('data-pdel'),10),1);savePH();renderPH();
@@ -1243,23 +1235,14 @@ function clamp(v,a,b){return Math.min(b,Math.max(a,v));}
 function errT(e){return e&&e.message?' ('+e.message+')':'';}
 function pjs(buf){var L=window.pdfjsLib;if(!L.GlobalWorkerOptions.workerSrc)L.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';return L.getDocument({data:buf.slice(0)}).promise;}
 async function rend(doc,n,w){var p=await doc.getPage(n),v=p.getViewport({scale:1}),vp=p.getViewport({scale:w/v.width}),c=document.createElement('canvas');c.width=Math.round(vp.width);c.height=Math.round(vp.height);await p.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;return c;}
-function mkHist(key,boxId,clrId){
-  var a=[],box=$(boxId);try{a=JSON.parse(localStorage.getItem(key)||'[]')||[];}catch(e){}
-  function save(){try{localStorage.setItem(key,JSON.stringify(a.slice(0,30)));}catch(e){}}
-  function draw(){box.innerHTML=a.length?a.map(function(h,i){var t='';try{t=new Date(h.ts).toLocaleString('id-ID',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});}catch(e){}
-    return '<div class="card"><p class="val">'+esc(h.name)+'</p><p class="meta">'+h.pages+' halaman · '+fmt(h.size)+' · '+esc(t)+'</p><div class="acts"><button data-i="'+i+'">Hapus</button></div></div>';}).join(''):'<p class="empty">Belum ada file yang diunduh.</p>';}
-  box.addEventListener('click',function(e){var b=e.target.closest('button');if(!b||b.getAttribute('data-i')===null)return;a.splice(+b.getAttribute('data-i'),1);save();draw();});
-  $(clrId).onclick=function(){a=[];save();draw();};
-  draw();return function(h){h.ts=Date.now();a.unshift(h);a=a.slice(0,30);save();draw();};
-}
+function H(kind){return function(x){if(window.addPdfHist)window.addPdfHist({name:x.name,size:x.size,kind:kind,ts:Date.now()});};}
 function toBytes(u){var s=atob(u.split(',')[1]),b=new Uint8Array(s.length);for(var i=0;i<s.length;i++)b[i]=s.charCodeAt(i);return b;}
 window.addEventListener('load',function(){var m=[];if(!window.PDFLib)m.push('gabung & tanda tangan PDF');if(!window.qrcode)m.push('pembuat QR');
   if(m.length){var w=$('libwarn');w.textContent=(w.hidden?'Sebagian pustaka gagal dimuat (':w.textContent.replace(/\. Periksa.*$/,'').replace(/\)$/,'; ')) +m.join(', ')+'). Periksa koneksi internet lalu muat ulang halaman.';w.hidden=false;}});
 
 /* ===== 1. Gabung & Pisah ===== */
-var gH=mkHist('gd-history','gdHist','gdHC'),gm=[],sp=null,sel={};
-function gdTab(n){$('gdT1').setAttribute('aria-selected',n===1);$('gdT2').setAttribute('aria-selected',n===2);$('gdA').hidden=n!==1;$('gdB').hidden=n!==2;say('gdMsg','');}
-$('gdT1').onclick=function(){gdTab(1);};$('gdT2').onclick=function(){gdTab(2);};
+var gH=H('Gabung PDF'),gP=H('Pisah PDF'),gm=[],sp=null,sel={};
+document.querySelector('#p-pdf .seg').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;say('gdMsg','');try{b.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});}catch(x){}});
 function gmDraw(){var l=$('gdList');l.innerHTML='';
   gm.forEach(function(f,i){var li=document.createElement('li');li.innerHTML='<span></span><small>'+f.n+' hlm</small>'+ib('up','Naikkan',UP)+ib('dn','Turunkan',DN)+ib('del','Hapus',DEL);
     li.querySelector('span').textContent=f.name;var q=function(a){return li.querySelector('[data-a='+a+']');};
@@ -1300,11 +1283,11 @@ $('gdSplit').onclick=async function(){
   try{var src=await PDFLib.PDFDocument.load(sp.buf),nm=base(sp.name),blob,name;
     if(!zip){var o=await PDFLib.PDFDocument.create();(await o.copyPages(src,idx)).forEach(function(p){o.addPage(p);});blob=new Blob([await o.save()],{type:'application/pdf'});name=nm+'_pilihan.pdf';}
     else{var z=new JSZip();for(var i of idx){var o2=await PDFLib.PDFDocument.create();o2.addPage((await o2.copyPages(src,[i]))[0]);z.file(nm+'_hal'+(i+1)+'.pdf',await o2.save());}blob=await z.generateAsync({type:'blob'});name=nm+'_halaman.zip';}
-    dl(blob,name);gH({name:name,pages:idx.length,size:blob.size});gdReset();say('gdMsg','File diunduh.',true);
+    dl(blob,name);gP({name:name,pages:idx.length,size:blob.size});gdReset();say('gdMsg','File diunduh.',true);
   }catch(x){say('gdMsg','Gagal memisahkan'+errT(x)+'.');b.disabled=false;}};
 
 /* ===== 2. Pembuat QR ===== */
-var qT=$('qType'),qb=null;
+var qT=$('qType'),qb=null,qLogo=null,qLogoUrl=null;
 function qv(i){return $(i).value.trim();}
 function qEsc(s){return s.replace(/([\\;,:"])/g,'\\$1');}
 function vEsc(s){return s.replace(/([\\;,])/g,'\\$1').replace(/\n/g,'\\n');}
@@ -1315,13 +1298,16 @@ function qText(){var t=qT.value;
   var to=qv('q_to');if(!to)return '';var q=[];if(qv('q_sub'))q.push('subject='+encodeURIComponent(qv('q_sub')));if(qv('q_body'))q.push('body='+encodeURIComponent(qv('q_body')));
   return 'mailto:'+to+(q.length?'?'+q.join('&'):'');}
 function qDraw(cv,px){var n=qb.getModuleCount(),cell=Math.max(1,Math.floor(px/(n+8))),S=cell*(n+8),x;cv.width=cv.height=S;x=cv.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,S,S);x.fillStyle='#000';
-  for(var r=0;r<n;r++)for(var c=0;c<n;c++)if(qb.isDark(r,c))x.fillRect((c+4)*cell,(r+4)*cell,cell,cell);}
+  for(var r=0;r<n;r++)for(var c=0;c<n;c++)if(qb.isDark(r,c))x.fillRect((c+4)*cell,(r+4)*cell,cell,cell);
+  if(qLogo){var L=Math.round(S*.2),bx=(S-L)/2,pd=Math.round(L*.1),rr=Math.round(L*.16);x.fillStyle='#fff';x.beginPath();
+    if(x.roundRect)x.roundRect(bx-pd,bx-pd,L+2*pd,L+2*pd,rr);else x.rect(bx-pd,bx-pd,L+2*pd,L+2*pd);x.fill();
+    var k=Math.min(L/qLogo.naturalWidth,L/qLogo.naturalHeight),lw=qLogo.naturalWidth*k,lh=qLogo.naturalHeight*k;x.drawImage(qLogo,(S-lw)/2,(S-lh)/2,lw,lh);}}
 function qUpd(){
   ['txt','wifi','vc','mail'].forEach(function(k){$('qF_'+k).hidden=qT.value!==k;});
   $('q_pw').closest('label').hidden=$('q_sec').value==='nopass';
   var t=qText(),ok=false;qb=null;say('qMsg','');
   if(t){if(!lib('qMsg',window.qcode_ok,'pembuat QR')){}else try{
-    var q=qcode_make(t,$('qEc').value);qb=q;var cv=$('qCv');qDraw(cv,+$('qSz').value*2);cv.style.width=cv.width/2+'px';ok=true;
+    var q=qcode_make(t,qLogo?'H':$('qEc').value);qb=q;var cv=$('qCv');qDraw(cv,+$('qSz').value*2);cv.style.width=cv.width/2+'px';ok=true;
   }catch(x){say('qMsg','Teks terlalu panjang untuk QR pada tingkat koreksi ini. Persingkat teks atau turunkan tingkat koreksi.');}}
   $('qCard').hidden=!ok;$('qDl').disabled=!ok;$('qCp').disabled=!ok;}
 function qcode_make(t,ec){qcode_ok_init();var q=qrcode(0,ec);q.addData(t,'Byte');q.make();return q;}
@@ -1331,11 +1317,16 @@ function qBlob(){var c=document.createElement('canvas');qDraw(c,1024);return new
 document.getElementById('p-qr').addEventListener('input',qUpd);document.getElementById('p-qr').addEventListener('change',qUpd);
 $('qDl').onclick=async function(){var b=await qBlob();dl(b,'qr.png');qReset();say('qMsg','PNG diunduh.',true);};
 $('qCp').onclick=async function(){try{if(!window.ClipboardItem||!navigator.clipboard)throw 0;await navigator.clipboard.write([new ClipboardItem({'image/png':await qBlob()})]);say('qMsg','Gambar disalin.',true);}catch(e){say('qMsg','Browser ini tidak mengizinkan menyalin gambar. Gunakan Unduh PNG.');}};
-function qReset(){[].forEach.call(document.querySelectorAll('#p-qr input'),function(i){i.value='';});qUpd();}
+function qReset(){qLogoClear();[].forEach.call(document.querySelectorAll('#p-qr input'),function(i){i.value='';});qUpd();}
+function qLogoClear(){if(qLogoUrl)URL.revokeObjectURL(qLogoUrl);qLogo=qLogoUrl=null;$('qImgX').hidden=true;}
+$('qImg').onchange=function(e){var f=e.target.files[0];if(!f)return;var u=URL.createObjectURL(f),im=new Image();
+  im.onload=function(){qLogoClear();qLogo=im;qLogoUrl=u;$('qImgX').hidden=false;qUpd();};
+  im.onerror=function(){URL.revokeObjectURL(u);say('qMsg','Gambar tidak bisa dibaca. Coba JPG, PNG, atau WebP.');};im.src=u;};
+$('qImgX').onclick=function(){qLogoClear();qUpd();};
 $('qRst').onclick=qReset;qUpd();
 
 /* ===== 3. Tanda Tangan PDF ===== */
-var sH=mkHist('sg-history','sgHist','sgHC'),sg={buf:null,name:'',pj:null,n:0,cur:1,objs:[],seq:0,tok:0},sigs=[],drag=null,pen=null;
+var sH=H('Tanda tangan'),sg={buf:null,name:'',pj:null,n:0,cur:1,objs:[],seq:0,tok:0},sigs=[],drag=null,pen=null;
 try{sigs=JSON.parse(localStorage.getItem('sig-list')||'[]')||[];}catch(e){}
 function sigSave(){try{localStorage.setItem('sig-list',JSON.stringify(sigs.slice(0,6)));}catch(e){}}
 function sigDraw(){var b=$('sgSaved');b.innerHTML='';sigs.forEach(function(u,i){var s=document.createElement('span');s.className='it';s.innerHTML='<button type="button" class="u" aria-label="Pakai tanda tangan"><img alt=""></button><button type="button" class="ic" aria-label="Hapus tanda tangan">'+ic(DEL)+'</button>';
@@ -1394,7 +1385,7 @@ function sgReset(){sg.buf=null;sg.pj=null;sg.objs=[];sg.tok++;$('sgView').hidden
 $('sgRst').onclick=sgReset;sigDraw();
 
 /* ===== 4. Pindai Dokumen ===== */
-var dH=mkHist('ds-history','dsHist','dsHC'),pgs=[],dcur=0,dd=null;
+var dH=H('Pindai dokumen'),pgs=[],dcur=0,dd=null;
 function area(q){var s=0;for(var i=0;i<4;i++){var a=q[i],b=q[(i+1)%4];s+=a.x*b.y-b.x*a.y;}return Math.abs(s)/2;}
 function detect(pg){
   var w=160,h=Math.max(8,Math.round(pg.sc.height*w/pg.sc.width)),c=document.createElement('canvas');c.width=w;c.height=h;var x=c.getContext('2d',{willReadFrequently:true});x.drawImage(pg.sc,0,0,w,h);
