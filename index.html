@@ -14,7 +14,7 @@
 --glass:rgba(255,255,255,.14);--glass-lo:rgba(255,255,255,.20);--glass-brd:rgba(255,255,255,.62);
 --sheen:rgba(255,255,255,.40);--sheen-lo:rgba(255,255,255,.10);--hi:rgba(255,255,255,.95);--hi-lo:rgba(255,255,255,.28);
 --shadow:0 10px 30px rgba(35,50,90,.16),0 2px 6px rgba(35,50,90,.08);
---sel1:rgba(255,255,255,.92);--sel2:rgba(255,255,255,.60);--track:rgba(13,26,48,.14);
+--menu:rgba(255,255,255,.62);--sel1:rgba(255,255,255,.92);--sel2:rgba(255,255,255,.60);--track:rgba(13,26,48,.14);
 --danger:#c4001a;--ok:#00724a;
 --bg1:#e9ecf2;--bg2:#cdd3df;--o1:#ffffff;--o2:#a7b1c4;--o3:#f4f6fa;--o4:#8c98af;--i1:#0d1a30;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -23,7 +23,7 @@ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:en
 --glass:rgba(255,255,255,.07);--glass-lo:rgba(255,255,255,.11);--glass-brd:rgba(255,255,255,.24);
 --sheen:rgba(255,255,255,.16);--sheen-lo:rgba(255,255,255,.04);--hi:rgba(255,255,255,.38);--hi-lo:rgba(255,255,255,.10);
 --shadow:0 14px 36px rgba(0,0,0,.5),0 2px 6px rgba(0,0,0,.3);
---sel1:rgba(255,255,255,.34);--sel2:rgba(255,255,255,.16);--track:rgba(255,255,255,.18);
+--menu:rgba(28,32,42,.74);--sel1:rgba(255,255,255,.34);--sel2:rgba(255,255,255,.16);--track:rgba(255,255,255,.18);
 --danger:#ff8a80;--ok:#7cf0b4;
 --bg1:#05060a;--bg2:#10131a;--o1:#313847;--o2:#171a23;--o3:#444d5f;--o4:#1e232e;--i1:#f2f6ff}}
 *{box-sizing:border-box}
@@ -131,9 +131,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .drop b{color:var(--ink);font-size:1rem}
 .opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:14px 0}
 .opts label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin-left:4px}
-.opts select,.nmrow input{-webkit-appearance:none;appearance:none;display:block;width:100%;margin-top:5px;font:inherit;font-size:.9rem;color:var(--ink);height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--glass-brd);background-color:var(--glass-lo);background-image:linear-gradient(180deg,var(--sheen),transparent 70%);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:inset 0 1px 0 var(--hi)}
-.opts select{padding-right:36px;cursor:pointer;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%),linear-gradient(180deg,var(--sheen),transparent 70%);background-position:calc(100% - 20px) 17px,calc(100% - 15px) 17px,0 0;background-size:5px 5px,5px 5px,100% 100%;background-repeat:no-repeat}
-.opts select option{color:#0d1a30}
+.nmrow input{-webkit-appearance:none;appearance:none;display:block;width:100%;margin-top:5px;font:inherit;font-size:.9rem;color:var(--ink);height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--glass-brd);background-color:var(--glass-lo);background-image:linear-gradient(180deg,var(--sheen),transparent 70%);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:inset 0 1px 0 var(--hi)}
 .files{list-style:none;margin:12px 0;padding:0}
 .files li{display:flex;align-items:center;gap:4px;border-radius:20px;padding:7px 8px;margin-bottom:8px}
 .files .th{width:42px;height:42px;flex:none;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:12px}
@@ -151,6 +149,19 @@ button.ic svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:
 .nmrow{display:flex;align-items:center;gap:8px;margin-top:2px}
 .nmrow input{flex:1;min-width:0;margin-top:0}
 .nmrow span{color:var(--muted);font-weight:600;font-size:.9rem}
+
+/* ===== Dropdown kustom ===== */
+.dd{position:relative;margin-top:5px}
+.dd-btn{width:100%;justify-content:space-between;height:40px;padding:0 16px;font-weight:500;font-size:.9rem}
+.dd-btn span{overflow:hidden;text-overflow:ellipsis}
+.dd-btn::after{content:"";flex:none;width:7px;height:7px;margin:-3px 2px 0 10px;border:solid var(--muted);border-width:0 2px 2px 0;transform:rotate(45deg);transition:transform .15s}
+.dd.open .dd-btn::after{transform:rotate(-135deg);margin-top:3px}
+.dd-menu{display:none;position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:40;margin:0;padding:6px;list-style:none;max-height:240px;overflow:auto;border-radius:22px;border:1px solid var(--glass-brd);background:linear-gradient(135deg,var(--sheen),transparent 50%),var(--menu);-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);box-shadow:var(--shadow),inset 0 1px 0 var(--hi)}
+.dd.open .dd-menu{display:block}
+.dd.up .dd-menu{top:auto;bottom:calc(100% + 6px)}
+.dd-menu li{padding:10px 14px;border-radius:15px;font-size:.9rem;cursor:pointer;color:var(--ink);outline:none}
+.dd-menu li:active,.dd-menu li:focus-visible{background:var(--glass-lo)}
+.dd-menu li[aria-selected="true"]{font-weight:700;background:linear-gradient(180deg,var(--sel1),var(--sel2));box-shadow:inset 0 1px 0 var(--hi)}
 
 /* ===== Gambar ke Teks ===== */
 .stage{position:relative;display:block;width:fit-content;max-width:100%;margin:0 auto;border-radius:22px;overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none;border:1px solid var(--glass-brd);box-shadow:var(--shadow),inset 0 1px 0 var(--hi);background:#fff;cursor:crosshair}
@@ -190,18 +201,18 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 <div id="libwarn" class="warn" role="alert" hidden></div>
 <section id="home" class="home">
 <h1 tabindex="-1">Alat Kode &amp; PDF</h1>
-<p class="sub">Pilih alat yang ingin dipakai.</p>
+<!-- NOTE: Teks dihapus dari tampilan: "Pilih alat yang ingin dipakai." -->
 <nav class="grid" aria-label="Pilih alat">
   <a class="tile" data-k="scan" data-go="scan" href="#scan"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg></div><b>Pindai</b><small>Barcode &amp; QR</small></a>
   <a class="tile" data-k="pdf" data-go="pdf" href="#pdf"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 11v6m0 0-2.5-2.5M12 17l2.5-2.5"/></svg></div><b>Konverter PDF</b><small>Word &amp; gambar ke PDF</small></a>
   <a class="tile" data-k="ocr" data-go="ocr" href="#ocr"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="3.5"/><path d="M9 10h6M12 10v5"/></svg></div><b>Gambar ke Teks</b><small>Baca teks dari foto</small></a>
 </nav>
-<p class="foot">Semua proses berjalan di perangkatmu.</p>
+<!-- NOTE: Teks dihapus dari tampilan: "Semua proses berjalan di perangkatmu." -->
 </section>
 
 <section id="p-scan" class="page" hidden>
 <header class="bar"><a class="back" href="#" data-back aria-label="Kembali ke beranda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></a><h2 class="ttl">Pindai</h2></header>
-<p class="sub">Arahkan kamera ke barcode atau QR. Hasilnya bisa disalin atau dibuka.</p>
+<!-- NOTE: Teks dihapus dari tampilan: "Arahkan kamera ke barcode atau QR. Hasilnya bisa disalin atau dibuka." -->
 <div class="view">
   <video id="v" playsinline muted></video>
   <div class="frame" id="frame" hidden></div>
@@ -229,7 +240,7 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
   <button type="button" role="tab" id="s-img" aria-controls="p-img" aria-selected="false" tabindex="-1">Gambar ke PDF</button>
 </div>
 <div id="p-word" role="tabpanel" aria-labelledby="s-word">
-<p class="sub">Ubah file Word (.docx) menjadi PDF langsung di perangkatmu. File tidak diunggah ke mana pun.</p>
+<!-- NOTE: Teks dihapus dari tampilan: "Ubah file Word (.docx) menjadi PDF langsung di perangkatmu. File tidak diunggah ke mana pun." -->
 <label class="drop"><b>Pilih file .docx</b><br><span id="wordName">Belum ada file dipilih</span><input id="wordFile" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden></label>
 <div class="opts"><label>Kualitas<select id="wQual"><option value="2">Tinggi</option><option value="1.5">Sedang</option><option value="1">Kecil (file ringan)</option></select></label></div>
 <div class="row"><button class="primary" id="wordGo" disabled>Ubah ke PDF</button></div>
@@ -237,7 +248,7 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 <div id="wordOut"></div>
 </div>
 <div id="p-img" role="tabpanel" aria-labelledby="s-img" hidden>
-<p class="sub">Gabungkan satu atau lebih gambar menjadi satu PDF. Urutan halaman mengikuti daftar.</p>
+<!-- NOTE: Teks dihapus dari tampilan: "Gabungkan satu atau lebih gambar menjadi satu PDF. Urutan halaman mengikuti daftar." -->
 <label class="drop"><b>Pilih gambar</b><br>JPG, PNG, atau WebP<input id="imgFiles" type="file" accept="image/*" multiple hidden></label>
 <ul class="files" id="imgList"></ul>
 <div class="opts">
@@ -252,7 +263,7 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 </section>
 <section id="p-ocr" class="page" hidden>
 <header class="bar"><a class="back" href="#" data-back aria-label="Kembali ke beranda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></a><h2 class="ttl">Gambar ke Teks</h2></header>
-<p class="sub">Unggah gambar, pilih area teks tertentu bila perlu, lalu baca teksnya.</p>
+<!-- NOTE: Teks dihapus dari tampilan: "Unggah gambar, pilih area teks tertentu bila perlu, lalu baca teksnya." -->
 <input id="ocrFile" type="file" accept="image/*" hidden>
 <label class="drop" id="ocrDrop" for="ocrFile"><b>Pilih gambar</b><br>JPG, PNG, atau WebP</label>
 <p class="msg" id="ocrMsg" role="status"></p>
@@ -261,19 +272,15 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
     <canvas id="ocrCv" aria-label="Gambar yang akan dibaca"></canvas>
     <div class="crop" id="crop" hidden><i data-h="nw"></i><i data-h="n"></i><i data-h="ne"></i><i data-h="e"></i><i data-h="se"></i><i data-h="s"></i><i data-h="sw"></i><i data-h="w"></i></div>
   </div>
-  <p class="hint">Seret di atas gambar untuk memilih area. Tanpa area, seluruh gambar dibaca.</p>
-  <div class="opts"><label>Bahasa teks<select id="ocrLang"><option value="ind+eng">Indonesia + Inggris</option><option value="eng">Inggris</option><option value="ind">Indonesia</option></select></label></div>
+  <!-- NOTE: Teks dihapus dari tampilan: "Seret di atas gambar untuk memilih area. Tanpa area, seluruh gambar dibaca." -->
   <div class="row">
     <button type="button" class="primary" id="ocrGo">Baca teks</button>
-    <button type="button" id="ocrRot">Putar</button>
-    <button type="button" id="ocrClr" disabled>Hapus area</button>
     <label class="btn" for="ocrFile">Ganti gambar</label>
   </div>
   <div id="ocrOut" hidden>
     <label class="nm" for="ocrText">Hasil teks (bisa diedit)</label>
     <textarea id="ocrText" rows="8"></textarea>
-    <p class="hint" id="ocrMeta"></p>
-    <div class="row"><button type="button" class="primary" id="ocrCopy">Salin</button><button type="button" id="ocrTxt">Unduh .txt</button></div>
+    <div class="row"><button type="button" class="primary" id="ocrCopy">Salin</button></div>
   </div>
 </div>
 </section>
@@ -705,7 +712,7 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
   };
 
   /* ===== Gambar -> Teks (OCR) ===== */
-  var oCv=$('ocrCv'),oCtx=oCv.getContext('2d',{willReadFrequently:true}),stage=$('stage'),cropEl=$('crop'),oMsg=$('ocrMsg'),oGo=$('ocrGo'),oClr=$('ocrClr');
+  var oCv=$('ocrCv'),oCtx=oCv.getContext('2d',{willReadFrequently:true}),stage=$('stage'),cropEl=$('crop'),oMsg=$('ocrMsg'),oGo=$('ocrGo');
   var oBmp=null,oRot=0,oName='gambar',crop=null,drag=null,oWorker=null,oLangCur='',oBusy=false;
   function clamp(x,a,b){a=a===undefined?0:a;b=b===undefined?1:b;return Math.min(b,Math.max(a,x));}
   function drawOcr(){
@@ -717,8 +724,8 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
     oCtx.drawImage(oBmp,-bw*sc/2,-bh*sc/2,bw*sc,bh*sc);oCtx.restore();
   }
   function renderCrop(){
-    if(!crop){cropEl.hidden=true;oClr.disabled=true;return;}
-    cropEl.hidden=false;oClr.disabled=false;
+    if(!crop){cropEl.hidden=true;return;}
+    cropEl.hidden=false;
     cropEl.style.left=(crop.x*100)+'%';cropEl.style.top=(crop.y*100)+'%';
     cropEl.style.width=(crop.w*100)+'%';cropEl.style.height=(crop.h*100)+'%';
   }
@@ -767,8 +774,6 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
     }catch(x){oMsg.textContent='Gambar tidak bisa dibaca'+errText(x)+'. Format seperti HEIC mungkin tidak didukung browser; coba JPG atau PNG.';}
     e.target.value='';
   };
-  $('ocrRot').onclick=function(){if(!oBmp||oBusy)return;oRot=(oRot+90)%360;crop=null;drawOcr();renderCrop();};
-  oClr.onclick=function(){crop=null;renderCrop();};
 
   function prepCanvas(){
     var sx=0,sy=0,sw=oCv.width,sh=oCv.height;
@@ -798,12 +803,11 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
     if(!window.Tesseract){oMsg.className='msg';oMsg.textContent='Pustaka pembaca teks belum termuat. Periksa koneksi internet lalu muat ulang halaman.';return;}
     oBusy=true;oGo.disabled=true;$('ocrOut').hidden=true;
     try{
-      var w=await getWorker($('ocrLang').value);
+      var w=await getWorker('ind+eng');
       oMsg.className='msg ok';oMsg.textContent='Membaca teks...';
       var r=await w.recognize(prepCanvas()),t=(r.data.text||'').replace(/\n{3,}/g,'\n\n').trim();
       if(t){
         $('ocrText').value=t;$('ocrOut').hidden=false;
-        $('ocrMeta').textContent='Perkiraan akurasi '+Math.round(r.data.confidence||0)+'%. Periksa dan koreksi bila perlu.';
         oMsg.className='msg ok';oMsg.textContent='Selesai.';
       }else{
         oMsg.className='msg';oMsg.textContent='Tidak ada teks yang terbaca. Coba pilih area yang lebih rapat atau gunakan gambar yang lebih jelas.';
@@ -817,9 +821,52 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
     var b=this;copyText($('ocrText').value,b);
     setTimeout(function(){b.textContent='Salin';},1600);
   };
-  $('ocrTxt').onclick=function(){
-    download(new Blob(['﻿'+$('ocrText').value],{type:'text/plain;charset=utf-8'}),(oName||'teks')+'.txt');
-  };
+  /* ===== Dropdown kustom (pengganti pilihan bawaan sistem) ===== */
+  (function(){
+    function closeAll(except){
+      [].forEach.call(document.querySelectorAll('.dd.open'),function(d){
+        if(d!==except){d.classList.remove('open','up');d.querySelector('.dd-btn').setAttribute('aria-expanded','false');}
+      });
+    }
+    [].forEach.call(document.querySelectorAll('select'),function(sel){
+      var dd=document.createElement('div');dd.className='dd';
+      var btn=document.createElement('button');btn.type='button';btn.className='dd-btn';
+      btn.setAttribute('aria-haspopup','listbox');btn.setAttribute('aria-expanded','false');
+      var lab=document.createElement('span');btn.appendChild(lab);
+      var menu=document.createElement('ul');menu.className='dd-menu';menu.setAttribute('role','listbox');
+      [].forEach.call(sel.options,function(o){
+        var li=document.createElement('li');li.setAttribute('role','option');li.tabIndex=-1;
+        li.setAttribute('data-v',o.value);li.textContent=o.textContent;menu.appendChild(li);
+      });
+      function sync(){
+        var cur=sel.options[sel.selectedIndex];lab.textContent=cur?cur.textContent:'';
+        [].forEach.call(menu.children,function(li){li.setAttribute('aria-selected',li.getAttribute('data-v')===sel.value?'true':'false');});
+      }
+      function openIt(){
+        closeAll(dd);dd.classList.add('open');btn.setAttribute('aria-expanded','true');
+        var r=btn.getBoundingClientRect(),need=Math.min(menu.scrollHeight,240)+14,below=window.innerHeight-r.bottom;
+        if(below<need&&r.top>below)dd.classList.add('up');else dd.classList.remove('up');
+      }
+      btn.addEventListener('click',function(e){e.preventDefault();if(dd.classList.contains('open'))closeAll();else openIt();});
+      btn.addEventListener('keydown',function(e){
+        if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+          e.preventDefault();
+          var i=Math.max(0,Math.min(sel.options.length-1,sel.selectedIndex+(e.key==='ArrowDown'?1:-1)));
+          sel.selectedIndex=i;sel.dispatchEvent(new Event('change',{bubbles:true}));sync();
+        }
+      });
+      menu.addEventListener('click',function(e){
+        var li=e.target.closest('li');if(!li)return;
+        e.preventDefault();
+        sel.value=li.getAttribute('data-v');sel.dispatchEvent(new Event('change',{bubbles:true}));
+        sync();closeAll();btn.focus();
+      });
+      dd.appendChild(btn);dd.appendChild(menu);
+      sel.hidden=true;sel.parentNode.insertBefore(dd,sel.nextSibling);sync();
+    });
+    document.addEventListener('click',function(e){if(!e.target.closest('.dd'))closeAll();});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAll();});
+  })();
 })();
 </script>
 </body>
