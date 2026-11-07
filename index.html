@@ -387,13 +387,14 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 <!-- ===== Pembuat QR ===== -->
 <section id="p-qr" class="page" hidden>
 <header class="bar"><a class="back" href="#" data-back aria-label="Kembali ke beranda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></a><h2 class="ttl">Pembuat QR</h2></header>
-<div class="opts"><label>Jenis<select id="qType"><option value="txt">Teks / Tautan</option><option value="wifi">Wi-Fi</option><option value="vc">Kontak</option><option value="mail">Email</option></select></label></div>
+<div class="opts"><label>Jenis<select id="qType"><option value="txt">Teks / Tautan</option><option value="wifi">Wi-Fi</option><option value="vc">Kontak</option><option value="mail">Email</option><option value="img">Gambar</option></select></label></div>
 <div class="opts" id="qF_txt"><label>Teks atau tautan<input id="q_txt" type="text" autocomplete="off"></label></div>
 <div class="opts" id="qF_wifi" hidden><label>Nama jaringan<input id="q_ssid" type="text" autocomplete="off"></label><label>Kata sandi<input id="q_pw" type="text" autocomplete="off"></label><label>Keamanan<select id="q_sec"><option value="WPA">WPA/WPA2</option><option value="WEP">WEP</option><option value="nopass">Tanpa sandi</option></select></label></div>
 <div class="opts" id="qF_vc" hidden><label>Nama<input id="q_nm" type="text" autocomplete="off"></label><label>Telepon<input id="q_tel" type="tel" autocomplete="off"></label><label>Email<input id="q_em" type="email" autocomplete="off"></label></div>
+<div class="row" id="qF_img" hidden><label class="btn" for="qPic">Pilih gambar</label><input id="qPic" type="file" accept="image/*" hidden><span id="qPicN" style="font-size:.85rem;color:var(--muted)"></span></div>
 <div class="opts" id="qF_mail" hidden><label>Alamat tujuan<input id="q_to" type="email" autocomplete="off"></label><label>Subjek<input id="q_sub" type="text" autocomplete="off"></label><label>Isi<input id="q_body" type="text" autocomplete="off"></label></div>
 <div class="opts"><label>Koreksi kesalahan<select id="qEc"><option value="L">Rendah</option><option value="M" selected>Sedang</option><option value="Q">Tinggi</option><option value="H">Maksimal</option></select></label><label>Ukuran<select id="qSz"><option value="220">Kecil</option><option value="300" selected>Sedang</option><option value="380">Besar</option></select></label></div>
-<div class="row"><label class="btn" for="qImg">Tambah gambar</label><button type="button" id="qImgX" hidden>Hapus gambar</button><input id="qImg" type="file" accept="image/*" hidden></div>
+<div class="row" id="qLogoRow"><label class="btn" for="qImg">Tambah logo</label><button type="button" id="qImgX" hidden>Hapus logo</button><input id="qImg" type="file" accept="image/*" hidden></div>
 <div class="card" id="qCard" hidden><div class="qw"><canvas id="qCv" aria-label="Kode QR"></canvas></div></div>
 <div class="row"><button class="primary" id="qDl" disabled>Unduh PNG</button><button type="button" id="qCp" disabled>Salin gambar</button><button type="button" id="qRst">Reset</button></div>
 <p class="msg" id="qMsg" role="status"></p>
@@ -1287,28 +1288,39 @@ $('gdSplit').onclick=async function(){
   }catch(x){say('gdMsg','Gagal memisahkan'+errT(x)+'.');b.disabled=false;}};
 
 /* ===== 2. Pembuat QR ===== */
-var qT=$('qType'),qb=null,qLogo=null,qLogoUrl=null;
+var qT=$('qType'),qb=null,qLogo=null,qLogoUrl=null,qPicImg=null,qFitC=null,qFitInfo=null;
 function qv(i){return $(i).value.trim();}
 function qEsc(s){return s.replace(/([\\;,:"])/g,'\\$1');}
 function vEsc(s){return s.replace(/([\\;,])/g,'\\$1').replace(/\n/g,'\\n');}
+/* Gambar -> QR: gambar dikecilkan lalu disematkan sebagai tautan data:image (tanpa server, semua di perangkat).
+   Kapasitas QR hanya ~1,2-2,9 KB, jadi hasilnya kecil (maks 160 px). Tidak semua pemindai membuka tautan data:. */
+var QCAP={L:2900,M:2300,Q:1640,H:1250};
+function qFit(img,ec){var cap=QCAP[ec],fm=['image/webp','image/jpeg'];
+  for(var d of [160,128,96,80,64,48,40,32])for(var q of [.7,.5,.35,.2])for(var f of fm){
+    var k=Math.min(d/img.naturalWidth,d/img.naturalHeight),w=Math.max(1,Math.round(img.naturalWidth*k)),h=Math.max(1,Math.round(img.naturalHeight*k)),c=document.createElement('canvas');c.width=w;c.height=h;
+    var x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,w,h);x.drawImage(img,0,0,w,h);var u=c.toDataURL(f,q);
+    if(u.indexOf('data:'+f)===0&&u.length<=cap)return {u:u,w:w,h:h};}
+  return null;}
 function qText(){var t=qT.value;
+  if(t==='img'){qFitInfo=null;if(!qPicImg)return '';var ec=$('qEc').value;if(!qFitC||qFitC.ec!==ec||qFitC.img!==qPicImg)qFitC={img:qPicImg,ec:ec,r:qFit(qPicImg,ec)};qFitInfo=qFitC.r;return qFitC.r?qFitC.r.u:'';}
   if(t==='txt')return qv('q_txt');
   if(t==='wifi'){var s=qv('q_ssid');if(!s)return '';var sec=$('q_sec').value;return 'WIFI:T:'+sec+';S:'+qEsc(s)+';'+(sec==='nopass'?'':'P:'+qEsc($('q_pw').value)+';')+';';}
   if(t==='vc'){var n=qv('q_nm'),tl=qv('q_tel'),em=qv('q_em');if(!n&&!tl&&!em)return '';return 'BEGIN:VCARD\nVERSION:3.0\nFN:'+vEsc(n)+'\n'+(tl?'TEL:'+vEsc(tl)+'\n':'')+(em?'EMAIL:'+vEsc(em)+'\n':'')+'END:VCARD';}
   var to=qv('q_to');if(!to)return '';var q=[];if(qv('q_sub'))q.push('subject='+encodeURIComponent(qv('q_sub')));if(qv('q_body'))q.push('body='+encodeURIComponent(qv('q_body')));
   return 'mailto:'+to+(q.length?'?'+q.join('&'):'');}
-function qDraw(cv,px){var n=qb.getModuleCount(),cell=Math.max(1,Math.floor(px/(n+8))),S=cell*(n+8),x;cv.width=cv.height=S;x=cv.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,S,S);x.fillStyle='#000';
+function qDraw(cv,px){var n=qb.getModuleCount(),cell=Math.max(1,Math.ceil(px/(n+8))),S=cell*(n+8),x;cv.width=cv.height=S;x=cv.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,S,S);x.fillStyle='#000';
   for(var r=0;r<n;r++)for(var c=0;c<n;c++)if(qb.isDark(r,c))x.fillRect((c+4)*cell,(r+4)*cell,cell,cell);
-  if(qLogo){var L=Math.round(S*.2),bx=(S-L)/2,pd=Math.round(L*.1),rr=Math.round(L*.16);x.fillStyle='#fff';x.beginPath();
+  if(qLogo&&qT.value!=='img'){var L=Math.round(S*.2),bx=(S-L)/2,pd=Math.round(L*.1),rr=Math.round(L*.16);x.fillStyle='#fff';x.beginPath();
     if(x.roundRect)x.roundRect(bx-pd,bx-pd,L+2*pd,L+2*pd,rr);else x.rect(bx-pd,bx-pd,L+2*pd,L+2*pd);x.fill();
     var k=Math.min(L/qLogo.naturalWidth,L/qLogo.naturalHeight),lw=qLogo.naturalWidth*k,lh=qLogo.naturalHeight*k;x.drawImage(qLogo,(S-lw)/2,(S-lh)/2,lw,lh);}}
 function qUpd(){
-  ['txt','wifi','vc','mail'].forEach(function(k){$('qF_'+k).hidden=qT.value!==k;});
-  $('q_pw').closest('label').hidden=$('q_sec').value==='nopass';
+  ['txt','wifi','vc','mail','img'].forEach(function(k){$('qF_'+k).hidden=qT.value!==k;});
+  $('qLogoRow').hidden=qT.value==='img';$('q_pw').closest('label').hidden=$('q_sec').value==='nopass';
   var t=qText(),ok=false;qb=null;say('qMsg','');
   if(t){if(!lib('qMsg',window.qcode_ok,'pembuat QR')){}else try{
-    var q=qcode_make(t,qLogo?'H':$('qEc').value);qb=q;var cv=$('qCv');qDraw(cv,+$('qSz').value*2);cv.style.width=cv.width/2+'px';ok=true;
+    var q=qcode_make(t,qLogo&&qT.value!=='img'?'H':$('qEc').value);qb=q;var cv=$('qCv');if(qT.value==='img'){qDraw(cv,1024);cv.style.width='100%';cv.style.maxWidth='420px';}else{qDraw(cv,+$('qSz').value*2);cv.style.width=cv.width/2+'px';cv.style.maxWidth='100%';}ok=true;
   }catch(x){say('qMsg','Teks terlalu panjang untuk QR pada tingkat koreksi ini. Persingkat teks atau turunkan tingkat koreksi.');}}
+  if(qT.value==='img'&&qPicImg){if(ok&&qFitInfo)say('qMsg','Gambar dikecilkan menjadi '+qFitInfo.w+'×'+qFitInfo.h+' px agar muat di QR.',true);else if(!t)say('qMsg','Gambar terlalu rumit untuk muat di QR. Pakai gambar yang lebih sederhana atau turunkan tingkat koreksi.');}
   $('qCard').hidden=!ok;$('qDl').disabled=!ok;$('qCp').disabled=!ok;}
 function qcode_make(t,ec){qcode_ok_init();var q=qrcode(0,ec);q.addData(t,'Byte');q.make();return q;}
 function qcode_ok_init(){if(window.qrcode&&qrcode.stringToBytesFuncs&&qrcode.stringToBytesFuncs['UTF-8'])qrcode.stringToBytes=qrcode.stringToBytesFuncs['UTF-8'];}
@@ -1317,10 +1329,13 @@ function qBlob(){var c=document.createElement('canvas');qDraw(c,1024);return new
 document.getElementById('p-qr').addEventListener('input',qUpd);document.getElementById('p-qr').addEventListener('change',qUpd);
 $('qDl').onclick=async function(){var b=await qBlob();dl(b,'qr.png');qReset();say('qMsg','PNG diunduh.',true);};
 $('qCp').onclick=async function(){try{if(!window.ClipboardItem||!navigator.clipboard)throw 0;await navigator.clipboard.write([new ClipboardItem({'image/png':await qBlob()})]);say('qMsg','Gambar disalin.',true);}catch(e){say('qMsg','Browser ini tidak mengizinkan menyalin gambar. Gunakan Unduh PNG.');}};
-function qReset(){qLogoClear();[].forEach.call(document.querySelectorAll('#p-qr input'),function(i){i.value='';});qUpd();}
+function qReset(){qLogoClear();qPicImg=null;qFitC=null;$('qPicN').textContent='';[].forEach.call(document.querySelectorAll('#p-qr input'),function(i){i.value='';});qUpd();}
 function qLogoClear(){if(qLogoUrl)URL.revokeObjectURL(qLogoUrl);qLogo=qLogoUrl=null;$('qImgX').hidden=true;}
 $('qImg').onchange=function(e){var f=e.target.files[0];if(!f)return;var u=URL.createObjectURL(f),im=new Image();
   im.onload=function(){qLogoClear();qLogo=im;qLogoUrl=u;$('qImgX').hidden=false;qUpd();};
+  im.onerror=function(){URL.revokeObjectURL(u);say('qMsg','Gambar tidak bisa dibaca. Coba JPG, PNG, atau WebP.');};im.src=u;};
+$('qPic').onchange=function(e){var f=e.target.files[0];if(!f)return;var u=URL.createObjectURL(f),im=new Image();
+  im.onload=function(){URL.revokeObjectURL(u);qPicImg=im;qFitC=null;$('qPicN').textContent=f.name;qUpd();};
   im.onerror=function(){URL.revokeObjectURL(u);say('qMsg','Gambar tidak bisa dibaca. Coba JPG, PNG, atau WebP.');};im.src=u;};
 $('qImgX').onclick=function(){qLogoClear();qUpd();};
 $('qRst').onclick=qReset;qUpd();
