@@ -32,7 +32,7 @@ body{margin:0;min-height:100vh;background:linear-gradient(160deg,var(--bg1),var(
 main{max-width:520px;margin:0 auto;padding:16px 16px 48px}
 
 /* ===== Dasar kaca (liquid glass) ===== */
-.glass,.card,.files li,.drop,.pv,.bar,dialog,.warn,.tile .box{
+.glass,.card,.files li,.drop,.pv,.bar,.seg,dialog,.warn,.tile .box{
   position:relative;
   background:linear-gradient(135deg,var(--sheen),transparent 46%),var(--glass);
   -webkit-backdrop-filter:blur(24px) saturate(190%);backdrop-filter:blur(24px) saturate(190%);
@@ -40,7 +40,7 @@ main{max-width:520px;margin:0 auto;padding:16px 16px 48px}
   box-shadow:var(--shadow),inset 0 1px 0 var(--hi),inset 0 -1px 0 rgba(255,255,255,.10),inset 0 0 18px rgba(255,255,255,.06);
   border-radius:26px}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
-  .glass,.card,.files li,.drop,.pv,.bar,dialog,.warn,.tile .box{background:var(--bg2)}}
+  .glass,.card,.files li,.drop,.pv,.bar,.seg,dialog,.warn,.tile .box{background:var(--bg2)}}
 
 /* ===== Beranda & tile ===== */
 .home h1{font-size:2.2rem;font-weight:800;letter-spacing:-.025em;line-height:1.1;margin:22px 4px 6px}
@@ -55,8 +55,7 @@ main{max-width:520px;margin:0 auto;padding:16px 16px 48px}
 .tile b{display:block;margin:12px 6px 0;font-size:1.05rem;letter-spacing:-.01em}
 .tile small{display:block;margin:0 6px;color:var(--muted);font-size:.86rem}
 .tile[data-k="scan"]{--t:rgba(10,132,255,.55);--ti:var(--i1)}
-.tile[data-k="word"]{--t:rgba(122,92,255,.55);--ti:var(--i2)}
-.tile[data-k="img"]{--t:rgba(255,149,60,.55);--ti:var(--i3)}
+.tile[data-k="pdf"]{--t:rgba(122,92,255,.55);--ti:var(--i2)}
 .tile:focus-visible{outline:none}
 .tile:focus-visible .box{outline:3px solid var(--accent);outline-offset:3px}
 .foot{margin:34px 6px 0;color:var(--muted);font-size:.85rem;text-align:center}
@@ -68,6 +67,10 @@ main{max-width:520px;margin:0 auto;padding:16px 16px 48px}
 .back:active{transform:scale(.94)}
 .ttl{margin:0;flex:1;text-align:center;padding-right:42px;font-size:1.08rem;font-weight:700;letter-spacing:-.01em;outline:none}
 
+.seg{display:flex;gap:4px;padding:5px;border-radius:999px;margin:0 0 18px}
+.seg button{flex:1;border:0;background:transparent;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;white-space:nowrap;font-size:.93rem;padding:10px 8px}
+.seg button[aria-selected="true"]{color:#fff;background:linear-gradient(180deg,rgba(255,255,255,.38),rgba(255,255,255,0) 55%),linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 6px 18px rgba(10,132,255,.38)}
+dialog{position:fixed}
 /* ===== Kontrol ===== */
 .row{display:flex;gap:10px;margin:14px 0}
 button,label.btn{flex:1;font:inherit;font-weight:600;padding:13px 16px;border-radius:999px;border:1px solid var(--glass-brd);background:linear-gradient(180deg,var(--sheen),transparent 62%),var(--glass-lo);color:var(--ink);text-align:center;cursor:pointer;-webkit-backdrop-filter:blur(16px) saturate(170%);backdrop-filter:blur(16px) saturate(170%);box-shadow:inset 0 1px 0 var(--hi),0 4px 14px rgba(20,40,90,.14);transition:transform .12s ease}
@@ -142,15 +145,14 @@ dialog ul{margin:0 0 10px;padding-left:20px;color:var(--danger)}
 <h1 tabindex="-1">Alat Kode &amp; PDF</h1>
 <p class="sub">Pilih alat yang ingin dipakai.</p>
 <nav class="grid" aria-label="Pilih alat">
-  <a class="tile" data-k="scan" href="#scan"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg></div><b>Pindai</b><small>Barcode &amp; QR</small></a>
-  <a class="tile" data-k="word" href="#word"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg></div><b>Word ke PDF</b><small>Ubah file .docx</small></a>
-  <a class="tile" data-k="img" href="#img"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="m4 17 5-4.5 3.5 3L16 12l4 4"/></svg></div><b>Gambar ke PDF</b><small>Gabung beberapa gambar</small></a>
+  <a class="tile" data-k="scan" data-go="scan" href="#scan"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg></div><b>Pindai</b><small>Barcode &amp; QR</small></a>
+  <a class="tile" data-k="pdf" data-go="pdf" href="#pdf"><div class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 11v6m0 0-2.5-2.5M12 17l2.5-2.5"/></svg></div><b>Konverter PDF</b><small>Word &amp; gambar ke PDF</small></a>
 </nav>
 <p class="foot">Semua proses berjalan di perangkatmu.</p>
 </section>
 
 <section id="p-scan" class="page" hidden>
-<header class="bar"><a class="back" href="#" aria-label="Kembali ke beranda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></a><h2 class="ttl">Pindai</h2></header>
+<header class="bar"><a class="back" href="#" data-back aria-label="Kembali ke beranda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></a><h2 class="ttl">Pindai</h2></header>
 <p class="sub">Arahkan kamera ke barcode atau QR. Hasilnya bisa disalin atau dibuka.</p>
 <div class="view">
   <video id="v" playsinline muted></video>
@@ -173,18 +175,21 @@ dialog ul{margin:0 0 10px;padding-left:20px;color:var(--danger)}
 <div id="list"><p class="empty">Belum ada hasil pindaian.</p></div>
 </section>
 
-<section id="p-word" class="page" hidden>
-<header class="bar"><a class="back" href="#" aria-label="Kembali ke beranda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></a><h2 class="ttl">Word ke PDF</h2></header>
+<section id="p-pdf" class="page" hidden>
+<header class="bar"><a class="back" href="#" data-back aria-label="Kembali ke beranda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></a><h2 class="ttl">Konverter PDF</h2></header>
+<div class="seg" role="tablist" aria-label="Jenis konversi">
+  <button type="button" role="tab" id="s-word" aria-controls="p-word" aria-selected="true" tabindex="0">Word ke PDF</button>
+  <button type="button" role="tab" id="s-img" aria-controls="p-img" aria-selected="false" tabindex="-1">Gambar ke PDF</button>
+</div>
+<div id="p-word" role="tabpanel" aria-labelledby="s-word">
 <p class="sub">Ubah file Word (.docx) menjadi PDF langsung di perangkatmu. File tidak diunggah ke mana pun.</p>
 <label class="drop"><b>Pilih file .docx</b><br><span id="wordName">Belum ada file dipilih</span><input id="wordFile" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden></label>
 <div class="opts"><label>Kualitas<select id="wQual"><option value="2">Tinggi</option><option value="1.5">Sedang</option><option value="1">Kecil (file ringan)</option></select></label></div>
 <div class="row"><button class="primary" id="wordGo" disabled>Ubah ke PDF</button></div>
 <p class="msg" id="wordMsg" role="status"></p>
 <div id="wordOut"></div>
-</section>
-
-<section id="p-img" class="page" hidden>
-<header class="bar"><a class="back" href="#" aria-label="Kembali ke beranda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></a><h2 class="ttl">Gambar ke PDF</h2></header>
+</div>
+<div id="p-img" role="tabpanel" aria-labelledby="s-img" hidden>
 <p class="sub">Gabungkan satu atau lebih gambar menjadi satu PDF. Urutan halaman mengikuti daftar.</p>
 <label class="drop"><b>Pilih gambar</b><br>JPG, PNG, atau WebP<input id="imgFiles" type="file" accept="image/*" multiple hidden></label>
 <ul class="files" id="imgList"></ul>
@@ -196,6 +201,7 @@ dialog ul{margin:0 0 10px;padding-left:20px;color:var(--danger)}
 <div class="row"><button class="primary" id="imgGo" disabled>Buat PDF</button></div>
 <p class="msg" id="imgMsg" role="status"></p>
 <div id="imgOut"></div>
+</div>
 </section>
 <div id="docRender" hidden></div>
 </main>
@@ -208,11 +214,54 @@ dialog ul{margin:0 0 10px;padding-left:20px;color:var(--danger)}
   <div class="row"><button id="dlgNo">Batal</button><button class="primary" id="dlgGo">Buka tautan</button></div>
 </dialog>
 
-<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+(function(){
+  var $=function(i){return document.getElementById(i);};
+  var pages={scan:$('p-scan'),pdf:$('p-pdf')},home=$('home'),cur=null;
+  function show(k,first){
+    if(!pages[k])k='';cur=k;
+    home.hidden=!!k;
+    for(var n in pages)pages[n].hidden=(n!==k);
+    window.scrollTo(0,0);
+    if(!first){var h=(k?pages[k]:home).querySelector('h1,.ttl');if(h){h.tabIndex=-1;try{h.focus({preventScroll:true});}catch(e){}}}
+    window.dispatchEvent(new CustomEvent('navchange',{detail:k}));
+  }
+  function go(k){
+    if(k===cur)return;
+    try{history.pushState({k:k},'',k?'#'+k:location.pathname+location.search);}catch(e){}
+    show(k);
+  }
+  document.addEventListener('click',function(e){
+    var t=e.target.closest&&e.target.closest('[data-go]');
+    if(t){e.preventDefault();go(t.getAttribute('data-go'));return;}
+    var b=e.target.closest&&e.target.closest('[data-back]');
+    if(b){e.preventDefault();if(history.state&&history.state.k){history.back();}else go('');}
+  });
+  window.addEventListener('popstate',function(e){show((e.state&&e.state.k)||location.hash.replace('#',''));});
+  window.addEventListener('hashchange',function(){var k=location.hash.replace('#','');if(k!==cur)show(k);});
+  show(location.hash.replace('#',''),true);
+
+  var segs=[].slice.call(document.querySelectorAll('.seg button'));
+  function pick(b,focus){
+    segs.forEach(function(x){var on=x===b;x.setAttribute('aria-selected',on?'true':'false');x.tabIndex=on?0:-1;$(x.getAttribute('aria-controls')).hidden=!on;});
+    if(focus)b.focus();
+  }
+  segs.forEach(function(b,i){
+    b.addEventListener('click',function(){pick(b,false);});
+    b.addEventListener('keydown',function(e){
+      var t=null;
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft')t=segs[(i+1)%segs.length];
+      else if(e.key==='Home')t=segs[0];else if(e.key==='End')t=segs[segs.length-1];
+      if(t){e.preventDefault();pick(t,true);}
+    });
+  });
+})();
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+<script async src="https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
 (function(){
   var $=function(id){return document.getElementById(id);};
@@ -234,18 +283,9 @@ dialog ul{margin:0 0 10px;padding-left:20px;color:var(--danger)}
     $('mf').href=URL.createObjectURL(new Blob([JSON.stringify(mf)],{type:'application/manifest+json'}));
   }catch(e){}
 
-  /* ===== Navigasi beranda <-> halaman (berbasis #hash, tombol Kembali ikut bekerja) ===== */
-  var pages={scan:$('p-scan'),word:$('p-word'),img:$('p-img')},homeEl=$('home');
-  function route(first){
-    var k=location.hash.replace('#','');if(!pages[k])k='';
-    if(k!=='scan'&&$('toggle').textContent==='Hentikan kamera')$('toggle').click();
-    homeEl.hidden=!!k;
-    Object.keys(pages).forEach(function(n){pages[n].hidden=(n!==k);});
-    window.scrollTo(0,0);
-    if(!first){var h=(k?pages[k]:homeEl).querySelector('h1,.ttl');if(h){h.tabIndex=-1;h.focus({preventScroll:true});}}
-  }
-  window.addEventListener('hashchange',function(){route(false);});
-  route(true);
+  window.addEventListener('navchange',function(e){
+    if(e.detail!=='scan'&&$('toggle').textContent==='Hentikan kamera')$('toggle').click();
+  });
 
   /* ===== Pindai ===== */
   var v=$('v'),msg=$('msg'),ann=$('ann'),list=$('list'),toggle=$('toggle'),idle=$('idle'),frame=$('frame');
