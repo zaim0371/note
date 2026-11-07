@@ -261,39 +261,22 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 @supports (transition-timing-function:linear(0,1)){:root{--spring:linear(0, 0.064 3.3%, 0.215 6.7%, 0.401 10%, 0.587 13.3%, 0.751 16.7%, 0.882 20%, 0.977 23.3%, 1.038 26.7%, 1.071 30%, 1.083 33.3%, 1.081 36.7%, 1.07 40%, 1.054 43.3%, 1.039 46.7%, 1.024 50%, 1.013 53.3%, 1.004 56.7%, 0.998 60%, 0.995 63.3%, 0.993 66.7%, 0.993 70%, 0.994 73.3%, 0.995 76.7%, 0.996 80%, 0.998 83.3%, 0.999 86.7%, 0.999 90%, 1 93.3%, 1 96.7%, 1)}}
 @media (prefers-color-scheme:dark){:root{--rip:rgba(255,255,255,.30);--aur-o:.30}}
 
-/* ---------- Latar aurora + paralaks ---------- */
-.bg{inset:-48px;view-transition-name:bg;
-  transform:translate3d(calc(var(--px,0)*-14px),calc(var(--py,0)*-14px + var(--sy,0)*-.05px),0);
-  transition:transform .9s var(--ease-out);will-change:transform}
-.bg::before,.bg::after{content:"";position:absolute;border-radius:50%;filter:blur(70px);opacity:var(--aur-o);pointer-events:none}
-.bg::before{width:46vmax;height:46vmax;left:8vmax;top:22vh;background:radial-gradient(circle,var(--aur1),transparent 68%);animation:aurA 26s ease-in-out infinite alternate}
-.bg::after{width:42vmax;height:42vmax;right:2vmax;bottom:6vh;background:radial-gradient(circle,var(--aur2),transparent 68%);animation:aurB 32s ease-in-out infinite alternate}
-@keyframes aurA{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(14vmax,-8vmax,0) scale(1.18)}100%{transform:translate3d(-6vmax,10vmax,0) scale(.92)}}
-@keyframes aurB{0%{transform:translate3d(0,0,0) scale(1.05)}50%{transform:translate3d(-12vmax,8vmax,0) scale(.9)}100%{transform:translate3d(8vmax,-10vmax,0) scale(1.15)}}
-
 /* ---------- Keyframes dasar ---------- */
-@keyframes rise{from{opacity:0;transform:translate3d(0,22px,0) scale(.975);filter:blur(6px)}}
-@keyframes riseSoft{from{opacity:0;transform:translate3d(0,12px,0)}}
-@keyframes dropIn{from{opacity:0;transform:translate3d(0,-26px,0) scale(.96);filter:blur(8px)}}
+@keyframes rise{0%{opacity:0;transform:scale(.8)}6%{opacity:1}100%{opacity:1;transform:scale(1)}}
+@keyframes riseSoft{0%{opacity:0;transform:scale(.9)}6%{opacity:1}100%{opacity:1;transform:scale(1)}}
+@keyframes dropIn{0%{opacity:0;transform:scale(.86)}6%{opacity:1}100%{opacity:1;transform:scale(1)}}
 @keyframes pop{0%{transform:scale(.6) rotate(-8deg)}60%{transform:scale(1.14) rotate(3deg)}100%{transform:scale(1) rotate(0)}}
 @keyframes breathe{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(0,-3px,0) scale(1.06)}}
 @keyframes floaty{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-4px,0)}}
 @keyframes rip{from{transform:scale(0);opacity:1}to{transform:scale(1);opacity:0}}
 @keyframes sweep{from{transform:translateX(-130%) skewX(-18deg)}to{transform:translateX(230%) skewX(-18deg)}}
-@keyframes ddIn{from{opacity:0;transform:translate3d(0,-10px,0) scale(.92)}}
-@keyframes ddInUp{from{opacity:0;transform:translate3d(0,10px,0) scale(.92)}}
-@keyframes dlgIn{from{opacity:0;transform:translate3d(0,34px,0) scale(.9);filter:blur(10px)}}
-@keyframes bdIn{from{opacity:0}}
+@keyframes ddIn{0%{opacity:0;transform:translate3d(0,-6px,0) scale(.88)}6%{opacity:1}100%{opacity:1;transform:none}}
+@keyframes ddInUp{0%{opacity:0;transform:translate3d(0,6px,0) scale(.88)}6%{opacity:1}100%{opacity:1;transform:none}}
+@keyframes dlgIn{0%{opacity:0;transform:scale(.82)}6%{opacity:1}100%{opacity:1;transform:scale(1)}}
+@keyframes bdIn{from{opacity:1}}
 @keyframes scan{from{top:20%}to{top:80%}}
 @keyframes hitpulse{0%{transform:scale(1)}35%{transform:scale(1.06)}100%{transform:scale(1)}}
-@keyframes msgIn{from{opacity:0;transform:translate3d(0,8px,0) scale(.97)}}
-
-/* ---------- Transisi antar-halaman (View Transitions) ---------- */
-::view-transition-old(root){animation:vtOut .26s var(--ease-in) both}
-::view-transition-new(root){animation:vtIn .5s var(--ease-out) both}
-::view-transition-group(bg){animation:none}
-@keyframes vtOut{to{opacity:0;transform:scale(.965);filter:blur(10px)}}
-@keyframes vtIn{from{opacity:0;transform:scale(1.035);filter:blur(12px)}}
+@keyframes msgIn{0%{opacity:0;transform:scale(.9)}6%{opacity:1}100%{opacity:1;transform:scale(1)}}
 
 /* ---------- Masuk halaman: berurutan (stagger) ---------- */
 .home:not([hidden]) h1{animation:rise .8s var(--ease-out) backwards}
@@ -350,8 +333,6 @@ button.primary:active::after{animation:sweep .7s var(--ease-out)}
 .tile .box.tilt{transition:transform .09s linear}
 .tile:active .box{transform:perspective(720px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(.93)}
 .tile .box::before{background:radial-gradient(120% 90% at var(--mx,25%) var(--my,10%),rgba(255,255,255,.62),transparent 70%);transition:opacity .3s}
-.tile svg{animation:floaty 6s ease-in-out infinite}
-.tile:nth-child(2) svg{animation-delay:-3s}
 .tile:active svg{transition:transform .2s;transform:scale(1.12)}
 @media (hover:hover){.tile:hover .box{--s:1.035;box-shadow:0 18px 40px rgba(35,50,90,.22),inset 0 1px 0 var(--hi)}}
 
@@ -386,17 +367,15 @@ button.primary:active::after{animation:sweep .7s var(--ease-out)}
   background:linear-gradient(180deg,rgba(255,255,255,.45),rgba(255,255,255,0) 55%),rgba(10,132,255,.88);border-color:rgba(255,255,255,.6);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 8px 18px rgba(10,132,255,.38)}
 .cdock .cat[aria-selected="true"] .ci svg{animation:pop .65s var(--spring)}
-.cdock:not(.has) .cat .ci{animation:breathe 3.4s ease-in-out infinite;animation-delay:calc(var(--i,0)*.3s)}
 .cdock .cat:focus-visible{outline-offset:-3px}
 /* isi kategori: buka/tutup mulus (tinggi + stagger) */
 .cstage{display:block}
-.cp{display:grid;grid-template-rows:0fr;transition:grid-template-rows .6s var(--ease-out),opacity .35s;opacity:0}
-.cp.on{grid-template-rows:1fr;opacity:1}
-.cp>.cpi{min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:8px;padding:12px 6px 14px;margin:-6px -6px -14px;visibility:hidden;transition:visibility 0s .6s}
+.cp{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s var(--ease-out)}
+.cp.on{grid-template-rows:1fr}
+.cp>.cpi{min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:8px;padding:12px 6px 14px;margin:-6px -6px -14px;visibility:hidden;transition:visibility 0s .5s}
 .cp.on>.cpi{visibility:visible;transition-delay:0s}
-.cp .fm-i{opacity:0;transform:translate3d(0,18px,0) scale(.96);
-  transition:opacity .3s,transform .45s var(--ease-out),box-shadow .35s}
-.cp.on .fm-i{opacity:1;transform:none;transition:opacity .45s var(--ease-out) calc(var(--i,0)*60ms + 90ms),transform .75s var(--spring) calc(var(--i,0)*60ms + 90ms),box-shadow .35s}
+.cp .fm-i{opacity:0;transform:scale(.86);-webkit-backdrop-filter:none;backdrop-filter:none;transition:opacity 0s,transform .3s var(--ease-out),box-shadow .35s}
+.cp.on .fm-i{opacity:1;transform:none;transition:opacity 0s linear calc(var(--i,0)*55ms + 60ms),transform .6s var(--spring) calc(var(--i,0)*55ms + 60ms),box-shadow .35s}
 .cp.on .fm-i:active{transform:scale(.97);transition-delay:0s;transition-duration:.12s}
 .fm-i .fb{transition:transform .55s var(--spring)}
 .fm-i:active .fb{transform:scale(.88) rotate(-6deg)}
@@ -434,7 +413,7 @@ dialog[open]::backdrop{animation:bdIn .45s var(--ease-out)}
 .idle{transition:opacity .4s}
 
 /* ---------- Hormati preferensi "kurangi gerak" ---------- */
-@media (prefers-reduced-motion:reduce){.bg{transform:none}.cp{transition:none!important}.cp .fm-i{opacity:1!important;transform:none!important}}
+@media (prefers-reduced-motion:reduce){.cp{transition:none!important}.cp .fm-i{opacity:1!important;transform:none!important}}
 </style>
 </head>
 <body>
@@ -647,14 +626,8 @@ dialog[open]::backdrop{animation:bdIn .45s var(--ease-out)}
 </dialog>
 
 <script>
-/* ===== Transisi halaman halus (View Transitions) =====
-   VT(fn): jalankan perubahan tampilan dengan animasi lintas-halaman bila browser mendukung; jika tidak, langsung jalan. */
-var VT=(function(){var busy=false,rm=window.matchMedia('(prefers-reduced-motion: reduce)');
-  return function(fn){
-    if(busy||!document.startViewTransition||rm.matches){fn();return;}
-    busy=true;var end=function(){busy=false;};
-    try{var t=document.startViewTransition(fn);t.finished.then(end,end);}catch(x){busy=false;fn();}
-  };})();
+/* VT(fn): perubahan tampilan dijalankan langsung (tanpa fade); animasi pop-up ditangani CSS. */
+var VT=function(fn){fn();};
 (function(){
   var $=function(i){return document.getElementById(i);};
   var pages={scan:$('p-scan'),pdf:$('p-pdf')},home=$('home'),cur=null;
@@ -2108,9 +2081,6 @@ function groupMenu(nav,order){
   function reset(el){if(!el)return;el.classList.remove('tilt');el.style.removeProperty('--rx');el.style.removeProperty('--ry');el.style.removeProperty('--mx');el.style.removeProperty('--my');}
   function frame(){
     raf=0;if(!ev)return;var e=ev;ev=null;
-    if(mouseMoved){var W=window.innerWidth||1,H=window.innerHeight||1;
-      px=(e.clientX/W-.5)*2;py=(e.clientY/H-.5)*2;
-      var bg=document.querySelector('.bg');if(bg){bg.style.setProperty('--px',px.toFixed(3));bg.style.setProperty('--py',py.toFixed(3));}}
     var t=e.target.closest?e.target.closest(GLOW):null;
     if(active&&active!==t){reset(active);active=null;}
     if(!t)return;active=t;
@@ -2131,8 +2101,7 @@ function groupMenu(nav,order){
   /* 3) paralaks latar saat menggulir + header menebal */
   var bars=[].slice.call(document.querySelectorAll('.bar')),sraf=0;
   function onScroll(){
-    sraf=0;var y=window.pageYOffset||0,bg=document.querySelector('.bg');
-    if(bg&&!rm.matches)bg.style.setProperty('--sy',Math.min(y,700));
+    sraf=0;var y=window.pageYOffset||0;
     var on=y>6;bars.forEach(function(b){if(b.classList.contains('scrolled')!==on)b.classList.toggle('scrolled',on);});
   }
   window.addEventListener('scroll',function(){if(!sraf)sraf=requestAnimationFrame(onScroll);},{passive:true});
