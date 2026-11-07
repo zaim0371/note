@@ -226,9 +226,6 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 .tgl[aria-checked="true"]{background:rgba(10,132,255,.8)}.tgl[aria-checked="true"] i{transform:translateX(22px)}
 .pgnum{min-width:64px;text-align:center;font-size:.9rem}
 .fm{display:flex;flex-direction:column;gap:8px;margin:0 0 12px}
-.fm-h{display:flex;align-items:center;gap:10px;margin:16px 4px 4px;font-size:.74rem;font-weight:600;letter-spacing:.03em;color:var(--muted)}
-.fm-h:first-child{margin-top:2px}
-.fm-h::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--track),transparent)}
 .fm-i{display:flex;align-items:center;gap:12px;width:100%;height:auto;min-height:66px;padding:12px 14px;text-align:left;border-radius:22px}
 .fm-i .ft{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}.fm-i b{font-size:.98rem;line-height:1.25}.fm-i small{color:var(--muted);font-size:.78rem;font-weight:400;line-height:1.3}
 .fm-i .fb{width:38px;height:38px;flex:none;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(10,132,255,.14);color:var(--accent)}
@@ -249,6 +246,195 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 #epSig{margin:0 0 12px}
 #epSig .hh{margin-top:0}
 .enw{width:auto!important;height:auto!important}.enw span{-webkit-user-select:text;user-select:text;display:block;white-space:pre;min-width:1em;color:#111;background:rgba(255,255,255,.65);font-family:Helvetica,Arial,sans-serif;line-height:1.15;outline:none;padding:0 3px}
+/* =====================================================================
+   ROMBAKAN ANIMASI — Glassmorphism hidup & realistis
+   Sistem gerak: pegas fisik (--spring) + ease-out lembut (--ease-out).
+   Semua animasi hanya memakai transform/opacity supaya tetap ringan.
+   ===================================================================== */
+:root{
+  --spring:cubic-bezier(.34,1.42,.64,1);
+  --ease-out:cubic-bezier(.22,1,.36,1);
+  --ease-in:cubic-bezier(.5,0,.75,0);
+  --rip:rgba(10,132,255,.24);
+  --aur1:rgba(10,132,255,.55);--aur2:rgba(150,110,255,.45);--aur-o:.34;
+}
+@supports (transition-timing-function:linear(0,1)){:root{--spring:linear(0, 0.064 3.3%, 0.215 6.7%, 0.401 10%, 0.587 13.3%, 0.751 16.7%, 0.882 20%, 0.977 23.3%, 1.038 26.7%, 1.071 30%, 1.083 33.3%, 1.081 36.7%, 1.07 40%, 1.054 43.3%, 1.039 46.7%, 1.024 50%, 1.013 53.3%, 1.004 56.7%, 0.998 60%, 0.995 63.3%, 0.993 66.7%, 0.993 70%, 0.994 73.3%, 0.995 76.7%, 0.996 80%, 0.998 83.3%, 0.999 86.7%, 0.999 90%, 1 93.3%, 1 96.7%, 1)}}
+@media (prefers-color-scheme:dark){:root{--rip:rgba(255,255,255,.30);--aur-o:.30}}
+
+/* ---------- Latar aurora + paralaks ---------- */
+.bg{inset:-48px;view-transition-name:bg;
+  transform:translate3d(calc(var(--px,0)*-14px),calc(var(--py,0)*-14px + var(--sy,0)*-.05px),0);
+  transition:transform .9s var(--ease-out);will-change:transform}
+.bg::before,.bg::after{content:"";position:absolute;border-radius:50%;filter:blur(70px);opacity:var(--aur-o);pointer-events:none}
+.bg::before{width:46vmax;height:46vmax;left:8vmax;top:22vh;background:radial-gradient(circle,var(--aur1),transparent 68%);animation:aurA 26s ease-in-out infinite alternate}
+.bg::after{width:42vmax;height:42vmax;right:2vmax;bottom:6vh;background:radial-gradient(circle,var(--aur2),transparent 68%);animation:aurB 32s ease-in-out infinite alternate}
+@keyframes aurA{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(14vmax,-8vmax,0) scale(1.18)}100%{transform:translate3d(-6vmax,10vmax,0) scale(.92)}}
+@keyframes aurB{0%{transform:translate3d(0,0,0) scale(1.05)}50%{transform:translate3d(-12vmax,8vmax,0) scale(.9)}100%{transform:translate3d(8vmax,-10vmax,0) scale(1.15)}}
+
+/* ---------- Keyframes dasar ---------- */
+@keyframes rise{from{opacity:0;transform:translate3d(0,22px,0) scale(.975);filter:blur(6px)}}
+@keyframes riseSoft{from{opacity:0;transform:translate3d(0,12px,0)}}
+@keyframes dropIn{from{opacity:0;transform:translate3d(0,-26px,0) scale(.96);filter:blur(8px)}}
+@keyframes pop{0%{transform:scale(.6) rotate(-8deg)}60%{transform:scale(1.14) rotate(3deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes breathe{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(0,-3px,0) scale(1.06)}}
+@keyframes floaty{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-4px,0)}}
+@keyframes rip{from{transform:scale(0);opacity:1}to{transform:scale(1);opacity:0}}
+@keyframes sweep{from{transform:translateX(-130%) skewX(-18deg)}to{transform:translateX(230%) skewX(-18deg)}}
+@keyframes ddIn{from{opacity:0;transform:translate3d(0,-10px,0) scale(.92)}}
+@keyframes ddInUp{from{opacity:0;transform:translate3d(0,10px,0) scale(.92)}}
+@keyframes dlgIn{from{opacity:0;transform:translate3d(0,34px,0) scale(.9);filter:blur(10px)}}
+@keyframes bdIn{from{opacity:0}}
+@keyframes scan{from{top:20%}to{top:80%}}
+@keyframes hitpulse{0%{transform:scale(1)}35%{transform:scale(1.06)}100%{transform:scale(1)}}
+@keyframes msgIn{from{opacity:0;transform:translate3d(0,8px,0) scale(.97)}}
+
+/* ---------- Transisi antar-halaman (View Transitions) ---------- */
+::view-transition-old(root){animation:vtOut .26s var(--ease-in) both}
+::view-transition-new(root){animation:vtIn .5s var(--ease-out) both}
+::view-transition-group(bg){animation:none}
+@keyframes vtOut{to{opacity:0;transform:scale(.965);filter:blur(10px)}}
+@keyframes vtIn{from{opacity:0;transform:scale(1.035);filter:blur(12px)}}
+
+/* ---------- Masuk halaman: berurutan (stagger) ---------- */
+.home:not([hidden]) h1{animation:rise .8s var(--ease-out) backwards}
+.home:not([hidden]) .tile{animation:rise .85s var(--ease-out) backwards}
+.home:not([hidden]) .tile:nth-child(1){animation-delay:.08s}
+.home:not([hidden]) .tile:nth-child(2){animation-delay:.18s}
+.page:not([hidden]) .bar{animation:dropIn .7s var(--spring) backwards}
+.page>div:not([hidden]):not(.seg)>*{animation:rise .7s var(--ease-out) backwards}
+.page>div:not([hidden]):not(.seg)>*:nth-child(1){animation-delay:.04s}
+.page>div:not([hidden]):not(.seg)>*:nth-child(2){animation-delay:.09s}
+.page>div:not([hidden]):not(.seg)>*:nth-child(3){animation-delay:.14s}
+.page>div:not([hidden]):not(.seg)>*:nth-child(4){animation-delay:.19s}
+.page>div:not([hidden]):not(.seg)>*:nth-child(5){animation-delay:.24s}
+.page>div:not([hidden]):not(.seg)>*:nth-child(6){animation-delay:.29s}
+.page>div:not([hidden]):not(.seg)>*:nth-child(n+7){animation-delay:.34s}
+.page .cdock{animation:rise .75s var(--ease-out) .04s backwards}
+/* item yang muncul belakangan (riwayat, daftar file, hasil, thumbnail) */
+.card,.files li,.tg button,.sgl .it,.pv figure,.warn{animation:rise .6s var(--spring) backwards}
+.card:nth-child(2),.files li:nth-child(2),.tg button:nth-child(2){animation-delay:.05s}
+.card:nth-child(3),.files li:nth-child(3),.tg button:nth-child(3){animation-delay:.10s}
+.card:nth-child(4),.files li:nth-child(4),.tg button:nth-child(4){animation-delay:.15s}
+.card:nth-child(n+5),.files li:nth-child(n+5),.tg button:nth-child(n+5){animation-delay:.2s}
+#msg:not(:empty),.msg:not(:empty){animation:msgIn .5s var(--spring) backwards}
+
+/* ---------- Sentuhan: tekan, riak cahaya, kilau mengikuti jari ---------- */
+button,label.btn,.back,.drop,.card,.files li,.dd-menu li,.tile .box,.cdock .cat{position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent}
+button,label.btn{transition:transform .55s var(--spring),box-shadow .35s var(--ease-out),background-color .3s,filter .3s}
+button:active,label.btn:active{transform:scale(.94);transition-duration:.12s,.2s,.3s,.3s}
+button.primary:active{filter:brightness(1.08) saturate(1.1)}
+.back{transition:transform .55s var(--spring)}
+.back:active{transform:scale(.88);transition-duration:.12s}
+.rip{position:absolute;border-radius:50%;pointer-events:none;z-index:0;background:radial-gradient(circle,var(--rip) 0,transparent 68%);animation:rip .75s var(--ease-out) forwards}
+button.primary .rip,.cdock .cat[aria-selected="true"] .rip{--rip:rgba(255,255,255,.55)}
+button.ib .rip,.idle button .rip{--rip:rgba(255,255,255,.4)}
+/* kilau kaca mengikuti titik sentuh */
+.fm-i::before,.cdock .cat::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .35s;border-radius:inherit;
+  background:radial-gradient(180px circle at var(--mx,50%) var(--my,0%),rgba(255,255,255,.55),transparent 65%)}
+.fm-i:active::before,.cdock .cat:active::before{opacity:.9;transition-duration:.08s}
+@media (hover:hover){
+  .fm-i:hover::before,.cdock .cat:hover::before{opacity:.75}
+  button:not(:disabled):not(.fm-i):not(.cat):hover{box-shadow:inset 0 1px 0 var(--hi),0 8px 20px rgba(35,50,90,.18)}
+  .fm-i:hover{transform:translate3d(0,-2px,0)}
+  .card:hover,.files li:hover{transform:translate3d(0,-2px,0)}
+}
+.card,.files li{transition:transform .5s var(--spring),box-shadow .35s}
+/* sapuan cahaya melintas pada tombol utama saat ditekan */
+button.primary::after{content:"";position:absolute;top:0;bottom:0;left:0;width:45%;pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:translateX(-130%) skewX(-18deg)}
+button.primary:active::after{animation:sweep .7s var(--ease-out)}
+
+/* ---------- Tile beranda: 3D tilt + kilau + melayang ---------- */
+.tile .box{transform:perspective(720px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(var(--s,1));
+  transition:transform .7s var(--spring),box-shadow .4s;will-change:transform}
+.tile .box.tilt{transition:transform .09s linear}
+.tile:active .box{transform:perspective(720px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(.93)}
+.tile .box::before{background:radial-gradient(120% 90% at var(--mx,25%) var(--my,10%),rgba(255,255,255,.62),transparent 70%);transition:opacity .3s}
+.tile svg{animation:floaty 6s ease-in-out infinite}
+.tile:nth-child(2) svg{animation-delay:-3s}
+.tile:active svg{transition:transform .2s;transform:scale(1.12)}
+@media (hover:hover){.tile:hover .box{--s:1.035;box-shadow:0 18px 40px rgba(35,50,90,.22),inset 0 1px 0 var(--hi)}}
+
+/* ---------- Header: makin tegas saat halaman digulir ---------- */
+.bar{transition:box-shadow .4s var(--ease-out),transform .5s var(--spring)}
+.bar.scrolled{box-shadow:0 14px 34px rgba(35,50,90,.22),0 2px 6px rgba(35,50,90,.10),inset 0 1px 0 var(--hi),inset 0 -1px 0 var(--hi-lo)}
+
+/* =====================================================================
+   BILAH KATEGORI — satu tombol ikon per kategori, tanpa garis pemisah
+   ===================================================================== */
+.fm{gap:12px}
+.cdock{display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));gap:4px;padding:6px;border-radius:30px;overflow:visible}
+.cdock .cind{position:absolute;left:0;top:0;width:0;height:0;border-radius:24px;pointer-events:none;opacity:0;z-index:0;overflow:hidden;
+  background:linear-gradient(180deg,var(--sel1),var(--sel2));border:1px solid var(--glass-brd);
+  box-shadow:inset 0 1px 0 var(--hi),inset 0 -1px 0 var(--hi-lo),0 8px 22px rgba(35,50,90,.22);
+  transition:transform .65s var(--spring),width .65s var(--spring),height .65s var(--spring),opacity .3s}
+.cdock .cind.on{opacity:1}
+.cdock .cind::after{content:"";position:absolute;top:0;bottom:0;left:0;width:40%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.7),transparent);transform:translateX(-140%) skewX(-18deg)}
+.cdock .cind.go::after{animation:sweep .9s var(--ease-out)}
+.cdock .cat{height:auto;min-height:78px;padding:10px 4px 9px;flex-direction:column;gap:7px;border:0;border-radius:24px;background:transparent;
+  box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;color:var(--muted);z-index:1;min-width:0;overflow:hidden}
+.cdock .cat b{position:relative;z-index:1;font-size:.74rem;font-weight:650;letter-spacing:-.005em;line-height:1.1;max-width:100%;overflow:hidden;text-overflow:ellipsis;transition:color .3s}
+.cdock .cat .ci{position:relative;z-index:1;width:40px;height:40px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  color:var(--accent);background:rgba(10,132,255,.13);border:1px solid rgba(10,132,255,.16);
+  transition:transform .6s var(--spring),background .35s,color .35s,box-shadow .4s}
+.cdock .cat .ci svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.cdock .cat:active{transform:scale(.95)}
+.cdock .cat:active .ci{transform:scale(.86)}
+.cdock .cat[aria-selected="true"]{color:var(--ink)}
+.cdock .cat[aria-selected="true"] .ci{color:#fff;transform:translate3d(0,-1px,0) scale(1.06);
+  background:linear-gradient(180deg,rgba(255,255,255,.45),rgba(255,255,255,0) 55%),rgba(10,132,255,.88);border-color:rgba(255,255,255,.6);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 8px 18px rgba(10,132,255,.38)}
+.cdock .cat[aria-selected="true"] .ci svg{animation:pop .65s var(--spring)}
+.cdock:not(.has) .cat .ci{animation:breathe 3.4s ease-in-out infinite;animation-delay:calc(var(--i,0)*.3s)}
+.cdock .cat:focus-visible{outline-offset:-3px}
+/* isi kategori: buka/tutup mulus (tinggi + stagger) */
+.cstage{display:block}
+.cp{display:grid;grid-template-rows:0fr;transition:grid-template-rows .6s var(--ease-out),opacity .35s;opacity:0}
+.cp.on{grid-template-rows:1fr;opacity:1}
+.cp>.cpi{min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:8px;padding:12px 6px 14px;margin:-6px -6px -14px;visibility:hidden;transition:visibility 0s .6s}
+.cp.on>.cpi{visibility:visible;transition-delay:0s}
+.cp .fm-i{opacity:0;transform:translate3d(0,18px,0) scale(.96);
+  transition:opacity .3s,transform .45s var(--ease-out),box-shadow .35s}
+.cp.on .fm-i{opacity:1;transform:none;transition:opacity .45s var(--ease-out) calc(var(--i,0)*60ms + 90ms),transform .75s var(--spring) calc(var(--i,0)*60ms + 90ms),box-shadow .35s}
+.cp.on .fm-i:active{transform:scale(.97);transition-delay:0s;transition-duration:.12s}
+.fm-i .fb{transition:transform .55s var(--spring)}
+.fm-i:active .fb{transform:scale(.88) rotate(-6deg)}
+.fm-i .chev{transition:transform .5s var(--spring)}
+.fm-i:active .chev{transform:translateX(5px)}
+@media (hover:hover){.fm-i:hover .chev{transform:translateX(3px)}}
+
+/* ---------- Dropdown, dialog, sakelar ---------- */
+.dd.open .dd-menu{display:block;transform-origin:50% 0;animation:ddIn .5s var(--spring)}
+.dd.up.open .dd-menu{transform-origin:50% 100%;animation:ddInUp .5s var(--spring)}
+.dd-menu li{transition:background .2s,transform .35s var(--spring)}
+.dd-menu li:active{transform:scale(.97)}
+.dd.open .dd-menu li{animation:riseSoft .45s var(--ease-out) backwards}
+.dd.open .dd-menu li:nth-child(2){animation-delay:.03s}.dd.open .dd-menu li:nth-child(3){animation-delay:.06s}
+.dd.open .dd-menu li:nth-child(4){animation-delay:.09s}.dd.open .dd-menu li:nth-child(n+5){animation-delay:.12s}
+dialog[open]{animation:dlgIn .6s var(--spring)}
+dialog[open]::backdrop{animation:bdIn .45s var(--ease-out)}
+.chk input{transition:background .3s,border-color .3s}
+.chk input::after{transition:transform .55s var(--spring),width .25s var(--ease-out)}
+.chk input:active::after{width:25px}
+.chk input:checked:active::after{transform:translateX(11px)}
+.tgl{transition:background .3s,transform .5s var(--spring)}
+.tgl i{transition:transform .55s var(--spring),width .25s var(--ease-out)}
+.tgl:active i{width:28px}
+.tgl[aria-checked="true"]:active i{transform:translateX(16px)}
+.seg button{transition:background .35s,color .3s,box-shadow .35s,transform .5s var(--spring)}
+
+/* ---------- Kamera ---------- */
+.view:has(#idle[hidden])::after{content:"";position:absolute;left:18%;right:18%;top:20%;height:2px;border-radius:2px;z-index:2;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(140,210,255,.95),transparent);box-shadow:0 0 16px 3px rgba(80,170,255,.65);
+  animation:scan 2.6s ease-in-out infinite alternate}
+.frame{transition:border-color .25s,box-shadow .25s,transform .5s var(--spring)}
+.frame:not([hidden]){animation:rise .5s var(--spring) backwards}
+.frame.hit{animation:hitpulse .6s var(--spring)}
+.idle{transition:opacity .4s}
+
+/* ---------- Hormati preferensi "kurangi gerak" ---------- */
+@media (prefers-reduced-motion:reduce){.bg{transform:none}.cp{transition:none!important}.cp .fm-i{opacity:1!important;transform:none!important}}
 </style>
 </head>
 <body>
@@ -269,7 +455,7 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 <header class="bar"><a class="back" href="#" data-back aria-label="Kembali ke beranda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></a><h2 class="ttl">QR Master</h2></header>
 <!-- ===== MENU QR MASTER =====
      Tambah fitur: salin satu tombol .fm-i, isi data-p (id panel fitur) dan data-cat (kategori).
-     Pengelompokan + garis pemisah otomatis oleh groupMenu(); urutan kategori lewat QM_CATS. -->
+     Pengelompokan jadi tombol ikon kategori otomatis oleh groupMenu(); urutan kategori lewat QM_CATS. -->
 <nav class="fm" id="qmMenu" aria-label="Fitur QR Master">
 <button type="button" class="fm-i" data-p="qmScan" data-cat="Pindai"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg></span><span class="ft"><b>Pindai QR</b><small>Barcode &amp; QR lewat kamera atau foto</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
 <button type="button" class="fm-i" data-p="qmMake" data-cat="Buat"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><path d="M14 14h2v2h-2zM18 14h2v6h-4M14 18v2"/></svg></span><span class="ft"><b>Buat QR</b><small>Ubah tautan menjadi kode QR</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
@@ -334,7 +520,7 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
      Cara menambah fitur: salin satu tombol .fm-i di bawah, lalu isi
        data-t   = id tab fitur (lihat <div class="seg"> di bawah),
        data-cat = nama kategori (Konversi / Kelola / Edit / Pindai, atau nama baru).
-     Penempatan di bawah judul kategori + garis pemisah dibuat OTOMATIS oleh groupMenu() di bagian script,
+     Tombol ikon kategori + isinya dibuat OTOMATIS oleh groupMenu() di bagian script (tanpa garis pemisah),
      jadi urutan tombol di sini bebas. Urutan kategori diatur lewat FM_CATS. -->
 <nav class="fm" id="fmMenu" aria-label="Fitur File Master">
 <button type="button" class="fm-i" data-t="s-word" data-cat="Konversi"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg></span><span class="ft"><b>Word ke PDF</b><small>Ubah file .docx menjadi PDF</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
@@ -461,10 +647,23 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 </dialog>
 
 <script>
+/* ===== Transisi halaman halus (View Transitions) =====
+   VT(fn): jalankan perubahan tampilan dengan animasi lintas-halaman bila browser mendukung; jika tidak, langsung jalan. */
+var VT=(function(){var busy=false,rm=window.matchMedia('(prefers-reduced-motion: reduce)');
+  return function(fn){
+    if(busy||!document.startViewTransition||rm.matches){fn();return;}
+    busy=true;var end=function(){busy=false;};
+    try{var t=document.startViewTransition(fn);t.finished.then(end,end);}catch(x){busy=false;fn();}
+  };})();
 (function(){
   var $=function(i){return document.getElementById(i);};
   var pages={scan:$('p-scan'),pdf:$('p-pdf')},home=$('home'),cur=null;
   function show(k,first){
+    if(first){_show(k,first);return;}
+    if(!pages[k])k='';cur=k;
+    VT(function(){_show(k,first);});
+  }
+  function _show(k,first){
     if(!pages[k])k='';cur=k;
     home.hidden=!!k;
     for(var n in pages)pages[n].hidden=(n!==k);
@@ -1795,33 +1994,84 @@ $('epGo').onclick=async function(){
   }catch(x){say('epMsg','Gagal menyimpan'+errT(x)+'.');b.disabled=false;}};
 function epReset(){ep.buf=null;ep.pj=null;ep.objs=[];ep.tok++;$('epView').hidden=true;$('epSig').hidden=true;$('sgPadBox').hidden=true;$('epSg').setAttribute('aria-pressed','false');$('epName').textContent='Belum ada file dipilih';say('epMsg','');}
 $('epRst').onclick=epReset;
-/* ===== Pengelompokan menu otomatis =====
-   groupMenu(nav, urutan): membaca atribut data-cat di setiap tombol .fm-i, lalu menyusun ulang menu menjadi
-   kelompok: judul kategori + garis pemisah, diikuti fitur-fitur di kategori itu. Kategori diurutkan menurut daftar
-   'urutan'; kategori yang belum terdaftar diletakkan di akhir (urut sesuai kemunculan). Tombol tanpa data-cat
-   masuk ke kategori "Lainnya". Jadi untuk fitur baru cukup menulis data-cat, tanpa mengatur judul secara manual. */
+/* ===== Pengelompokan menu otomatis → bilah tombol ikon kategori =====
+   groupMenu(nav, urutan): membaca data-cat pada setiap tombol .fm-i, lalu membuat SATU tombol ikon untuk tiap kategori
+   (tanpa judul & garis pemisah). Menekan tombol kategori membuka isi fitur kategori itu; menekan lagi menutupnya.
+   Urutan kategori mengikuti daftar 'urutan'; kategori baru otomatis ditambahkan di akhir (ikon cadangan dipakai bila
+   belum ada di CAT_ICON). Tombol tanpa data-cat masuk ke kategori "Lainnya". */
 var FM_CATS=['Konversi','Kelola','Edit','Pindai'];   /* urutan kategori di File Master */
 var QM_CATS=['Pindai','Buat','Teks'];                /* urutan kategori di QR Master */
+var CAT_ICON={
+  'Konversi':'<path d="M4 8h14M14 4l4 4-4 4"/><path d="M20 16H6M10 12l-4 4 4 4"/>',
+  'Kelola':'<path d="m12 3 9 4.5-9 4.5-9-4.5z"/><path d="m3 12 9 4.5 9-4.5"/><path d="m3 16.5 9 4.5 9-4.5"/>',
+  'Edit':'<path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>',
+  'Pindai':'<path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/>',
+  'Buat':'<rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><path d="M14 14h2v2h-2zM18 14h2v6h-4M14 18v2"/>',
+  'Teks':'<path d="M5 7V5h14v2M12 5v14M9 19h6"/>'
+};
+var CAT_DEF='<rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/>';
+var GM_ID=0;
 function groupMenu(nav,order){
+  function mk(tag,cls){var e=document.createElement(tag);e.className=cls;return e;}
   var items=[].slice.call(nav.querySelectorAll('.fm-i')),seen=[];
-  [].forEach.call(nav.querySelectorAll('.fm-h'),function(h){h.remove();});
+  [].forEach.call(nav.querySelectorAll('.fm-h,.cdock,.cstage'),function(h){h.remove();});
   items.forEach(function(b){var c=b.getAttribute('data-cat')||'Lainnya';if(seen.indexOf(c)<0)seen.push(c);});
   var rank=function(c){var i=order.indexOf(c);return i<0?order.length+seen.indexOf(c):i;};
   seen.sort(function(a,b){return rank(a)-rank(b);});
-  seen.forEach(function(c){
-    var h=document.createElement('div');h.className='fm-h';h.setAttribute('role','presentation');
-    var sp=document.createElement('span');sp.textContent=c;h.appendChild(sp);nav.appendChild(h);
-    items.forEach(function(b){if((b.getAttribute('data-cat')||'Lainnya')===c)nav.appendChild(b);});});}
+  var uid='gm'+(++GM_ID),cur=-1,tabs=[],panels=[];
+  var dock=mk('div','cdock glass');dock.setAttribute('role','tablist');dock.setAttribute('aria-label','Kategori fitur');dock.style.setProperty('--n',seen.length);
+  var ind=mk('i','cind');ind.setAttribute('aria-hidden','true');dock.appendChild(ind);
+  var stage=mk('div','cstage');
+  seen.forEach(function(c,k){
+    var tab=mk('button','cat');tab.type='button';tab.id=uid+'t'+k;tab.setAttribute('role','tab');tab.setAttribute('aria-selected','false');tab.setAttribute('aria-controls',uid+'p'+k);
+    tab.style.setProperty('--i',k);
+    tab.innerHTML='<span class="ci"><svg viewBox="0 0 24 24" aria-hidden="true">'+(CAT_ICON[c]||CAT_DEF)+'</svg></span><b></b>';
+    tab.querySelector('b').textContent=c;
+    var p=mk('div','cp');p.id=uid+'p'+k;p.setAttribute('role','tabpanel');p.setAttribute('aria-labelledby',tab.id);p.setAttribute('aria-hidden','true');p.inert=true;
+    var inner=mk('div','cpi');p.appendChild(inner);
+    var n=0;items.forEach(function(b){if((b.getAttribute('data-cat')||'Lainnya')===c){b.style.setProperty('--i',n++);inner.appendChild(b);}});
+    dock.appendChild(tab);stage.appendChild(p);tabs.push(tab);panels.push(p);
+  });
+  nav.appendChild(dock);nav.appendChild(stage);
+  function place(){
+    var t=tabs[cur];
+    if(!t||!t.offsetWidth){ind.classList.remove('on');return;}
+    var first=!ind.classList.contains('on');
+    if(first){ind.style.transition='none';}
+    ind.style.width=t.offsetWidth+'px';ind.style.height=t.offsetHeight+'px';
+    ind.style.transform='translate3d('+t.offsetLeft+'px,'+t.offsetTop+'px,0)';
+    if(first){void ind.offsetWidth;ind.style.transition='';}
+    ind.classList.add('on');
+  }
+  function select(i){
+    cur=i;
+    tabs.forEach(function(t,k){var on=k===i;t.setAttribute('aria-selected',on?'true':'false');t.tabIndex=(on||(i<0&&k===0))?0:-1;
+      panels[k].classList.toggle('on',on);panels[k].inert=!on;panels[k].setAttribute('aria-hidden',on?'false':'true');});
+    dock.classList.toggle('has',i>=0);
+    place();
+    if(i>=0){ind.classList.remove('go');void ind.offsetWidth;ind.classList.add('go');}
+  }
+  tabs.forEach(function(t,k){
+    t.addEventListener('click',function(){select(cur===k?-1:k);});
+    t.addEventListener('keydown',function(e){
+      var n=null;
+      if(e.key==='ArrowRight')n=(k+1)%tabs.length;else if(e.key==='ArrowLeft')n=(k-1+tabs.length)%tabs.length;
+      else if(e.key==='Home')n=0;else if(e.key==='End')n=tabs.length-1;
+      if(n!==null){e.preventDefault();tabs[n].focus();select(n);}});
+  });
+  if(window.ResizeObserver)new ResizeObserver(place).observe(dock);else window.addEventListener('resize',place);
+  select(-1);
+}
 
 /* ===== File Master: daftar fitur (kolom) -> isi fitur ===== */
 (function(){
   var menu=$('fmMenu');groupMenu(menu,FM_CATS);var ttl=document.querySelector('#p-pdf .ttl'),back=document.querySelector('#p-pdf .back'),open=false,pushed=false,ids=['p-word','p-ppt','p-p2w','szPanel','p-img','gdPanel','epPanel','dsPanel'];
   function showMenu(){open=false;pushed=false;menu.hidden=false;ids.forEach(function(i){$(i).hidden=true;});ttl.textContent='File Master';say('gdMsg','');}
   menu.addEventListener('click',function(e){var b=e.target.closest('.fm-i');if(!b)return;
-    menu.hidden=true;open=true;ttl.textContent=b.querySelector('b').textContent;$(b.getAttribute('data-t')).click();window.scrollTo(0,0);
+    open=true;VT(function(){menu.hidden=true;ttl.textContent=b.querySelector('b').textContent;$(b.getAttribute('data-t')).click();window.scrollTo(0,0);});
     try{history.pushState({k:'pdf',f:1},'','#pdf');pushed=true;}catch(x){pushed=false;}});
   /* Tombol kembali: dari isi fitur -> daftar fitur; dari daftar -> beranda (ditangani navigasi lama) */
-  back.addEventListener('click',function(e){if(!open)return;e.preventDefault();e.stopPropagation();if(pushed)history.back();else showMenu();});
+  back.addEventListener('click',function(e){if(!open)return;e.preventDefault();e.stopPropagation();if(pushed)history.back();else VT(showMenu);});
   window.addEventListener('navchange',function(e){if(e.detail==='pdf')showMenu();});
   showMenu();
 })();
@@ -1831,13 +2081,62 @@ function groupMenu(nav,order){
   function fire(on){window.dispatchEvent(new CustomEvent('qmscan',{detail:on}));}
   function showMenu(){open=false;pushed=false;menu.hidden=false;ids.forEach(function(i){$(i).hidden=true;});ttl.textContent='QR Master';fire(false);}
   menu.addEventListener('click',function(e){var b=e.target.closest('.fm-i');if(!b)return;var p=b.getAttribute('data-p');
-    menu.hidden=true;open=true;ids.forEach(function(i){$(i).hidden=(i!==p);});ttl.textContent=b.querySelector('b').textContent;window.scrollTo(0,0);
-    try{history.pushState({k:'scan',f:1},'','#scan');pushed=true;}catch(x){pushed=false;}
-    fire(p==='qmScan');});
-  back.addEventListener('click',function(e){if(!open)return;e.preventDefault();e.stopPropagation();if(pushed)history.back();else showMenu();});
+    open=true;VT(function(){menu.hidden=true;ids.forEach(function(i){$(i).hidden=(i!==p);});ttl.textContent=b.querySelector('b').textContent;window.scrollTo(0,0);fire(p==='qmScan');});
+    try{history.pushState({k:'scan',f:1},'','#scan');pushed=true;}catch(x){pushed=false;}});
+  back.addEventListener('click',function(e){if(!open)return;e.preventDefault();e.stopPropagation();if(pushed)history.back();else VT(showMenu);});
   window.addEventListener('navchange',function(e){if(e.detail==='scan')showMenu();});
   showMenu();
 })();
+})();
+/* ===== Interaksi sentuhan & pandangan: riak cahaya, kilau mengikuti jari, tilt 3D, paralaks, header ===== */
+(function(){
+  var rm=window.matchMedia('(prefers-reduced-motion: reduce)');
+  var PRESS='button,label.btn,.back,.drop,.card,.files li,.dd-menu li,.tile .box';
+  var GLOW='.tile .box,.fm-i,.cdock .cat';
+  /* 1) riak cahaya + titik kilau saat disentuh */
+  document.addEventListener('pointerdown',function(e){
+    if(rm.matches||e.button>0||!e.target.closest)return;
+    var h=e.target.closest(PRESS);if(!h||h.disabled)return;
+    var r=h.getBoundingClientRect(),d=Math.max(r.width,r.height)*2.2,s=document.createElement('x-rip');
+    s.className='rip';s.setAttribute('aria-hidden','true');
+    s.style.cssText='width:'+d+'px;height:'+d+'px;left:'+(e.clientX-r.left-d/2)+'px;top:'+(e.clientY-r.top-d/2)+'px';
+    h.appendChild(s);s.addEventListener('animationend',function(){s.remove();});
+    if(h.matches(GLOW)&&!h.matches('.tile .box')){h.style.setProperty('--mx',(e.clientX-r.left)+'px');h.style.setProperty('--my',(e.clientY-r.top)+'px');}
+  },{passive:true});
+  /* 2) kilau & tilt 3D mengikuti pointer (rAF agar tetap ringan) */
+  var ev=null,raf=0,active=null,px=0,py=0,mouseMoved=false;
+  function reset(el){if(!el)return;el.classList.remove('tilt');el.style.removeProperty('--rx');el.style.removeProperty('--ry');el.style.removeProperty('--mx');el.style.removeProperty('--my');}
+  function frame(){
+    raf=0;if(!ev)return;var e=ev;ev=null;
+    if(mouseMoved){var W=window.innerWidth||1,H=window.innerHeight||1;
+      px=(e.clientX/W-.5)*2;py=(e.clientY/H-.5)*2;
+      var bg=document.querySelector('.bg');if(bg){bg.style.setProperty('--px',px.toFixed(3));bg.style.setProperty('--py',py.toFixed(3));}}
+    var t=e.target.closest?e.target.closest(GLOW):null;
+    if(active&&active!==t){reset(active);active=null;}
+    if(!t)return;active=t;
+    var r=t.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+    t.style.setProperty('--mx',(x*100).toFixed(1)+'%');t.style.setProperty('--my',(y*100).toFixed(1)+'%');
+    if(t.matches('.tile .box')){
+      t.classList.add('tilt');
+      t.style.setProperty('--ry',((x-.5)*16).toFixed(2)+'deg');t.style.setProperty('--rx',((.5-y)*16).toFixed(2)+'deg');
+    }else{t.style.setProperty('--mx',(e.clientX-r.left)+'px');t.style.setProperty('--my',(e.clientY-r.top)+'px');}
+  }
+  document.addEventListener('pointermove',function(e){
+    if(rm.matches)return;ev=e;mouseMoved=e.pointerType==='mouse';if(!raf)raf=requestAnimationFrame(frame);
+  },{passive:true});
+  function release(){if(active){var a=active;active=null;if(a.matches('.tile .box')){a.classList.remove('tilt');a.style.removeProperty('--rx');a.style.removeProperty('--ry');}}}
+  document.addEventListener('pointerup',release,{passive:true});
+  document.addEventListener('pointercancel',release,{passive:true});
+  document.addEventListener('pointerleave',release,{passive:true});
+  /* 3) paralaks latar saat menggulir + header menebal */
+  var bars=[].slice.call(document.querySelectorAll('.bar')),sraf=0;
+  function onScroll(){
+    sraf=0;var y=window.pageYOffset||0,bg=document.querySelector('.bg');
+    if(bg&&!rm.matches)bg.style.setProperty('--sy',Math.min(y,700));
+    var on=y>6;bars.forEach(function(b){if(b.classList.contains('scrolled')!==on)b.classList.toggle('scrolled',on);});
+  }
+  window.addEventListener('scroll',function(){if(!sraf)sraf=requestAnimationFrame(onScroll);},{passive:true});
+  onScroll();
 })();
 </script>
 </body>
