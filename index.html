@@ -39,7 +39,7 @@ body{margin:0;min-height:100vh;background:linear-gradient(160deg,var(--bg1),var(
 main{max-width:520px;margin:0 auto;padding:16px 16px 48px}
 
 /* ===== Liquid glass bening ===== */
-.glass,.card,.files li,.drop,.pv,.bar,.seg,dialog,.warn,.tile .box{
+.glass,.rb,.card,.files li,.drop,.pv,.bar,.seg,dialog,.warn,.tile .box{
   position:relative;
   background:linear-gradient(135deg,var(--sheen),transparent 42%,var(--sheen-lo)),var(--glass);
   -webkit-backdrop-filter:blur(12px) saturate(175%) brightness(1.05);backdrop-filter:blur(12px) saturate(175%) brightness(1.05);
@@ -224,10 +224,25 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 .tgl[aria-checked="true"]{background:rgba(10,132,255,.8)}.tgl[aria-checked="true"] i{transform:translateX(22px)}
 .pgnum{min-width:64px;text-align:center;font-size:.9rem}
 .fm{display:flex;flex-direction:column;gap:8px;margin:0 0 12px}
-.fm-i{display:flex;align-items:center;gap:12px;width:100%;height:auto;min-height:60px;padding:10px 14px;text-align:left;border-radius:22px}
-.fm-i .ft{flex:1;min-width:0;display:flex;flex-direction:column}.fm-i b{font-size:.98rem}.fm-i small{color:var(--muted);font-size:.78rem;font-weight:400}
+.fm-i{display:flex;align-items:center;gap:12px;width:100%;height:auto;min-height:66px;padding:12px 14px;text-align:left;border-radius:22px}
+.fm-i .ft{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}.fm-i b{font-size:.98rem;line-height:1.25}.fm-i small{color:var(--muted);font-size:.78rem;font-weight:400;line-height:1.3}
 .fm-i .fb{width:38px;height:38px;flex:none;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(10,132,255,.14);color:var(--accent)}
 .fm-i svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.fm-i .chev{width:16px;height:16px;color:var(--muted)}
+/* ===== Pita alat Edit PDF (gaya header Word, versi ringan) ===== */
+.rb{display:flex;align-items:stretch;gap:0;margin:12px 0;padding:6px 6px 5px;border-radius:20px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.rb::-webkit-scrollbar{display:none}
+.rg{display:flex;flex-direction:column;align-items:center;justify-content:space-between;flex:none;padding:0 6px}
+.rg+.rg{border-left:1px solid var(--track)}
+.rbt{display:flex;align-items:center;gap:2px}
+.rl{margin-top:3px;font-size:.64rem;line-height:1;color:var(--muted);font-weight:500}
+.rb .rbn{height:52px;min-width:52px;padding:6px 7px;flex-direction:column;gap:4px;border-radius:13px;border:1px solid transparent;background:transparent;box-shadow:none;font-size:.68rem;font-weight:600;line-height:1.1;cursor:pointer}
+.rb .rbn svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.rb .rbn .gl{height:21px;display:flex;align-items:center;font-size:1.02rem;font-weight:700;letter-spacing:-.02em}
+.rb .rbn:active,.rb .rbn[aria-pressed="true"]{background:rgba(10,132,255,.16);border-color:rgba(10,132,255,.38);color:var(--accent)}
+.rb .rbn.sm{min-width:40px;padding:6px 4px}
+.rb .pgnum{min-width:54px;font-size:.8rem;font-weight:600}
+#epSig{margin:0 0 12px}
+#epSig .hh{margin-top:0}
 .etx{position:absolute;white-space:pre;color:transparent;caret-color:var(--accent);outline:none;line-height:1.15;font-family:Helvetica,Arial,sans-serif;cursor:text;padding:0 1px;margin:-1px 0 0 -1px}
 .etx:focus,.etx.d{background:#fff;color:#111}.etx:focus{outline:1.5px solid var(--accent)}
 .enw{width:auto!important;height:auto!important}.enw span{display:block;white-space:pre;min-width:1em;color:#111;background:rgba(255,255,255,.65);font-family:Helvetica,Arial,sans-serif;line-height:1.15;outline:none;padding:0 3px}
@@ -281,8 +296,7 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 <button type="button" class="fm-i" data-t="s-img"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="3"/><circle cx="9" cy="10" r="1.5"/><path d="m4 17 5-4 4 3 3-2 4 3"/></svg></span><span class="ft"><b>Gambar ke PDF</b><small>Satukan gambar menjadi PDF</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
 <button type="button" class="fm-i" data-t="s-gab"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="9" height="11" rx="2"/><rect x="11" y="9" width="9" height="11" rx="2"/></svg></span><span class="ft"><b>Gabung PDF</b><small>Satukan beberapa PDF</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
 <button type="button" class="fm-i" data-t="s-pis"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16"/><path d="M8 8 4 12l4 4M16 8l4 4-4 4"/></svg></span><span class="ft"><b>Pisah PDF</b><small>Ambil halaman tertentu</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
-<button type="button" class="fm-i" data-t="s-edt"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg></span><span class="ft"><b>Edit PDF</b><small>Ubah teks, tambah gambar</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
-<button type="button" class="fm-i" data-t="s-ttd"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17c3-6 4-9 6-9s0 6 2 6 2-4 4-4 1 3 4 3"/><path d="M4 21h16"/></svg></span><span class="ft"><b>Tanda Tangan</b><small>Bubuhkan tanda tangan ke PDF</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+<button type="button" class="fm-i" data-t="s-edt"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg></span><span class="ft"><b>Edit PDF</b><small>Ubah teks, gambar, tanda tangan</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
 <button type="button" class="fm-i" data-t="s-pin"><span class="fb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h8l4 4v14H7z"/><path d="M4 8v13h3M10 12h6M10 16h6"/></svg></span><span class="ft"><b>Pindai Dokumen</b><small>Foto kertas menjadi PDF</small></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
 </nav>
 <div class="seg" role="tablist" aria-label="Jenis konversi" hidden>
@@ -291,7 +305,6 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
   <button type="button" role="tab" id="s-gab" aria-controls="gdA" aria-selected="false" tabindex="-1">Gabung</button>
   <button type="button" role="tab" id="s-pis" aria-controls="gdB" aria-selected="false" tabindex="-1">Pisah</button>
   <button type="button" role="tab" id="s-edt" aria-controls="epPanel" aria-selected="false" tabindex="-1">Edit PDF</button>
-  <button type="button" role="tab" id="s-ttd" aria-controls="sgPanel" aria-selected="false" tabindex="-1">Tanda tangan</button>
   <button type="button" role="tab" id="s-pin" aria-controls="dsPanel" aria-selected="false" tabindex="-1">Pindai</button>
 </div>
 <div id="p-word" role="tabpanel" aria-labelledby="s-word">
@@ -330,26 +343,26 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 <div id="epPanel" role="tabpanel" aria-labelledby="s-edt" hidden>
 <label class="drop"><b>Pilih PDF</b><br><span id="epName">Belum ada file dipilih</span><input id="epFile" type="file" accept="application/pdf" hidden></label>
 <div id="epView" hidden>
-<div class="row"><button type="button" class="ic" id="epPrev" aria-label="Halaman sebelumnya"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button><span class="pgnum" id="epPg">1 / 1</span><button type="button" class="ic" id="epNext" aria-label="Halaman berikutnya"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button></div>
-<div class="row"><button type="button" id="epTxt">Tambah teks</button><label class="btn" for="epImgF">Tambah gambar</label><input id="epImgF" type="file" accept="image/*" hidden><button type="button" class="ic" id="epMn" aria-label="Perkecil teks baru">A−</button><button type="button" class="ic" id="epPl" aria-label="Besarkan teks baru">A+</button></div>
+<div class="rb" role="toolbar" aria-label="Alat edit PDF">
+<div class="rg"><div class="rbt"><button type="button" class="rbn sm" id="epPrev" aria-label="Halaman sebelumnya"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button><span class="pgnum" id="epPg">1 / 1</span><button type="button" class="rbn sm" id="epNext" aria-label="Halaman berikutnya"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button></div><span class="rl">Halaman</span></div>
+<div class="rg"><div class="rbt">
+<button type="button" class="rbn" id="epTxt"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7V5h14v2M12 5v14M9 19h6"/></svg>Teks</button>
+<label class="btn rbn" for="epImgF"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="3"/><circle cx="9" cy="10" r="1.5"/><path d="m4 17 5-4 4 3 3-2 4 3"/></svg>Gambar</label><input id="epImgF" type="file" accept="image/*" hidden>
+<button type="button" class="rbn" id="epSg" aria-pressed="false" aria-controls="epSig"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17c3-6 4-9 6-9s0 6 2 6 2-4 4-4 1 3 4 3"/><path d="M4 21h16"/></svg>Tanda tangan</button>
+</div><span class="rl">Sisipkan</span></div>
+<div class="rg"><div class="rbt"><button type="button" class="rbn sm" id="epMn" aria-label="Perkecil teks baru"><span class="gl">A&minus;</span></button><button type="button" class="rbn sm" id="epPl" aria-label="Besarkan teks baru"><span class="gl">A+</span></button></div><span class="rl">Ukuran teks</span></div>
+</div>
+<div class="card" id="epSig" hidden>
+<h3 class="hh">Tanda tangan <button type="button" class="ghost" id="sgNew">Buat baru</button></h3>
+<div id="sgPadBox" hidden><canvas id="sgPad" class="pad" width="600" height="240" aria-label="Kanvas tanda tangan"></canvas>
+<div class="opts"><label>Pena<select id="sgPen"><option value="#111111">Hitam</option><option value="#0a3fd4">Biru</option></select></label></div>
+<div class="row"><button type="button" id="sgClr">Hapus</button><button type="button" class="primary" id="sgOk">Selesai</button></div></div>
+<div class="sgl" id="sgSaved"></div>
+</div>
 <div class="stage" id="epStage" style="cursor:default;touch-action:auto"><canvas id="epCv"></canvas></div>
 <div class="row"><button class="primary" id="epGo">Simpan &amp; unduh</button><button type="button" id="epRst">Reset</button></div>
 </div>
 <p class="msg" id="epMsg" role="status"></p>
-</div>
-<div id="sgPanel" role="tabpanel" aria-labelledby="s-ttd" hidden>
-<label class="drop"><b>Pilih PDF</b><br><span id="sgName">Belum ada file dipilih</span><input id="sgFile" type="file" accept="application/pdf" hidden></label>
-<h3 class="hh">Tanda tangan <button type="button" class="ghost" id="sgNew">Buat baru</button></h3>
-<div id="sgPadBox" hidden><div class="card"><canvas id="sgPad" class="pad" width="600" height="240" aria-label="Kanvas tanda tangan"></canvas></div>
-<div class="opts"><label>Pena<select id="sgPen"><option value="#111111">Hitam</option><option value="#0a3fd4">Biru</option></select></label></div>
-<div class="row"><button type="button" id="sgClr">Hapus</button><button type="button" class="primary" id="sgOk">Selesai</button></div></div>
-<div class="sgl" id="sgSaved"></div>
-<div id="sgView" hidden>
-<div class="row"><button type="button" class="ic" id="sgPrev" aria-label="Halaman sebelumnya"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button><span class="pgnum" id="sgPg">1 / 1</span><button type="button" class="ic" id="sgNext" aria-label="Halaman berikutnya"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button></div>
-<div class="stage" id="sgStage" style="cursor:default"><canvas id="sgCv"></canvas></div>
-<div class="row"><button class="primary" id="sgGo" disabled>Terapkan &amp; unduh</button><button type="button" id="sgRst">Reset</button></div>
-</div>
-<p class="msg" id="sgMsg" role="status"></p>
 </div>
 <div id="dsPanel" role="tabpanel" aria-labelledby="s-pin" hidden>
 <div class="row"><label class="btn" for="dsCam">Ambil foto</label><label class="btn" for="dsGal">Dari galeri</label><input id="dsCam" type="file" accept="image/*" capture="environment" hidden><input id="dsGal" type="file" accept="image/*" multiple hidden></div>
@@ -363,8 +376,6 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
 <p class="msg" id="dsMsg" role="status"></p>
 </div>
 <p class="msg" id="gdMsg" role="status"></p>
-<h3 class="hh">Riwayat <button type="button" class="ghost" id="pdfHistClear">Hapus semua</button></h3>
-<div id="pdfHist"></div>
 </section>
 <section id="p-ocr" class="page" hidden>
 <header class="bar"><a class="back" href="#" data-back aria-label="Kembali ke beranda"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></a><h2 class="ttl">Gambar ke Teks</h2></header>
@@ -722,26 +733,11 @@ dialog .row{justify-content:flex-end;margin:12px 0 0}
     return new Blob(chunks,{type:'application/pdf'});
   }
 
-  /* ===== Riwayat PDF ===== */
-  var pHist=[];
-  try{pHist=JSON.parse(localStorage.getItem('pdf-history')||'[]')||[];}catch(e){}
-  function savePH(){try{localStorage.setItem('pdf-history',JSON.stringify(pHist.slice(0,30)));}catch(e){}}
+  /* Riwayat PDF dihapus; fungsi dibiarkan kosong agar pemanggil lama tetap aman */
+  try{localStorage.removeItem('pdf-history');}catch(e){}
   function fmtSize(b){return b>=1048576?(b/1048576).toFixed(1)+' MB':Math.max(1,Math.round(b/1024))+' KB';}
-  function renderPH(){
-    var box=$('pdfHist');
-    if(!pHist.length){box.innerHTML='<p class="empty">Belum ada file yang diunduh.</p>';return;}
-    box.innerHTML=pHist.map(function(h,i){
-      return '<div class="card"><p class="val">'+esc(h.name)+'</p><p class="meta">'+esc(h.kind)+' · '+esc(fmtSize(h.size))+' · '+esc(when(h))+'</p><div class="acts"><button data-pdel="'+i+'">Hapus</button></div></div>';
-    }).join('');
-  }
-  function addPdfHist(h){pHist.unshift(h);pHist=pHist.slice(0,30);savePH();renderPH();}
-  window.addPdfHist=addPdfHist;
-  $('pdfHist').addEventListener('click',function(e){
-    var b=e.target.closest('button');if(!b||b.getAttribute('data-pdel')===null)return;
-    pHist.splice(parseInt(b.getAttribute('data-pdel'),10),1);savePH();renderPH();
-  });
-  $('pdfHistClear').onclick=function(){pHist=[];savePH();renderPH();};
-  renderPH();
+  window.addPdfHist=function(){};
+  function addPdfHist(){}
 
   /* ===== Hasil: pratinjau (bertahap) + ganti nama + unduh ===== */
   function baseName(n){return n.replace(/\.[^.]+$/,'');}
@@ -1405,8 +1401,8 @@ $('qCp').onclick=async function(){try{if(!window.ClipboardItem||!navigator.clipb
 function qReset(){[].forEach.call(document.querySelectorAll('#p-qr input'),function(i){i.value='';});qUpd();}
 $('qRst').onclick=qReset;qUpd();
 
-/* ===== 3. Tanda Tangan PDF ===== */
-var sH=H('Tanda tangan'),sg={buf:null,name:'',pj:null,n:0,cur:1,objs:[],seq:0,tok:0},sigs=[],drag=null,pen=null;
+/* ===== 3. Tanda tangan (bagian dari Edit PDF) ===== */
+var sigs=[],pen=null;
 try{sigs=JSON.parse(localStorage.getItem('sig-list')||'[]')||[];}catch(e){}
 function sigSave(){try{localStorage.setItem('sig-list',JSON.stringify(sigs.slice(0,6)));}catch(e){}}
 function sigDraw(){var b=$('sgSaved');b.innerHTML='';sigs.forEach(function(u,i){var s=document.createElement('span');s.className='it';s.innerHTML='<button type="button" class="u" aria-label="Pakai tanda tangan"><img alt=""></button><button type="button" class="ic" aria-label="Hapus tanda tangan">'+ic(DEL)+'</button>';
@@ -1419,50 +1415,15 @@ pad.addEventListener('pointermove',function(e){if(!pen)return;var p=padPt(e);px.
 $('sgNew').onclick=function(){$('sgPadBox').hidden=!$('sgPadBox').hidden;px.clearRect(0,0,pad.width,pad.height);inked=false;};
 $('sgClr').onclick=function(){px.clearRect(0,0,pad.width,pad.height);inked=false;};
 $('sgOk').onclick=function(){
-  if(!inked){say('sgMsg','Gambar tanda tangan dulu di kanvas.');return;}
+  if(!inked){say('epMsg','Gambar tanda tangan dulu di kanvas.');return;}
   var w=pad.width,h=pad.height,d=px.getImageData(0,0,w,h).data,x0=w,y0=h,x1=-1,y1=-1;
   for(var y=0;y<h;y++)for(var x=0;x<w;x++)if(d[(y*w+x)*4+3]>8){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;}
   if(x1<0)return;x0=Math.max(0,x0-6);y0=Math.max(0,y0-6);x1=Math.min(w-1,x1+6);y1=Math.min(h-1,y1+6);
   var o=document.createElement('canvas');o.width=x1-x0+1;o.height=y1-y0+1;o.getContext('2d').drawImage(pad,x0,y0,o.width,o.height,0,0,o.width,o.height);
-  sigs.unshift(o.toDataURL('image/png'));sigs=sigs.slice(0,6);sigSave();sigDraw();$('sgPadBox').hidden=true;say('sgMsg','');};
-$('sgFile').onchange=async function(e){
-  var f=e.target.files[0];e.target.value='';if(!f||!lib('sgMsg',window.PDFLib&&window.pdfjsLib,'pdf-lib / pdf.js'))return;say('sgMsg','');
-  try{var buf=await f.arrayBuffer(),d=await PDFLib.PDFDocument.load(buf),pj=await pjs(buf);sg.buf=buf;sg.name=f.name;sg.pj=pj;sg.n=d.getPageCount();sg.cur=1;sg.objs=[];
-    $('sgName').textContent=f.name;$('sgView').hidden=false;sgPage();}
-  catch(x){say('sgMsg','PDF tidak bisa dibaca (rusak atau terkunci kata sandi).');}};
-async function sgPage(){var t=++sg.tok,c=await rend(sg.pj,sg.cur,900);if(t!==sg.tok)return;var cv=$('sgCv');cv.width=c.width;cv.height=c.height;cv.getContext('2d').drawImage(c,0,0);
-  $('sgPg').textContent=sg.cur+' / '+sg.n;$('sgPrev').disabled=sg.cur<2;$('sgNext').disabled=sg.cur>=sg.n;sgOv();}
-function place(el,o){var cv=$('sgCv');el.style.left=o.x*100+'%';el.style.top=o.y*100+'%';el.style.width=o.w*100+'%';el.style.height=o.w*o.ar*cv.width/cv.height*100+'%';}
-function sgOv(){var st=$('sgStage');[].forEach.call(st.querySelectorAll('.sgo'),function(n){n.remove();});
-  sg.objs.forEach(function(o){if(o.p!==sg.cur)return;var el=document.createElement('div');el.className='sgo';el.setAttribute('data-id',o.id);el.innerHTML='<img alt=""><i data-h="nw"></i><i data-h="ne"></i><i data-h="se"></i><i data-h="sw"></i><b data-del>×</b>';el.querySelector('img').src=o.u;place(el,o);st.appendChild(el);});
-  $('sgGo').disabled=!sg.objs.length;}
-$('sgPrev').onclick=function(){sg.cur--;sgPage();};$('sgNext').onclick=function(){sg.cur++;sgPage();};
-function sgAdd(u){if(!sg.buf){say('sgMsg','Pilih PDF dulu.');return;}say('sgMsg','');var im=new Image();im.onload=function(){sg.objs.push({id:++sg.seq,p:sg.cur,x:.3,y:.4,w:.35,ar:im.naturalHeight/im.naturalWidth,u:u});sgOv();};im.src=u;}
-var stg=$('sgStage');
-function sp2(e){var r=$('sgCv').getBoundingClientRect();return {x:(e.clientX-r.left)/r.width,y:(e.clientY-r.top)/r.height};}
-stg.addEventListener('pointerdown',function(e){var el=e.target.closest&&e.target.closest('.sgo');if(!el)return;var o=sg.objs.filter(function(a){return a.id==el.getAttribute('data-id');})[0];if(!o)return;
-  if(e.target.hasAttribute('data-del')){sg.objs.splice(sg.objs.indexOf(o),1);sgOv();return;}
-  var p=sp2(e),h=e.target.getAttribute('data-h'),k=o.ar*$('sgCv').width/$('sgCv').height,hh=o.w*k;
-  if(h)drag={o:o,el:el,h:h,k:k,ax:h.indexOf('w')>-1?o.x+o.w:o.x,ay:h.indexOf('n')>-1?o.y+hh:o.y};else drag={o:o,el:el,m:1,sx:p.x,sy:p.y,ox:o.x,oy:o.y,k:k};
-  try{stg.setPointerCapture(e.pointerId);}catch(x){}e.preventDefault();});
-stg.addEventListener('pointermove',function(e){if(!drag)return;var p=sp2(e),o=drag.o,k=drag.k;
-  if(drag.m){o.x=clamp(drag.ox+p.x-drag.sx,0,1-o.w);o.y=clamp(drag.oy+p.y-drag.sy,0,1-o.w*k);}
-  else{var w=clamp(Math.max(Math.abs(p.x-drag.ax),Math.abs(p.y-drag.ay)/k),.06,1),hh=w*k;o.w=w;o.x=drag.h.indexOf('w')>-1?drag.ax-w:drag.ax;o.y=drag.h.indexOf('n')>-1?drag.ay-hh:drag.ay;}
-  place(drag.el,o);});
-['pointerup','pointercancel'].forEach(function(n){stg.addEventListener(n,function(){drag=null;});});
-$('sgGo').onclick=async function(){
-  var b=this;b.disabled=true;say('sgMsg','Menerapkan tanda tangan...',true);
-  try{var doc=await PDFLib.PDFDocument.load(sg.buf),cache={},D=PDFLib.degrees;
-    for(var o of sg.objs){var img=cache[o.u]||(cache[o.u]=await doc.embedPng(toBytes(o.u))),pg=doc.getPage(o.p-1),a=((pg.getRotation().angle%360)+360)%360,sz=pg.getSize(),w0=sz.width,h0=sz.height,
-        W=a%180?h0:w0,H=a%180?w0:h0,vx=o.x*W,vy=o.y*H,vw=o.w*W,vh=vw*o.ar,X,Y;
-      /* (vx,vy)=pojok kiri-bawah gambar di ruang tampilan (asal kiri-atas) -> ruang PDF per rotasi */
-      var by=vy+vh;
-      if(a===0){X=vx;Y=H-by;}else if(a===90){X=by;Y=vx;}else if(a===180){X=w0-vx;Y=by;}else{X=w0-by;Y=h0-vx;}
-      pg.drawImage(img,{x:X,y:Y,width:vw,height:vh,rotate:D(a)});}
-    var bl=new Blob([await doc.save()],{type:'application/pdf'}),nm=base(sg.name)+'_ttd.pdf';dl(bl,nm);sH({name:nm,pages:doc.getPageCount(),size:bl.size});sgReset();say('sgMsg','PDF bertanda tangan diunduh.',true);
-  }catch(x){say('sgMsg','Gagal menerapkan tanda tangan'+errT(x)+'.');b.disabled=false;}};
-function sgReset(){sg.buf=null;sg.pj=null;sg.objs=[];sg.tok++;$('sgView').hidden=true;$('sgName').textContent='Belum ada file dipilih';$('sgPadBox').hidden=true;say('sgMsg','');}
-$('sgRst').onclick=sgReset;sigDraw();
+  sigs.unshift(o.toDataURL('image/png'));sigs=sigs.slice(0,6);sigSave();sigDraw();$('sgPadBox').hidden=true;say('epMsg','');};
+/* Tanda tangan ditempel sebagai objek gambar di halaman Edit PDF (bisa digeser & diubah ukurannya) */
+function sgAdd(u){if(!ep.buf){say('epMsg','Pilih PDF dulu.');return;}say('epMsg','');var im=new Image();im.onload=function(){ep.objs.push({id:++ep.seq,p:ep.cur,t:'img',x:.3,y:.4,w:.35,ar:im.naturalHeight/im.naturalWidth,u:u});epOv();};im.src=u;}
+sigDraw();
 
 /* ===== 4. Pindai Dokumen ===== */
 var dH=H('Pindai dokumen'),pgs=[],dcur=0,dd=null;
@@ -1591,6 +1552,7 @@ $('epPrev').onclick=function(){ep.cur--;epPage();};$('epNext').onclick=function(
 window.addEventListener('resize',function(){if(ep.pj&&!$('epView').hidden)epOv();});
 $('epTxt').onclick=function(){ep.objs.push({id:++ep.seq,p:ep.cur,t:'txt',x:.3,y:.4,fs:14,s:'Teks'});epOv();};
 function epSz(d){if(ep.sel&&ep.objs.indexOf(ep.sel)>-1){ep.sel.fs=clamp(ep.sel.fs+d,6,72);epOv();}}
+$('epSg').onclick=function(){var box=$('epSig'),open=box.hidden;box.hidden=!open;this.setAttribute('aria-pressed',open?'true':'false');if(!open)$('sgPadBox').hidden=true;};
 $('epMn').onclick=function(){epSz(-2);};$('epPl').onclick=function(){epSz(2);};
 $('epImgF').onchange=function(e){var f=e.target.files[0];e.target.value='';if(!f)return;var u=URL.createObjectURL(f),im=new Image();
   im.onload=function(){URL.revokeObjectURL(u);var sc=Math.min(1,1600/Math.max(im.naturalWidth,im.naturalHeight)),c=document.createElement('canvas');c.width=Math.round(im.naturalWidth*sc);c.height=Math.round(im.naturalHeight*sc);
@@ -1626,11 +1588,11 @@ $('epGo').onclick=async function(){
     var bl=new Blob([await doc.save()],{type:'application/pdf'}),nm=base(ep.name)+'_edit.pdf';dl(bl,nm);eH({name:nm,size:bl.size});epReset();
     say('epMsg','PDF hasil edit diunduh.'+(bad?' Karakter di luar font standar diganti tanda tanya.':''),true);
   }catch(x){say('epMsg','Gagal menyimpan'+errT(x)+'.');b.disabled=false;}};
-function epReset(){ep.buf=null;ep.pj=null;ep.tc={};ep.objs=[];ep.tok++;$('epView').hidden=true;$('epName').textContent='Belum ada file dipilih';say('epMsg','');}
+function epReset(){ep.buf=null;ep.pj=null;ep.tc={};ep.objs=[];ep.tok++;$('epView').hidden=true;$('epSig').hidden=true;$('sgPadBox').hidden=true;$('epSg').setAttribute('aria-pressed','false');$('epName').textContent='Belum ada file dipilih';say('epMsg','');}
 $('epRst').onclick=epReset;
 /* ===== File Master: daftar fitur (kolom) -> isi fitur ===== */
 (function(){
-  var menu=$('fmMenu'),ttl=document.querySelector('#p-pdf .ttl'),back=document.querySelector('#p-pdf .back'),open=false,pushed=false,ids=['p-word','p-img','gdA','gdB','epPanel','sgPanel','dsPanel'];
+  var menu=$('fmMenu'),ttl=document.querySelector('#p-pdf .ttl'),back=document.querySelector('#p-pdf .back'),open=false,pushed=false,ids=['p-word','p-img','gdA','gdB','epPanel','dsPanel'];
   function showMenu(){open=false;pushed=false;menu.hidden=false;ids.forEach(function(i){$(i).hidden=true;});ttl.textContent='File Master';say('gdMsg','');}
   menu.addEventListener('click',function(e){var b=e.target.closest('.fm-i');if(!b)return;
     menu.hidden=true;open=true;ttl.textContent=b.querySelector('b').textContent;$(b.getAttribute('data-t')).click();window.scrollTo(0,0);
