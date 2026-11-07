@@ -33,11 +33,35 @@ button:focus-visible,label.btn:focus-within,a:focus-visible{outline:3px solid va
 h2{font-size:1.05rem;margin:22px 0 10px;display:flex;justify-content:space-between;align-items:center}
 h2 button{flex:none;padding:6px 10px;font-size:.85rem}
 .empty{color:var(--muted)}
+
+.tabs{display:flex;gap:6px;margin:0 0 16px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:4px}
+.tabs button{border:0;background:transparent;padding:10px 6px;font-size:.9rem}
+.tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+.drop{display:block;border:2px dashed var(--line);border-radius:16px;padding:28px 16px;text-align:center;color:var(--muted);cursor:pointer;background:var(--surface)}
+.drop:focus-within{outline:3px solid var(--accent);outline-offset:2px}
+.drop b{color:var(--ink)}
+.files{list-style:none;margin:12px 0;padding:0}
+.files li{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px;margin-bottom:8px}
+.files img{width:44px;height:44px;object-fit:cover;border-radius:8px;flex:none}
+.files span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.92rem}
+.files button{flex:none;padding:6px 10px;font-size:.85rem}
+.ok{color:var(--accent)}
+#docRender{position:fixed;left:-10000px;top:0;width:700px;background:#fff;color:#000;font:14px/1.5 Arial,sans-serif;padding:0}
+#docRender img{max-width:100%}
+#docRender table{border-collapse:collapse}
+#docRender td,#docRender th{border:1px solid #999;padding:4px}
+[hidden]{display:none!important}
 </style>
 </head>
 <body>
 <main>
-<h1>Pindai Kode</h1>
+<h1>Alat Kode &amp; PDF</h1>
+<div class="tabs" role="tablist">
+  <button role="tab" aria-selected="true" data-tab="scan">Pindai</button>
+  <button role="tab" aria-selected="false" data-tab="word">Word ke PDF</button>
+  <button role="tab" aria-selected="false" data-tab="img">Gambar ke PDF</button>
+</div>
+<section id="p-scan">
 <p class="sub">Arahkan kamera ke barcode atau QR. Hasilnya bisa disalin atau dibuka.</p>
 <div class="view">
   <video id="v" playsinline muted></video>
@@ -51,8 +75,26 @@ h2 button{flex:none;padding:6px 10px;font-size:.85rem}
 <p id="msg" role="status"></p>
 <h2>Riwayat <button id="clear">Hapus semua</button></h2>
 <div id="list"><p class="empty">Belum ada hasil pindaian.</p></div>
+</section>
+<section id="p-word" hidden>
+<p class="sub">Ubah file Word (.docx) menjadi PDF langsung di perangkatmu. File tidak diunggah ke mana pun.</p>
+<label class="drop"><b>Pilih file .docx</b><br><span id="wordName">Belum ada file dipilih</span><input id="wordFile" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden></label>
+<div class="row"><button class="primary" id="wordGo" disabled>Ubah ke PDF</button></div>
+<p id="wordMsg" role="status"></p>
+</section>
+<section id="p-img" hidden>
+<p class="sub">Gabungkan satu atau lebih gambar menjadi satu PDF. Urutan halaman mengikuti daftar.</p>
+<label class="drop"><b>Pilih gambar</b><br>JPG, PNG, atau WebP<input id="imgFiles" type="file" accept="image/*" multiple hidden></label>
+<ul class="files" id="imgList"></ul>
+<div class="row"><button class="primary" id="imgGo" disabled>Buat PDF</button></div>
+<p id="imgMsg" role="status"></p>
+</section>
+<div id="docRender"></div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script>
 (function(){
   var v=document.getElementById('v'),msg=document.getElementById('msg'),list=document.getElementById('list');
@@ -134,6 +176,79 @@ h2 button{flex:none;padding:6px 10px;font-size:.85rem}
     e.target.value='';
   };
   render();
+})();
+</script>
+<script>
+(function(){
+  var tabs=document.querySelectorAll('.tabs button');
+  tabs.forEach(function(b){b.onclick=function(){
+    var scanBtn=document.getElementById('toggle');
+    if(b.dataset.tab!=='scan'&&scanBtn.textContent==='Hentikan kamera')scanBtn.click();
+    tabs.forEach(function(x){x.setAttribute('aria-selected',x===b?'true':'false');});
+    ['scan','word','img'].forEach(function(n){document.getElementById('p-'+n).hidden=(n!==b.dataset.tab);});
+  };});
+  function jsPDFClass(){return window.jspdf&&window.jspdf.jsPDF;}
+  function baseName(n){return n.replace(/\.[^.]+$/,'');}
+
+  // Word -> PDF
+  var wf=document.getElementById('wordFile'),wGo=document.getElementById('wordGo'),wMsg=document.getElementById('wordMsg'),wName=document.getElementById('wordName'),wFile=null;
+  wf.onchange=function(){wFile=wf.files[0]||null;wName.textContent=wFile?wFile.name:'Belum ada file dipilih';wGo.disabled=!wFile;wMsg.textContent='';wMsg.className='';};
+  wGo.onclick=async function(){
+    var J=jsPDFClass();
+    if(!J||!window.mammoth||!window.html2canvas){wMsg.textContent='Pustaka belum termuat. Periksa koneksi internet lalu muat ulang halaman.';return;}
+    if(!/\.docx$/i.test(wFile.name)){wMsg.textContent='Hanya file .docx yang didukung. Simpan ulang file .doc sebagai .docx di Word.';return;}
+    wGo.disabled=true;wMsg.className='';wMsg.textContent='Memproses...';
+    try{
+      var res=await mammoth.convertToHtml({arrayBuffer:await wFile.arrayBuffer()});
+      var box=document.getElementById('docRender');box.innerHTML=res.value;
+      var doc=new J({unit:'pt',format:'a4'});
+      await new Promise(function(ok,fail){
+        doc.html(box,{margin:[40,40,40,40],autoPaging:'text',width:515,windowWidth:700,callback:function(d){try{d.save(baseName(wFile.name)+'.pdf');ok();}catch(e){fail(e);}}});
+      });
+      box.innerHTML='';wMsg.className='ok';wMsg.textContent='Selesai. PDF sudah diunduh.';
+    }catch(e){wMsg.textContent='Gagal mengubah file. Pastikan file .docx tidak rusak atau diproteksi password.';}
+    wGo.disabled=false;
+  };
+
+  // Gambar -> PDF
+  var imgs=[],iIn=document.getElementById('imgFiles'),iList=document.getElementById('imgList'),iGo=document.getElementById('imgGo'),iMsg=document.getElementById('imgMsg');
+  function renderImgs(){
+    iList.innerHTML='';
+    imgs.forEach(function(it,i){
+      var li=document.createElement('li');
+      li.innerHTML='<img alt=""><span></span><button data-a="up">Naik</button><button data-a="del">Hapus</button>';
+      li.querySelector('img').src=it.url;li.querySelector('span').textContent=it.file.name;
+      li.querySelector('[data-a=up]').disabled=(i===0);
+      li.querySelector('[data-a=up]').onclick=function(){var t=imgs[i-1];imgs[i-1]=imgs[i];imgs[i]=t;renderImgs();};
+      li.querySelector('[data-a=del]').onclick=function(){URL.revokeObjectURL(it.url);imgs.splice(i,1);renderImgs();};
+      iList.appendChild(li);
+    });
+    iGo.disabled=!imgs.length;
+  }
+  iIn.onchange=function(){
+    Array.prototype.forEach.call(iIn.files,function(f){imgs.push({file:f,url:URL.createObjectURL(f)});});
+    iIn.value='';iMsg.textContent='';iMsg.className='';renderImgs();
+  };
+  iGo.onclick=async function(){
+    var J=jsPDFClass();
+    if(!J){iMsg.textContent='Pustaka belum termuat. Periksa koneksi internet lalu muat ulang halaman.';return;}
+    iGo.disabled=true;iMsg.className='';iMsg.textContent='Memproses...';
+    try{
+      var doc=new J({unit:'mm',format:'a4',orientation:'portrait'}),W=210,H=297,M=10;
+      for(var i=0;i<imgs.length;i++){
+        var bmp=await createImageBitmap(imgs[i].file);
+        var c=document.createElement('canvas');c.width=bmp.width;c.height=bmp.height;
+        var x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(bmp,0,0);
+        var data=c.toDataURL('image/jpeg',0.92);
+        var r=Math.min((W-2*M)/bmp.width,(H-2*M)/bmp.height),w=bmp.width*r,h=bmp.height*r;
+        if(i>0)doc.addPage('a4','portrait');
+        doc.addImage(data,'JPEG',(W-w)/2,(H-h)/2,w,h);
+      }
+      doc.save('gambar.pdf');
+      iMsg.className='ok';iMsg.textContent='Selesai. PDF sudah diunduh.';
+    }catch(e){iMsg.textContent='Gagal membuat PDF. Coba gambar dengan format lain.';}
+    iGo.disabled=!imgs.length;
+  };
 })();
 </script>
 </body>
