@@ -50,6 +50,18 @@ h2 button{flex:none;padding:6px 10px;font-size:.85rem}
 #docRender img{max-width:100%}
 #docRender table{border-collapse:collapse}
 #docRender td,#docRender th{border:1px solid #999;padding:4px}
+.result{margin-top:16px}
+.pv{max-height:60vh;overflow:auto;background:var(--line);border-radius:12px;padding:8px;border:1px solid var(--line)}
+.pv canvas{display:block;width:100%;height:auto;background:#fff;border-radius:4px;box-shadow:0 1px 4px rgba(0,0,0,.25)}
+.pv figure{margin:0 0 10px}
+.pv figcaption{text-align:center;font-size:.8rem;color:var(--muted);margin-top:4px}
+.pv .note{padding:16px;text-align:center;color:var(--muted)}
+.nm{display:block;margin:14px 0 10px;font-weight:600;font-size:.92rem}
+.nmrow{display:flex;align-items:center;gap:6px;margin-top:6px}
+.nmrow input{flex:1;min-width:0;font:inherit;padding:11px 12px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.nmrow input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.nmrow span{color:var(--muted);font-weight:600}
+.result .dl{width:100%}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -81,6 +93,7 @@ h2 button{flex:none;padding:6px 10px;font-size:.85rem}
 <label class="drop"><b>Pilih file .docx</b><br><span id="wordName">Belum ada file dipilih</span><input id="wordFile" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden></label>
 <div class="row"><button class="primary" id="wordGo" disabled>Ubah ke PDF</button></div>
 <p id="wordMsg" role="status"></p>
+<div id="wordOut"></div>
 </section>
 <section id="p-img" hidden>
 <p class="sub">Gabungkan satu atau lebih gambar menjadi satu PDF. Urutan halaman mengikuti daftar.</p>
@@ -88,6 +101,7 @@ h2 button{flex:none;padding:6px 10px;font-size:.85rem}
 <ul class="files" id="imgList"></ul>
 <div class="row"><button class="primary" id="imgGo" disabled>Buat PDF</button></div>
 <p id="imgMsg" role="status"></p>
+<div id="imgOut"></div>
 </section>
 <div id="docRender"></div>
 </main>
@@ -95,6 +109,7 @@ h2 button{flex:none;padding:6px 10px;font-size:.85rem}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
 (function(){
   var v=document.getElementById('v'),msg=document.getElementById('msg'),list=document.getElementById('list');
@@ -189,6 +204,32 @@ h2 button{flex:none;padding:6px 10px;font-size:.85rem}
   };});
   function jsPDFClass(){return window.jspdf&&window.jspdf.jsPDF;}
   function baseName(n){return n.replace(/\.[^.]+$/,'');}
+  function clearResult(box){if(box._url){URL.revokeObjectURL(box._url);box._url=null;}box.innerHTML='';}
+  function showResult(box,blob,name){
+    clearResult(box);
+    var url=URL.createObjectURL(blob);box._url=url;
+    box.innerHTML='<div class="result"><div class="pv" aria-label="Pratinjau PDF"><p class="note">Memuat pratinjau...</p></div><label class="nm">Nama file<div class="nmrow"><input type="text" autocomplete="off"><span>.pdf</span></div></label><button class="primary dl">Unduh PDF</button></div>';
+    var inp=box.querySelector('input'),pv=box.querySelector('.pv');
+    inp.value=name;
+    box.querySelector('.dl').onclick=function(){
+      var n=inp.value.trim().replace(/[\\\/:*?"<>|]+/g,'').replace(/\.pdf$/i,'')||'dokumen';
+      var a=document.createElement('a');a.href=url;a.download=n+'.pdf';document.body.appendChild(a);a.click();a.remove();
+    };
+    function fail(){pv.innerHTML='<p class="note">Pratinjau tidak tersedia, tetapi PDF tetap bisa diunduh.</p>';}
+    if(!window.pdfjsLib){fail();return;}
+    pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    blob.arrayBuffer().then(function(buf){return pdfjsLib.getDocument({data:buf}).promise;}).then(async function(pdf){
+      pv.innerHTML='';
+      var w=Math.max(pv.clientWidth-16,200),dpr=Math.min(window.devicePixelRatio||1,2);
+      for(var i=1;i<=pdf.numPages;i++){
+        var pg=await pdf.getPage(i),v0=pg.getViewport({scale:1}),vp=pg.getViewport({scale:(w*dpr)/v0.width});
+        var c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;
+        await pg.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;
+        var f=document.createElement('figure'),cap=document.createElement('figcaption');
+        cap.textContent='Halaman '+i+' dari '+pdf.numPages;f.appendChild(c);f.appendChild(cap);pv.appendChild(f);
+      }
+    }).catch(fail);
+  }
 
   // Word -> PDF
   var wf=document.getElementById('wordFile'),wGo=document.getElementById('wordGo'),wMsg=document.getElementById('wordMsg'),wName=document.getElementById('wordName'),wFile=null;
@@ -197,15 +238,15 @@ h2 button{flex:none;padding:6px 10px;font-size:.85rem}
     var J=jsPDFClass();
     if(!J||!window.mammoth||!window.html2canvas){wMsg.textContent='Pustaka belum termuat. Periksa koneksi internet lalu muat ulang halaman.';return;}
     if(!/\.docx$/i.test(wFile.name)){wMsg.textContent='Hanya file .docx yang didukung. Simpan ulang file .doc sebagai .docx di Word.';return;}
-    wGo.disabled=true;wMsg.className='';wMsg.textContent='Memproses...';
+    wGo.disabled=true;wMsg.className='';wMsg.textContent='Memproses...';clearResult(document.getElementById('wordOut'));
     try{
       var res=await mammoth.convertToHtml({arrayBuffer:await wFile.arrayBuffer()});
       var box=document.getElementById('docRender');box.innerHTML=res.value;
       var doc=new J({unit:'pt',format:'a4'});
-      await new Promise(function(ok,fail){
-        doc.html(box,{margin:[40,40,40,40],autoPaging:'text',width:515,windowWidth:700,callback:function(d){try{d.save(baseName(wFile.name)+'.pdf');ok();}catch(e){fail(e);}}});
+      var out=await new Promise(function(ok,fail){
+        doc.html(box,{margin:[40,40,40,40],autoPaging:'text',width:515,windowWidth:700,callback:function(d){try{ok(d);}catch(e){fail(e);}}});
       });
-      box.innerHTML='';wMsg.className='ok';wMsg.textContent='Selesai. PDF sudah diunduh.';
+      box.innerHTML='';showResult(document.getElementById('wordOut'),out.output('blob'),baseName(wFile.name));wMsg.className='ok';wMsg.textContent='PDF siap. Periksa pratinjau, ubah nama file bila perlu, lalu unduh.';
     }catch(e){wMsg.textContent='Gagal mengubah file. Pastikan file .docx tidak rusak atau diproteksi password.';}
     wGo.disabled=false;
   };
@@ -232,7 +273,7 @@ h2 button{flex:none;padding:6px 10px;font-size:.85rem}
   iGo.onclick=async function(){
     var J=jsPDFClass();
     if(!J){iMsg.textContent='Pustaka belum termuat. Periksa koneksi internet lalu muat ulang halaman.';return;}
-    iGo.disabled=true;iMsg.className='';iMsg.textContent='Memproses...';
+    iGo.disabled=true;iMsg.className='';iMsg.textContent='Memproses...';clearResult(document.getElementById('imgOut'));
     try{
       var doc=new J({unit:'mm',format:'a4',orientation:'portrait'}),W=210,H=297,M=10;
       for(var i=0;i<imgs.length;i++){
@@ -244,8 +285,8 @@ h2 button{flex:none;padding:6px 10px;font-size:.85rem}
         if(i>0)doc.addPage('a4','portrait');
         doc.addImage(data,'JPEG',(W-w)/2,(H-h)/2,w,h);
       }
-      doc.save('gambar.pdf');
-      iMsg.className='ok';iMsg.textContent='Selesai. PDF sudah diunduh.';
+      showResult(document.getElementById('imgOut'),doc.output('blob'),'gambar');
+      iMsg.className='ok';iMsg.textContent='PDF siap. Periksa pratinjau, ubah nama file bila perlu, lalu unduh.';
     }catch(e){iMsg.textContent='Gagal membuat PDF. Coba gambar dengan format lain.';}
     iGo.disabled=!imgs.length;
   };
